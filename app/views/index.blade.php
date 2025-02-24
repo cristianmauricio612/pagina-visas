@@ -3,8 +3,12 @@
 @section('title', 'Home')
 
 @section('content')
+    <div style="height:80vh; background-image: url('{{assets('img/homepage-hero.jpg')}}')">
+
+    </div>
+
     <!-- PORQUE ELEGIRNOS -->
-    <div class="container">
+    <div class="container mt-5">
         <div class="row row-cols-md-1 row-cols-lg-2">
             <div class="col d-flex flex-column align-items-center">
                 <img class="rounded-4" src="{{assets('img/elegirnos.jpg')}}" alt="">
@@ -48,7 +52,7 @@
     <!-- PORQUE ELEGIRNOS END-->
 
     <!-- NUESTRO PROCESO DE APLICACION -->
-    <div class="container">
+    <div class="container mt-5">
         <h2>Nuestro proceso de aplicación</h2>
         <p>Te explicamos cómo solicitar los diferentes documentos de viaje con nosotros.</p>
         <div class="row row-cols-md-1">
