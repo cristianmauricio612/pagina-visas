@@ -95,6 +95,41 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="countryModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="countryModalLabel">Selecciona tus preferencias de país y divisa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="languageSelect" class="form-label">Idioma</label>
+                            <select class="form-select" id="languageSelect">
+                                <option selected>Español</option>
+                                <option>Inglés</option>
+                                <option>Francés</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="currencySelect" class="form-label">Divisa</label>
+                            <select class="form-select" id="currencySelect">
+                                <option selected>PEN S/.</option>
+                                <option>USD $</option>
+                                <option>EUR €</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success w-100" data-bs-dismiss="modal">Actualizar preferencias</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @yield('content')
 @stack('js')
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -136,6 +171,16 @@
             menu.addEventListener("click", function (e) {
                 e.stopPropagation();
             });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const countryContainer = document.querySelector(".country-container");
+        const countryModal = new bootstrap.Modal(document.getElementById("countryModal"));
+
+        countryContainer.addEventListener("click", function () {
+            countryModal.show();
         });
     });
 </script>

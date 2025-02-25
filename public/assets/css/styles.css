@@ -105,6 +105,10 @@ body{
 .country-container{
     display: flex;
     align-items: center;
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 16px;
+    cursor: pointer;
 }
 
 .button-login{
