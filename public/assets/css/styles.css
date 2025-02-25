@@ -11,6 +11,22 @@
     --font-size: 3rem; /* Tamaño base de la fuente */
 }
 
+.circle {
+    font-size: var(--font-size); /* Tamaño de la fuente */
+    width: 1.8em; /* Se adapta al tamaño de la fuente */
+    height: 1.8em;
+    background-color: #e5eced;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Manrope,Arial,sans-serif;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    margin-right: 10px;
+}
 
 body{
     color: #0b3946;
