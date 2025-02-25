@@ -31,7 +31,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end mt-3">
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{route('kenia-e-visa')}}">
                                     <img class="gn gv hr entered loaded" data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" alt="KE Flag" data-ll-status="loaded" src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" style="height:16px; width:16px">
                                     Kenia ETA Visa
                                 </a>
