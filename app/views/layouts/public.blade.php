@@ -24,31 +24,19 @@
                 <nav class="nav-container">
                     <div class="dropdown">
                         <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>Viaja con seguridad</span>
+                            <span>Obtener mi visa</span>
                             <i class="fa-solid fa-angle-down i-content"></i>
                             <i class="fa-solid fa-angle-up i-content" hidden></i>
                         </span>
 
                         <ul class="dropdown-menu dropdown-menu-end mt-3">
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item sub-dropdown-toggle" href="#">Viaja con seguridad
-                                    <i class="fa-solid fa-angle-down sub-icon"></i>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <img class="gn gv hr entered loaded" data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" alt="KE Flag" data-ll-status="loaded" src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" style="height:16px; width:16px">
+                                    Kenia ETA Visa
                                 </a>
-                                <ul class="submenu">
-                                    <li><a class="dropdown-item" href="#">Opción 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Opción 2</a></li>
-                                </ul>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item sub-dropdown-toggle" href="#">Documentación y visados más comunes
-                                    <i class="fa-solid fa-angle-down sub-icon"></i>
-                                </a>
-                                <ul class="submenu">
-                                    <li><a class="dropdown-item" href="#">Opción 3</a></li>
-                                    <li><a class="dropdown-item" href="#">Opción 4</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="dropdown-item" href="#">Lo más destacado</a></li>
+                            <li><a class="dropdown-item" href="#">Otro</a></li>
                         </ul>
                     </div>
                     <div class="dropdown ms-4">
@@ -91,6 +79,9 @@
                         <button class="button-login">Iniciar sesión</button>
                     </a>
                 </div>
+                <button class="menu-toggle ms-auto" id="menuToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -99,10 +90,17 @@
     <div class="modal fade" id="countryModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="countryModalLabel">Selecciona tus preferencias de país y divisa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <!-- Botón de cierre en la esquina -->
+                <button type="button" class="btn-close custom-close" data-bs-dismiss="modal" aria-label="Cerrar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <!-- Título -->
+                <div class="modal-title-container">
+                    <span>Selecciona tus preferencias de país y divisa</span>
                 </div>
+
+                <!-- Cuerpo del modal -->
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
@@ -123,10 +121,112 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success w-100" data-bs-dismiss="modal">Actualizar preferencias</button>
+
+                <!-- Botón separado del contenido -->
+                <div class="modal-footer custom-footer">
+                    <button type="button" class="btn custom-btn" data-bs-dismiss="modal">Actualizar preferencias</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Menú lateral -->
+    <div class="side-menu" id="sideMenu">
+        <button class="close-menu" id="closeMenu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="side-menu-content">
+            <div class="title-modal-vertical">Explora</div>
+            <ul class="modal-vertical-list">
+                <!-- Primera opción con submenús -->
+                <li class="modal-vertical-item modal-vertical-has-submenu">
+                    <div class="modal-vertical-title">
+                        <span><i class="fa-solid fa-passport"></i> Obtener mi visa</span>
+                        <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
+                    </div>
+                    <ul class="modal-vertical-submenu">
+                        <li class="modal-vertical-title"><a href="#">Opción 1</a></li>
+                        <li class="modal-vertical-title"><a href="#">Opción 2</a></li>
+                    </ul>
+                </li>
+
+                <!-- Segunda opción con submenús anidados -->
+                <li class="modal-vertical-item modal-vertical-has-submenu">
+                    <div class="modal-vertical-title">
+                        <span><i class="fa-solid fa-plane"></i> Viaja con seguridad</span>
+                        <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
+                    </div>
+                    <ul class="modal-vertical-submenu">
+                        <li class="modal-vertical-item modal-vertical-has-submenu">
+                            <div class="modal-vertical-title">
+                                <span>Viaja con seguridad</span>
+                                <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
+                            </div>
+                            <ul class="modal-vertical-submenu">
+                                <li class="modal-vertical-title"><a href="#">Opción 1</a></li>
+                                <li class="modal-vertical-title"><a href="#">Opción 2</a></li>
+                            </ul>
+                        </li>
+                        <li class="modal-vertical-item modal-vertical-has-submenu">
+                            <div class="modal-vertical-title">
+                                <span>Documentación y visados más comunes</span>
+                                <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
+                            </div>
+                            <ul class="modal-vertical-submenu">
+                                <li class="modal-vertical-title"><a href="#">Opción 3</a></li>
+                                <li class="modal-vertical-title"><a href="#">Opción 4</a></li>
+                            </ul>
+                        </li>
+                        <li class="modal-vertical-item modal-vertical-has-submenu">
+                            <div class="modal-vertical-title">
+                                <span>Lo mas destacado</span>
+                                <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
+                            </div>
+                            <ul class="modal-vertical-submenu">
+                                <li class="modal-vertical-title"><a href="#">Opción 3</a></li>
+                                <li class="modal-vertical-title"><a href="#">Opción 4</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="configurations-modal-vertical mt-4">Ajustes</div>
+            <ul class="menu-list">
+                <li id="openLanguageModal">
+                    <i class="fa-solid fa-globe"></i> Español - ES
+                </li>
+                <li id="openCurrencyModal">
+                    <i class="fa-solid fa-dollar-sign"></i> Peruvian Nuevo Sol
+                </li>
+            </ul>
+
+            <button class="btn-login">Iniciar sesión</button>
+        </div>
+    </div>
+
+    <!-- Modal vertical de selección de idioma -->
+    <div id="languageModal" class="modal-vertical">
+        <div class="modal-vertical-content">
+            <button id="closeLanguageModal" class="modal-vertical-close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-language-title">Selecciona tu idioma</div>
+            <ul class="modal-vertical-languages">
+                <li><i class="fa-solid fa-globe"></i> English</li>
+                <li><i class="fa-solid fa-globe"></i> Español</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal vertical de selección de divisa -->
+    <div id="currencyModal" class="modal-vertical">
+        <div class="modal-vertical-content">
+            <button id="closeCurrencyModal" class="modal-vertical-close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-language-title">Selecciona tu moneda</div>
+            <ul class="modal-vertical-currencies">
+                <li>English</li>
+                <li>Español</li>
+            </ul>
         </div>
     </div>
 
@@ -136,7 +236,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Manejar el cambio de flecha en todos los dropdowns
+        // ===============================
+        // 🔽 MANEJO DE DROPDOWN PRINCIPAL
+        // ===============================
         document.querySelectorAll(".dropdown-toggle-custom").forEach((dropdownButton) => {
             const iconDown = dropdownButton.querySelector(".fa-angle-down");
             const iconUp = dropdownButton.querySelector(".fa-angle-up");
@@ -150,7 +252,9 @@
             });
         });
 
-        // Manejar los submenús sin cerrar el dropdown principal
+        // ===============================
+        // 🔽 MANEJO DE SUBMENÚS INTERNOS
+        // ===============================
         document.querySelectorAll(".sub-dropdown-toggle").forEach((toggle) => {
             toggle.addEventListener("click", function (e) {
                 e.preventDefault();
@@ -166,22 +270,127 @@
             });
         });
 
-        // Evitar que el menú principal se cierre al hacer clic en un submenú
+        // ===============================
+        // 🚫 EVITAR CIERRE AL CLICKEAR SUBMENÚ
+        // ===============================
         document.querySelectorAll(".dropdown-menu").forEach((menu) => {
             menu.addEventListener("click", function (e) {
                 e.stopPropagation();
             });
         });
+
+        // ===============================
+        // 🌍 ABRIR MODAL DE PAÍSES
+        // ===============================
+        const countryContainer = document.querySelector(".country-container");
+        const countryModalElement = document.getElementById("countryModal");
+
+        if (countryContainer && countryModalElement) {
+            const countryModal = new bootstrap.Modal(countryModalElement);
+            countryContainer.addEventListener("click", function () {
+                countryModal.show();
+            });
+        }
+
+        // ===============================
+        // 📜 MENÚ LATERAL (ABRIR / CERRAR)
+        // ===============================
+        const menuToggle = document.getElementById("menuToggle");
+        const sideMenu = document.getElementById("sideMenu");
+        const closeMenu = document.getElementById("closeMenu");
+
+        if (menuToggle && sideMenu && closeMenu) {
+            // Abrir menú
+            menuToggle.addEventListener("click", function () {
+                sideMenu.classList.add("show");
+            });
+
+            // Cerrar menú
+            closeMenu.addEventListener("click", function () {
+                sideMenu.classList.remove("show");
+            });
+
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener("click", function (event) {
+                if (!sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                    sideMenu.classList.remove("show");
+                }
+            });
+        }
+
+        // ===============================
+        // 🔽 MENÚ VERTICAL CON SUBMENÚS
+        // ===============================
+        document.querySelectorAll(".modal-vertical-title").forEach(item => {
+            item.addEventListener("click", function () {
+                const parent = this.parentElement;
+                const submenu = parent.querySelector(".modal-vertical-submenu");
+
+                if (submenu) {
+                    const isActive = parent.classList.contains("active");
+
+                    // Cerrar todos los submenús hermanos
+                    parent.parentElement.querySelectorAll(".modal-vertical-item.active").forEach(el => {
+                        el.classList.remove("active");
+                        el.querySelector(".modal-vertical-submenu").style.display = "none";
+                    });
+
+                    // Alternar el submenú actual
+                    parent.classList.toggle("active", !isActive);
+                    submenu.style.display = isActive ? "none" : "block";
+                }
+            });
+        });
+
+
     });
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const countryContainer = document.querySelector(".country-container");
-        const countryModal = new bootstrap.Modal(document.getElementById("countryModal"));
+        const openLanguageModal = document.getElementById("openLanguageModal");
+        const closeLanguageModal = document.getElementById("closeLanguageModal");
+        const languageModal = document.getElementById("languageModal");
 
-        countryContainer.addEventListener("click", function () {
-            countryModal.show();
-        });
+        if (openLanguageModal && closeLanguageModal && languageModal) {
+            openLanguageModal.addEventListener("click", function () {
+                languageModal.classList.add("show");
+            });
+
+            closeLanguageModal.addEventListener("click", function () {
+                languageModal.classList.remove("show");
+            });
+
+            // Cerrar modal si se hace clic fuera del contenido
+            document.addEventListener("click", function (event) {
+                if (!languageModal.contains(event.target) && !openLanguageModal.contains(event.target)) {
+                    languageModal.classList.remove("show");
+                }
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const openCurrencyModal = document.getElementById("openCurrencyModal");
+        const closeCurrencyModal = document.getElementById("closeCurrencyModal");
+        const currencyModal = document.getElementById("currencyModal");
+
+        if (openCurrencyModal && closeCurrencyModal && currencyModal) {
+            openCurrencyModal.addEventListener("click", function () {
+                currencyModal.classList.add("show");
+            });
+
+            closeCurrencyModal.addEventListener("click", function () {
+                currencyModal.classList.remove("show");
+            });
+
+            // Cerrar modal si se hace clic fuera del contenido
+            document.addEventListener("click", function (event) {
+                if (!currencyModal.contains(event.target) && !openCurrencyModal.contains(event.target)) {
+                    currencyModal.classList.remove("show");
+                }
+            });
+        }
     });
 </script>
 </body>
