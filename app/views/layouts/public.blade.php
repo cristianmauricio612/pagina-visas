@@ -64,7 +64,7 @@
                                     <i class="fa-solid fa-angle-down sub-icon"></i>
                                 </a>
                                 <ul class="submenu">
-                                    <li><a class="dropdown-item" href="#">Opción 1</a></li>
+                                    <li><a class="dropdown-item" href="{{route('about-visa')}}">¿Qué es una visa?</a></li>
                                     <li><a class="dropdown-item" href="#">Opción 2</a></li>
                                 </ul>
                             </li>

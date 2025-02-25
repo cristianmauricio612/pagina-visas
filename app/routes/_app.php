@@ -6,3 +6,5 @@ app()->get('/', function () {
      */
     render('index');
 });
+
+app()->get('/que-es-una-visa', ['name' => 'about-visa', function () {render('what_is_avisa');}]);
