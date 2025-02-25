@@ -13,85 +13,130 @@
     @stack('resources')
 </head>
 <body>
-<div class="bg-body-tertiary">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Brand</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="main_nav">
-                <ul class="navbar-nav">
-                    <li class="nav-item active"> <a class="nav-link" href="#">Home </a> </li>
-                    <li class="nav-item"><a class="nav-link" href="#"> About </a></li>
-                    <li class="nav-item dropdown" id="myDropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">  Treeview menu  </a>
-                        <ul class="dropdown-menu">
-                            <li> <a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
-                            <li> <a class="dropdown-item" href="#"> Dropdown item 2 &raquo; </a>
-                                <ul class="submenu dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
-                                    <li><a class="dropdown-item" href="#">Submenu item 3 &raquo; </a>
-                                        <ul class="submenu dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Multi level 1</a></li>
-                                            <li><a class="dropdown-item" href="#">Multi level 2</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Submenu item 4</a></li>
-                                    <li><a class="dropdown-item" href="#">Submenu item 5</a></li>
+    <div class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="{{ assets("img/av.png") }}" alt="" style="height: 32px">
+                <span>Visa Asesores</span>
+            </div>
+
+            <div class="menu-container">
+                <nav class="nav-container">
+                    <div class="dropdown">
+                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>Viaja con seguridad</span>
+                            <i class="fa-solid fa-angle-down i-content"></i>
+                            <i class="fa-solid fa-angle-up i-content" hidden></i>
+                        </span>
+
+                        <ul class="dropdown-menu dropdown-menu-end mt-3">
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item sub-dropdown-toggle" href="#">Viaja con seguridad
+                                    <i class="fa-solid fa-angle-down sub-icon"></i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a class="dropdown-item" href="#">Opción 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Opción 2</a></li>
                                 </ul>
                             </li>
-                            <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
-                            <li><a class="dropdown-item" href="#"> Dropdown item 4 </a></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item sub-dropdown-toggle" href="#">Documentación y visados más comunes
+                                    <i class="fa-solid fa-angle-down sub-icon"></i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a class="dropdown-item" href="#">Opción 3</a></li>
+                                    <li><a class="dropdown-item" href="#">Opción 4</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Lo más destacado</a></li>
                         </ul>
-                    </li>
-                </ul>
-            </div>
-            <!-- navbar-collapse.// -->
-        </div>
-        <!-- container-fluid.// -->
-    </nav>
-</div>
+                    </div>
+                    <div class="dropdown ms-4">
+                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>Viaja con seguridad</span>
+                            <i class="fa-solid fa-angle-down i-content"></i>
+                            <i class="fa-solid fa-angle-up i-content" hidden></i>
+                        </span>
 
+                        <ul class="dropdown-menu dropdown-menu-end mt-3">
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item sub-dropdown-toggle" href="#">Viaja con seguridad
+                                    <i class="fa-solid fa-angle-down sub-icon"></i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a class="dropdown-item" href="#">Opción 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Opción 2</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item sub-dropdown-toggle" href="#">Documentación y visados más comunes
+                                    <i class="fa-solid fa-angle-down sub-icon"></i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a class="dropdown-item" href="#">Opción 3</a></li>
+                                    <li><a class="dropdown-item" href="#">Opción 4</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Lo más destacado</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="country-container ms-4">
+                    <span>ES</span>
+                    <span class="mx-2 vr" style="height: 16px; margin-top: 2px;"></span>
+                    <span>S/. PEN</span>
+                </div>
+                <div class="ms-4">
+                    <a href="">
+                        <button class="button-login">Iniciar sesión</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @yield('content')
 @stack('js')
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function(){
-// make it as accordion for smaller screens
-        if (window.innerWidth < 992) {
+    document.addEventListener("DOMContentLoaded", function () {
+        // Manejar el cambio de flecha en todos los dropdowns
+        document.querySelectorAll(".dropdown-toggle-custom").forEach((dropdownButton) => {
+            const iconDown = dropdownButton.querySelector(".fa-angle-down");
+            const iconUp = dropdownButton.querySelector(".fa-angle-up");
 
-            // close all inner dropdowns when parent is closed
-            document.querySelectorAll('.navbar .dropdown').forEach(function(everydropdown){
-                everydropdown.addEventListener('hidden.bs.dropdown', function () {
-                    // after dropdown is hidden, then find all submenus
-                    this.querySelectorAll('.submenu').forEach(function(everysubmenu){
-                        // hide every submenu as well
-                        everysubmenu.style.display = 'none';
-                    });
-                })
+            dropdownButton.addEventListener("click", function () {
+                const isExpanded = this.getAttribute("aria-expanded") === "true";
+                
+                // Alternar visibilidad de las flechas
+                iconDown.hidden = isExpanded;
+                iconUp.hidden = !isExpanded;
             });
+        });
 
-            document.querySelectorAll('.dropdown-menu a').forEach(function(element){
-                element.addEventListener('click', function (e) {
-                    let nextEl = this.nextElementSibling;
-                    if(nextEl && nextEl.classList.contains('submenu')) {
-                        // prevent opening link if link needs to open dropdown
-                        e.preventDefault();
-                        if(nextEl.style.display == 'block'){
-                            nextEl.style.display = 'none';
-                        } else {
-                            nextEl.style.display = 'block';
-                        }
+        // Manejar los submenús sin cerrar el dropdown principal
+        document.querySelectorAll(".sub-dropdown-toggle").forEach((toggle) => {
+            toggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                const parent = this.closest(".dropdown-submenu");
+                const submenu = parent.querySelector(".submenu");
+                const icon = this.querySelector(".sub-icon");
 
-                    }
-                });
-            })
-        }
-// end if innerWidth
+                // Alternar visibilidad del submenú
+                submenu.classList.toggle("show");
+
+                // Rotar la flecha de submenú
+                icon.style.transform = submenu.classList.contains("show") ? "rotate(180deg)" : "rotate(0deg)";
+            });
+        });
+
+        // Evitar que el menú principal se cierre al hacer clic en un submenú
+        document.querySelectorAll(".dropdown-menu").forEach((menu) => {
+            menu.addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
+        });
     });
 </script>
 </body>
