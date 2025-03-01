@@ -3,8 +3,41 @@
 @section('title', 'Home')
 
 @section('content')
-    <div style="height:80vh; background-image: url('{{assets('img/homepage-hero.jpg')}}')">
-
+    <div class="hero">
+        <div class="hero-form-container">
+            <h1 class="hero-title">
+                Obtén tu visa para cualquier destino   
+            </h1>
+            <div class="hero-form-box">
+                <div class="hero-form">
+                    <div class="hero-form-selects">
+                        <div class="select-container">
+                            <label for="origen">¿De dónde soy?</label>
+                            <select id="origen">
+                                <option value="peru">Perú</option>
+                                <option value="alemania">🇩🇪 Alemania</option>
+                                <option value="australia">🇦🇺 Australia</option>
+                                <option value="canada">🇨🇦 Canadá</option>
+                            </select>
+                        </div>
+                        <div class="select-container">
+                            <label for="destino">¿A dónde viajo?</label>
+                            <select id="destino">
+                                <option value="canada">🇨🇦 Canadá</option>
+                                <option value="usa">🇺🇸 Estados Unidos</option>
+                                <option value="india">🇮🇳 India</option>
+                                <option value="israel">🇮🇱 Israel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hero-form-button-container">
+                        <div class="hero-form-button">
+                            <button class="hero-button">¡Comenzar ahora! <i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- PORQUE ELEGIRNOS -->
@@ -90,4 +123,6 @@
         </div>
     </div>
     <!-- NUESTRO PROCESO DE APLICACION END-->
+
+    <link rel="stylesheet" href="{{ assets("css/index.css") }}">
 @endsection
