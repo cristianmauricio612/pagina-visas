@@ -112,12 +112,11 @@
 .info-title {
     margin-bottom: 32px;
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 28px;
 }
 
 .info-number {
-    font-weight: bold;
     color: #6c757d; /* Color gris para los números */
 }
 
@@ -138,7 +137,7 @@
 }
 
 .info-col-article{
-    width: 55%;
+    width: 53%;
 }
 
 .image{
@@ -208,6 +207,70 @@
     text-align: justify;
     margin-top: 24px;
     margin-bottom: 0;
+}
+
+.vs-container{
+    margin-top: 24px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    border-radius: 8px;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(176 193 197 / var(--tw-border-opacity, 1));
+    border-style: solid;
+    box-sizing: border-box;
+    overflow-x: scroll;
+    position: relative;
+    width: 100%;
+}
+
+.table-vs{
+    border-collapse: collapse;
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+}
+
+.table-vs-header{
+    --tw-bg-opacity: 1;
+    background-color: rgb(221 241 247 / var(--tw-bg-opacity, 1));
+}
+
+.row-table-vs{
+    border-bottom-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+}
+
+.row-table-vs-par{
+    border-bottom-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    --tw-bg-opacity: 1;
+    background-color: rgb(248 249 249 / var(--tw-bg-opacity, 1));
+}
+
+.table-vs th, .table-vs td {
+    padding: 10px;
+    min-width: 140px;
+    text-align: left;
+}
+
+.column-static-header{
+    position: sticky;
+    left: 0;
+    --tw-bg-opacity: 1;
+    background-color: rgb(221 241 247 / var(--tw-bg-opacity, 1));
+}
+.column-static{
+    position: sticky;
+    left: 0;
+    background-color: white;/* Asegura que no se vea transparente */
+}
+.column-static-par{
+    position: sticky;
+    left: 0;
+    --tw-bg-opacity: 1;
+    background-color: rgb(248 249 249 / var(--tw-bg-opacity, 1));
 }
 
 /*------------------------------------------------------------*/
@@ -341,11 +404,11 @@
         display: flex;
         gap: 110px;
     }
-    
+
     .info-col-table {
         width: 40%;
     }
-
+    
     .info-col-article {
         width: 60%;
     }
@@ -481,7 +544,6 @@
     .header{
         position: static;
     }
-
     .title-page{
         font-size: 1.25rem;
         width: 87%;

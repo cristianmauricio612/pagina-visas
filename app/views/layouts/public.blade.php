@@ -61,11 +61,19 @@
                                     <i class="fa-solid fa-angle-down sub-icon"></i>
                                 </a>
                                 <ul class="submenu">
-                                    <li><a class="dropdown-item" href="#">Opción 3</a></li>
-                                    <li><a class="dropdown-item" href="#">Opción 4</a></li>
+                                    <li><a class="dropdown-item" href="{{route('electronic-visa')}}">Visa electrónica (eVisa)</a></li>
+                                    <li><a class="dropdown-item" href="{{route('arrived-visa')}}">Visa de llegada</a></li>
                                 </ul>
                             </li>
-                            <li><a class="dropdown-item" href="#">Lo más destacado</a></li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item sub-dropdown-toggle" href="#">Lo más destacado
+                                    <i class="fa-solid fa-angle-down sub-icon"></i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a class="dropdown-item" href="{{route('price-canadience-visa')}}">Precio de la visa canadiense</a></li>
+                                    <li><a class="dropdown-item" href="{{route('arrived-visa')}}">Vigencia visado de Estados Unidos</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </nav>
