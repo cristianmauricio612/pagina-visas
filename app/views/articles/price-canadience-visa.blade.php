@@ -107,7 +107,7 @@
             </div>
 
             <div class="info-col-article">
-                <p style="text-align: justify; margin-bottom: 0;">Si planeas viajar a Canadá, es probable que necesites de
+                <p class="many-text">Si planeas viajar a Canadá, es probable que necesites de
                     una Visa para ingresar al país. En este artículo te explicamos los requerimientos que necesitas para
                     tramitarla.
                 </p>
@@ -119,7 +119,7 @@
 
                 <h2 id="need-a-visa-to-go-canada" class="subtitle">¿Se necesita una visa para viajar a Canadá?</h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">Si, la mayoría de los viajeros que deseen visitar el país
+                <p class="many-text">Si, la mayoría de los viajeros que deseen visitar el país
                     como turista necesitan una Visa. Para algunas nacionalidades solo es necesario solicitar una
                     autorización electrónica de viaje o ETA.
                 </p>
@@ -135,7 +135,7 @@
 
                 <h2 id="requiers-to-get-visa-canada" class="subtitle">Requisitos para Obtener la Visa de Canadá</h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">Para poder tramitar la Visa se necesitan presentar algunos
+                <p class="many-text">Para poder tramitar la Visa se necesitan presentar algunos
                     documentos esenciales:
                 </p>
 
@@ -179,7 +179,7 @@
 
                 <h3 class="subtitle-sub">Datos biométricos requeridos para solicitar la visa de Canadá</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">IEs importante recalcar que los postulantes de este tipo
+                <p class="many-text">IEs importante recalcar que los postulantes de este tipo
                     de visa que deben presentar sus datos biométricos en algún centro de aplicación son aquellos que no han
                     presentado esta información en los últimos 10 años.
                 </p>
@@ -191,14 +191,14 @@
 
                 <h3 class="subtitle-sub">¿Se necesita visa para hacer escala en Canadá?</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">No importa si tu estancia dura menos de 48 horas, siempre
+                <p class="many-text">No importa si tu estancia dura menos de 48 horas, siempre
                     necesitarás una visa de tránsito o una ETA si eres elegible. Puedes solicitarla vía web o asistir a la
                     embajada más cercana y presentar los documentos que te soliciten.
                 </p>
 
                 <h3 class="subtitle-sub">Costo de la visa para Canadá</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">El costo siempre depende del país de origen y de la tasa
+                <p class="many-text">El costo siempre depende del país de origen y de la tasa
                     de servicio que cobre la empresa con quien estás realizando el procedimiento.
                 </p>
                 <p class="all-text">El precio de la visa de turista para Canadá es de
@@ -231,7 +231,7 @@
 
                 <h3 class="subtitle-sub">¿Se necesita una carta para solicitar la visa de turista para Canadá?</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Si, este documento es clave para el proceso de tramitación
+                <p class="many-text">Si, este documento es clave para el proceso de tramitación
                     de tu visa de turista para Canadá. Esta debe ser redactada cuidadosamente y y con sumo detalle. Si bien
                     no existe una fórmula exacta para redactar la carta, nosotros recomendamos que la estructura tenga lo
                     siguiente:
@@ -247,13 +247,13 @@
                     <li class="list-item">Cierre – Agradecimiento.</li>
                 </ul>
 
-                <p style="text-align: justify; margin-bottom: 0;">Esta estructura permite tener una coherencia en toda la
+                <p class="many-text">Esta estructura permite tener una coherencia en toda la
                     carta y facilita a los agentes migratorios poder leerla sin ningún problema.
                 </p>
 
                 <h3 class="subtitle-sub">¿Cuál es el proceso de solicitud de la visa de turista para Canadá?</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Si vas a realizar el proceso de solicitud por tu cuenta
+                <p class="many-text">Si vas a realizar el proceso de solicitud por tu cuenta
                     debes considerar la siguiente información:
                 </p>
 
@@ -275,7 +275,7 @@
 
                 <h3 class="subtitle-sub">¿Necesitas Seguro de Viaje para Canadá?</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Cuando planeas un viaje, es muy importante contar con un
+                <p class="many-text">Cuando planeas un viaje, es muy importante contar con un
                     seguro de viaje no importa cuál sea tu destino. Hay distintos tipos de seguros de salud. Para mayor
                     información y contratación puedes acceder a través de <a
                         href="https://www.intermundial.es/afiliados/seguros-de-viaje-recomendado?tduid=a2505c6202eb9[…]&amp;utm_campaign=General&amp;utm_content=3281006&amp;utm_term=23927290"
@@ -288,7 +288,7 @@
 
                 <h3 class="subtitle-sub">Obtener más información acerca de la Visa para Canadá</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Si tienes alguna duda sobre la visa turista de Canadá o
+                <p class="many-text">Si tienes alguna duda sobre la visa turista de Canadá o
                     sobre los servicios de iVisa, puedes ponerte en contacto con nuestro <a href="/contact-us"
                         target="_blank" class="text-link" rel="nofollow">equipo de atención al cliente</a> o escribirnos a
                     <strong>help@iVisa</strong>. Nuestros expertos están disponibles las 24 horas del día.</p>
@@ -308,7 +308,7 @@
             </div>
         </div>
         <div class="card-container">
-            <a class="card" href="#">
+            <a class="card-0" href="#">
                 <img class="xy hg zp ie entered loaded"
                     data-src="https://ivisa.s3.amazonaws.com/website-assets/blog/man-working-laptop-hat-outdoor.webp"
                     alt="Guía de tarjetas de llegada: Información clave para viajeros cover image" width="425" height="200"

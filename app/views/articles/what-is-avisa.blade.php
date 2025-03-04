@@ -74,7 +74,7 @@
             </div>
 
             <div class="info-col-article">
-                <p style="text-align: justify; margin-bottom: 0%;">¿Estás pensando en estudiar en los Estados Unidos o disfrutar de unas
+                <p class="many-text">¿Estás pensando en estudiar en los Estados Unidos o disfrutar de unas
                     vacaciones en Europa?
                     Cuando viajas a otro país, generalmente <strong>necesitas solicitar una visa</strong>. Hay diferentes
                     tipos de
@@ -102,7 +102,7 @@
 
                 <h2 id="what-is-a-visa" class="subtitle">¿Qué es una visa?</h2>
 
-                <p class="all-text">Una visa es un documento oficial o un sello en tu
+                <p class="many-text">Una visa es un documento oficial o un sello en tu
                     pasaporte que te permite
                     entrar, salir o permanecer en un país extranjero por un tiempo determinado. Este permiso lo emite el
                     país que quieres visitar,
@@ -119,7 +119,7 @@
 
                 <h2 id="categories-of-visa" class="subtitle">Categorías de visa según el propósito del viaje</h2>
 
-                <p class="all-text">El motivo de tu viaje definirá qué tipo de visa necesitas.
+                <p class="many-text">El motivo de tu viaje definirá qué tipo de visa necesitas.
                     Los requisitos varían según lo que planeas hacer durante tu viaje. Las autoridades locales te pedirán
                     documentos
                     para confirmar tus intenciones y que puedes cubrir los gastos. Aquí te presentamos algunos de los
@@ -128,7 +128,7 @@
 
                 <h3 class="subtitle-sub">Visa de turista</h3>
 
-                <p class="all-text">Cuando estás planeando unas vacaciones, normalmente
+                <p class="many-text">Cuando estás planeando unas vacaciones, normalmente
                     necesitas solicitar una visa de turista,
                     ya sea en línea o a través de una embajada. Estas visas, también llamadas visas de visitante, permiten a
                     los extranjeros
@@ -169,7 +169,7 @@
 
                 <h3 class="subtitle-sub">Visa de negocios</h3>
 
-                <p class="all-text">Este tipo de visa está destinado a los viajeros de
+                <p class="many-text">Este tipo de visa está destinado a los viajeros de
                     negocios. Puedes
                     solicitar una visa de negocios si tu viaje es por <strong>motivos empresariales</strong>, como asistir a
                     una
@@ -199,7 +199,7 @@
 
                 <h3 class="subtitle-sub">Visa médica</h3>
 
-                <p class="all-text">Esta visa es necesaria para <strong>tratamiento
+                <p class="many-text">Esta visa es necesaria para <strong>tratamiento
                         médico</strong>.
                     Algunos destinos son famosos por sus servicios de salud y ofrecen una visa médica especial para
                     gestionar
@@ -218,7 +218,7 @@
 
                 <h3 class="subtitle-sub">Visa de trabajo</h3>
 
-                <p class="all-text">Las visas de trabajo permiten <strong>trabajar legalmente
+                <p class="many-text">Las visas de trabajo permiten <strong>trabajar legalmente
                         en el país</strong>.
                     Se otorgan a quienes han recibido una oferta de empleo en el extranjero y desean trabajar allí, por lo
                     que se incluyen
@@ -244,7 +244,7 @@
 
                 <h3 class="subtitle-sub">Visa de estudiante</h3>
 
-                <p class="all-text">¿Te gustaría estudiar en el extranjero? Necesitas
+                <p class="many-text">¿Te gustaría estudiar en el extranjero? Necesitas
                     <strong>solicitar una visa de estudiante</strong> con un oficial
                     consular. Para obtener esta visa, debes haber sido aceptado en una institución educativa en el país. La
                     validez de
@@ -265,7 +265,7 @@
 
                 <h3 class="subtitle-sub">Visa Au Pair</h3>
 
-                <p class="all-text">Algunos países ofrecen una visa Au Pair, destinada a
+                <p class="many-text">Algunos países ofrecen una visa Au Pair, destinada a
                     quienes desean
                     <strong>vivir legalmente en el país mientras cuidan a niños</strong> en una familia anfitriona aprobada
                     por el programa.
@@ -289,7 +289,7 @@
 
                 <h3 class="subtitle-sub">Visa nómada</h3>
 
-                <p class="all-text">El <strong>trabajo remoto</strong> está en auge. Al no
+                <p class="many-text">El <strong>trabajo remoto</strong> está en auge. Al no
                     necesitar ir
                     a la oficina, las personas pueden trabajar desde cualquier lugar con conexión a internet. Los países han
                     visto esta
@@ -324,7 +324,7 @@
 
                 <h3 class="subtitle-sub">Visa para cónyuge patrocinado</h3>
 
-                <p class="all-text">Conseguiste una excelente oportunidad laboral en otro
+                <p class="many-text">Conseguiste una excelente oportunidad laboral en otro
                     país,
                     obtuviste tu visa de trabajo y ahora necesitas traer a tus familiares contigo. Muchos países ofrecen la
                     visa para cónyuge patrocinado, que permite a las personas <strong>unirse a su cónyuge</strong> que ya
@@ -344,7 +344,7 @@
 
                 <h3 class="subtitle-sub">Visa de retiro</h3>
 
-                <p class="all-text">Has trabajado mucho y ahora quieres experimentar una
+                <p class="many-text">Has trabajado mucho y ahora quieres experimentar una
                     cultura diferente en otro país.
                     Algunos países ofrecen una visa de retiro para quienes desean <strong>disfrutar de su jubilación en el
                         extranjero</strong>.
@@ -362,7 +362,7 @@
 
                 <h2 id="documents-of-travel" class="subtitle">Documentos de viaje según el proceso de solicitud</h2>
 
-                <p class="all-text">Hay varias formas de solicitar las visas mencionadas. Cada
+                <p class="many-text">Hay varias formas de solicitar las visas mencionadas. Cada
                     país establece el
                     <strong>proceso de solicitud para cada tipo de visa</strong>, y este puede variar según la nacionalidad
                     del viajero. Por ejemplo,
@@ -379,7 +379,7 @@
                 </p>
 
                 <h3 class="subtitle-sub">eVisa: Visa electrónica</h3>
-                <p class="all-text">Algunos países cuentan con un <strong>sistema electrónico
+                <p class="many-text">Algunos países cuentan con un <strong>sistema electrónico
                         para otorgar visas</strong>
                     que facilita el control del flujo de visitantes mediante la opción de e-visa, generalmente para negocios
                     y turismo. Este método es
@@ -391,7 +391,7 @@
                 </p>
 
                 <h3 class="subtitle-sub">ETA: Autorización electrónica de viaje</h3>
-                <p class="all-text">Una <strong>ETA (autorización electrónica de
+                <p class="many-text">Una <strong>ETA (autorización electrónica de
                         viaje)</strong> es algo parecido al eVisa,
                     pero suele aplicarse a países que no requieren visa. Este documento es una <strong>aprobación
                         electrónica que se emite antes</strong>
@@ -403,7 +403,7 @@
                 </p>
 
                 <h3 class="subtitle-sub">Visa a la llegada</h3>
-                <p class="all-text">Algunos países ofrecen esta visa a través de un
+                <p class="many-text">Algunos países ofrecen esta visa a través de un
                     <strong>Programa de Exención de
                         Visa</strong>, permitiendo a los ciudadanos de ciertos países obtener una visa a su llegada. En
                     algunos casos, tendrás que llenar
@@ -417,7 +417,7 @@
                 </p>
 
                 <h3 class="subtitle-sub">Visa en papel</h3>
-                <p class="all-text">A diferencia de otros métodos de solicitud, una visa en
+                <p class="many-text">A diferencia de otros métodos de solicitud, una visa en
                     papel es una
                     <strong>visa física emitida por un consulado o embajada</strong> y se adhiere a una página de tu
                     pasaporte. Para obtenerla,
@@ -431,7 +431,7 @@
                 </p>
 
                 <h4>Solicitud de visa guiada</h4>
-                <p class="all-text">No tienes que lidiar con este proceso complicado por tu
+                <p class="many-text">No tienes que lidiar con este proceso complicado por tu
                     cuenta. Con las <strong>aplicaciones guiadas de iVisa</strong>,
                     puedes simplificar tu solicitud con instrucciones claras y detalladas, y contar con un experto de iVisa
                     para ayudarte en
@@ -449,7 +449,7 @@
                 </p>
 
                 <h2 id="have-more-questions" class="subtitle">¿Tienes más preguntas? ¡Contacta a nuestros expertos!</h2>
-                <p class="all-text">Hay muchas opciones de documentos de viaje, y a veces
+                <p class="many-text">Hay muchas opciones de documentos de viaje, y a veces
                     puede resultar confuso.
                     Si tienes alguna pregunta, no dudes en contactar a nuestro <a href="/contact-us" class="text-link"
                         target="_blank" rel="nofollow">equipo de servicio al cliente</a>. Están disponibles las 24 horas del
@@ -473,7 +473,7 @@
         </div>
 
         <div class="card-container">
-            <a class="card" href="#">
+            <a class="card-0" href="#">
                 <img class="xy hg zp ie entered loaded" data-src="https://ivisa.s3.amazonaws.com/website-assets/blog/man-working-laptop-hat-outdoor.webp" 
                 alt="Guía de tarjetas de llegada: Información clave para viajeros cover image" width="425" height="200" data-ll-status="loaded" 
                 src="https://ivisa.s3.amazonaws.com/website-assets/blog/man-working-laptop-hat-outdoor.webp">

@@ -15,4 +15,6 @@ app()->get('/arrived-visa', ['name' => 'arrived-visa', function () {render('arti
 
 app()->get('/price-canadience-visa', ['name' => 'price-canadience-visa', function () {render('articles.price-canadience-visa');}]);
 
+app()->get('/visa-validity', ['name' => 'visa-validity', function () {render('articles.visa-validity');}]);
+
 app()->get('/kenia/p/e-visa', ['name' => 'kenia-e-visa', function () {render('articles.kenia-e-visa');}]);

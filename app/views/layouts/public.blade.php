@@ -71,7 +71,7 @@
                                 </a>
                                 <ul class="submenu">
                                     <li><a class="dropdown-item" href="{{route('price-canadience-visa')}}">Precio de la visa canadiense</a></li>
-                                    <li><a class="dropdown-item" href="{{route('arrived-visa')}}">Vigencia visado de Estados Unidos</a></li>
+                                    <li><a class="dropdown-item" href="{{route('visa-validity')}}">Vigencia visado de Estados Unidos</a></li>
                                 </ul>
                             </li>
                         </ul>

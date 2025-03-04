@@ -97,7 +97,7 @@
             </div>
 
             <div class="info-col-article">
-                <p style="text-align: justify; margin-bottom: 0;">Viajar a otro país es una experiencia emocionante, pero
+                <p class="many-text">Viajar a otro país es una experiencia emocionante, pero
                     seamos sinceros, el tema de las visas puede ser un verdadero dolor de cabeza. Lo bueno es que optar por
                     un destino que ofrezca una <strong>visa a la llegada</strong> puede simplificar mucho las cosas.
                 </p>
@@ -107,7 +107,7 @@
 
                 <h2 id="what-is-a-arrived-visa" class="subtitle">¿Qué es una visa a la llegada?</h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">Como su nombre indica, una visa a la llegada es
+                <p class="many-text">Como su nombre indica, una visa a la llegada es
                     exactamente lo que parece: <strong>una visa que obtienes cuando llegas a un país</strong>.
                 </p>
                 <p class="all-text">A diferencia de una visa tradicional, no necesitas pasar por un largo proceso de
@@ -120,13 +120,13 @@
                 <h2 id="destinations-of-arrived-visa" class="subtitle">Destinos populares que ofrecen visas a la llegada
                 </h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">Descubre algunos de los destinos increíbles que te
+                <p class="many-text">Descubre algunos de los destinos increíbles que te
                     permiten obtener la visa a la llegada.
                 </p>
 
                 <h3 class="subtitle-sub">Indonesia</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Indonesia ofrece una visa a la llegada para turistas y
+                <p class="many-text">Indonesia ofrece una visa a la llegada para turistas y
                     viajeros de negocios. Y lo mejor es que puedes
                     <strong><a href="/indonesia/p/evoa" class="text-link" target="_blank"
                             rel="nofollow">preinscribirte</a></strong> en línea,
@@ -135,7 +135,7 @@
 
                 <h3 class="subtitle-sub">Nepal</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Nepal también ofrece una visa a la llegada, lo que hace
+                <p class="many-text">Nepal también ofrece una visa a la llegada, lo que hace
                     que sea más fácil para excursionistas y turistas
                     explorar los Himalayas. Solo tienes que completar algunos datos antes de llegar, y recibirás tu
                     <strong><a href="/nepal/p/visa-on-arrival" class="text-link" target="_blank" rel="nofollow">visa a la
@@ -145,7 +145,7 @@
 
                 <h3 class="subtitle-sub">Otros países que ofrecen visas a la llegada</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Aquí tienes algunos otros países que también ofrecen esta
+                <p class="many-text">Aquí tienes algunos otros países que también ofrecen esta
                     visa:
                 </p>
                 <ul class="list-categories">
@@ -161,7 +161,7 @@
                     <li class="list-item">Vietnam</li>
                 </ul>
 
-                <p style="text-align: justify; margin-bottom: 0;">Recuerda que las reglas de entrada pueden variar según tu
+                <p class="many-text">Recuerda que las reglas de entrada pueden variar según tu
                     nacionalidad, ¡así que asegúrate de verificar
                     los requisitos específicos antes de viajar!
                 </p>
@@ -169,45 +169,45 @@
                 <h2 id="how-many-time" class="subtitle">¿Cuánto tiempo puedes quedarte en el país con una visa a la
                     llegada?</h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">La duración de la estancia con una visa a la llegada
+                <p class="many-text">La duración de la estancia con una visa a la llegada
                     depende del destino. Por lo general, puede ser
                     <strong>de 15 a 90 días</strong>, lo cual es suficiente para explorar la mayoría de los lugares.
                 </p>
 
                 <h3 class="subtitle-sub">Extensión de visa: Proceso para extender una visa a la llegada</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Si necesitas más tiempo en el país, no te preocupes.
+                <p class="many-text">Si necesitas más tiempo en el país, no te preocupes.
                     <strong>Extender tu visa a la llegada</strong> suele ser tan sencillo como conseguirla.
                 </p>
 
                 <h3 class="subtitle-sub">Propósitos para los que los viajeros pueden obtener una visa a la llegada</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Una visa a la llegada es bastante flexible y puede usarse
+                <p class="many-text">Una visa a la llegada es bastante flexible y puede usarse
                     para diferentes propósitos, dependiendo del destino:</p>
 
                 <ul class="list-categories">
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Turismo:</strong> Una visa a la llegada
+                        <p class="many-text"><strong>Turismo:</strong> Una visa a la llegada
                             para turismo hace que conocer nuevos lugares sea
                             mucho más sencillo, ya que evitas el papeleo complicado que suele ser necesario si solicitas la
                             visa con antelación.
                         </p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Negocios:</strong> Para los viajeros de
+                        <p class="many-text"><strong>Negocios:</strong> Para los viajeros de
                             negocios frecuentes, la visa a la llegada es un
                             cambio total.
                         </p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Tránsito:</strong> Una visa a la llegada
+                        <p class="many-text"><strong>Tránsito:</strong> Una visa a la llegada
                             hace que las conexiones de vuelos sean mucho más
                             fáciles. Así, puedes relajarte durante las escalas sin tener que preocuparte por trámites
                             complicados.
                         </p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Otros propósitos:</strong> Una visa a la
+                        <p class="many-text"><strong>Otros propósitos:</strong> Una visa a la
                             llegada ofrece flexibilidad a varios tipos de
                             viajeros, como aquellos que visitan a familiares o asisten a cursos cortos, sin necesidad de una
                             planificación exhaustiva.
@@ -217,30 +217,30 @@
 
                 <h2 id="how-get-arrived-visa" class="subtitle">¿Cómo obtener una visa a la llegada con preinscripción?</h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">No cabe duda de que una visa a la llegada facilita mucho
+                <p class="many-text">No cabe duda de que una visa a la llegada facilita mucho
                     la vida de los viajeros. Dependiendo del destino, existen dos tipos:
                 </p>
 
                 <ul class="list-categories">
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Sin preinscripción:</strong> Simplemente
+                        <p class="many-text"><strong>Sin preinscripción:</strong> Simplemente
                             llega y obtén tu visa en el mostrador designado
                             cuando llegues a tu destino. ¡No podría ser más fácil!</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Con preinscripción:</strong> En este caso,
+                        <p class="many-text"><strong>Con preinscripción:</strong> En este caso,
                             deberás proporcionar algunos detalles, como la
                             información de tu pasaporte y tus planes de viaje, antes de llegar.</p>
                     </li>
                 </ul>
 
-                <p style="text-align: justify; margin-bottom: 0;">Esto se hace para evitar largas filas en el aeropuerto y
+                <p class="many-text">Esto se hace para evitar largas filas en el aeropuerto y
                     asegurarte de que tu pasaporte cumpla con los requisitos para la visa.
                 </p>
 
                 <h3 class="subtitle-sub">Guía paso a paso para obtener una visa a la llegada con preinscripción</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Incluso si te preinscribes, conseguir una visa a la
+                <p class="many-text">Incluso si te preinscribes, conseguir una visa a la
                     llegada es bastante fácil. De hecho, te ahorra mucho tiempo en el aeropuerto porque todas las
                     verificaciones se hacen con antelación:
                 </p>
@@ -264,7 +264,7 @@
 
                 <h3 class="subtitle-sub">Documentos e información necesarios para solicitar la visa a la llegada</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Por lo general, ¡tu pasaporte es suficiente! Como regla
+                <p class="many-text">Por lo general, ¡tu pasaporte es suficiente! Como regla
                     general, asegúrate de que <strong>tu pasaporte sea válido por al menos 6 meses más allá de la fecha de
                         salida</strong> de tu destino.
                 </p>
@@ -274,7 +274,7 @@
 
                 <h3 class="subtitle-sub">Tarifas de la visa a la llegada: costo y tarifas adicionales</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">El costo de una visa a la llegada puede variar: desde
+                <p class="many-text">El costo de una visa a la llegada puede variar: desde
                     gratuito (¡sí, GRATIS!) hasta cantidades más altas, especialmente para estadías prolongadas o visas
                     específicas como la de negocios.
                 </p>
@@ -283,7 +283,7 @@
                 </p>
 
                 <h3 class="subtitle-sub">¿Cuánto tiempo lleva procesar una visa a la llegada?</h3>
-                <p style="text-align: justify; margin-bottom: 0;">Obtener una visa a la llegada es rápido y sencillo, y
+                <p class="many-text">Obtener una visa a la llegada es rápido y sencillo, y
                     generalmente <strong>toma solo unos minutos o unas pocas horas</strong> en el aeropuerto o en la
                     frontera.
                 </p>
@@ -293,44 +293,44 @@
 
                 <h2 id="arrived-visa-airport" class="subtitle">Visa a la llegada en el aeropuerto</h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">Obtener una visa a la llegada en el aeropuerto es muy
+                <p class="many-text">Obtener una visa a la llegada en el aeropuerto es muy
                     fácil y hace que tus planes de viaje sean mucho más sencillos. Solo necesitas aterrizar en tu destino y
                     gestionar todo allí mismo.
                 </p>
 
                 <h3 class="subtitle-sub">Procedimiento de llegada: Qué esperar al llegar al destino</h3>
 
-                <p style="text-align: justify; margin-bottom: 0;">Esto es lo que puedes esperar en el aeropuerto cuando
+                <p class="many-text">Esto es lo que puedes esperar en el aeropuerto cuando
                     llegues:
                 </p>
 
                 <ol style="margin-left: 20px">
                     <li style="margin: 16px 0px; list-style-type: decimal;">
-                        <p style="text-align: justify; margin-bottom: 0;">Una vez que tu vuelo aterrice, desembarcarás y te
+                        <p class="many-text">Una vez que tu vuelo aterrice, desembarcarás y te
                             dirigirás al lugar que dice <strong>'Visa a la
                                 llegada' o 'Mostrador de Visas'</strong>. Ahí es donde obtendrás y pagarás por tu visa.</p>
                     </li>
                     <li style="margin: 16 0; list-style-type: decimal;">
-                        <p style="text-align: justify; margin-bottom: 0;">Entrega <strong>tu pasaporte</strong>, llena los
+                        <p class="many-text">Entrega <strong>tu pasaporte</strong>, llena los
                             formularios necesarios (si te los entregan) y
                             presenta cualquier documento adicional que puedan pedirte, como un boleto de regreso o una
                             confirmación de preinscripción.</p>
                     </li>
                     <li style="margin: 16px 0px; list-style-type: decimal;">
-                        <p style="text-align: justify; margin-bottom: 0;">Luego, <strong>paga la tarifa de la visa</strong>,
+                        <p class="many-text">Luego, <strong>paga la tarifa de la visa</strong>,
                             generalmente en la moneda local o con otros
                             métodos de pago que acepten.</p>
                     </li>
                 </ol>
 
-                <p style="text-align: justify; margin-bottom: 0;">Si todo está en orden, te colocarán el sello o adhesivo de
+                <p class="many-text">Si todo está en orden, te colocarán el sello o adhesivo de
                     la visa en tu pasaporte, ¡y podrás continuar con tu viaje!
                 </p>
 
                 <h2 id="arrived-visa-vs-eVisa" class="subtitle">Visa a la llegada vs. eVisa: ¿Cuáles son las diferencias?
                 </h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">Una visa a la llegada y una eVisa son dos formas
+                <p class="many-text">Una visa a la llegada y una eVisa son dos formas
                     diferentes de obtener tu visa para visitar otro país. Vamos a desglosarlo:
                 </p>
 
@@ -370,60 +370,60 @@
 
                 <h2 id="why-choose-iVisa" class="subtitle">¿Por qué elegir iVisa para solicitar tu visa?</h2>
 
-                <p style="text-align: justify; margin-bottom: 0;">Si necesitas preinscribirte para tu visa a la llegada,
+                <p class="many-text">Si necesitas preinscribirte para tu visa a la llegada,
                     contamos con todo lo necesario para ayudarte. Aquí te explicamos cómo lo hacemos:
                 </p>
 
                 <ul class="list-categories">
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Una copia de tu pasaporte:</strong> No es
+                        <p class="many-text"><strong>Una copia de tu pasaporte:</strong> No es
                             necesario enviar el pasaporte original.
                             Como regla general, asegúrate de que tenga al menos seis meses de validez y dos páginas en
                             blanco.</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Detalles personales:</strong> Quieren
+                        <p class="many-text"><strong>Detalles personales:</strong> Quieren
                             saber quién está viajando. Completa tus datos
                             personales en línea, como tu nombre, fecha de nacimiento, fechas de viaje e información de
                             contacto.</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Prueba de viaje de retorno:</strong> La
+                        <p class="many-text"><strong>Prueba de viaje de retorno:</strong> La
                             mayoría de los países requieren un billete de
                             regreso o prueba de transporte reservado a otro destino.</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Foto:</strong> A veces necesitarás subir
+                        <p class="many-text"><strong>Foto:</strong> A veces necesitarás subir
                             una foto reciente tipo pasaporte.</p>
                     </li>
                 </ul>
 
                 <ul class="list-categories">
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Proceso sencillo:</strong>
+                        <p class="many-text"><strong>Proceso sencillo:</strong>
                             Hacemos que el proceso de registro sea fácil al desglosarlo en unos pocos pasos sencillos.</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Aplica desde cualquier lugar:</strong>
+                        <p class="many-text"><strong>Aplica desde cualquier lugar:</strong>
                             Solicita tu visa a la llegada en línea desde cualquier lugar usando nuestra <a
                                 href="/download" class="text-link">app de iVisa</a>.</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Asistencia cuando la necesites:</strong>
+                        <p class="many-text"><strong>Asistencia cuando la necesites:</strong>
                             Nuestro servicio al cliente de primera calidad tiene toda la información que necesitas para
                             planificar tu viaje.</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Tus datos están seguros:</strong>
+                        <p class="many-text"><strong>Tus datos están seguros:</strong>
                             Protegemos tu información personal con cifrado avanzado y medidas de seguridad.</p>
                     </li>
                     <li class="list-item">
-                        <p style="text-align: justify; margin-bottom: 0;"><strong>Sin sorpresas:</strong>
+                        <p class="many-text"><strong>Sin sorpresas:</strong>
                             Precios claros e instrucciones simples.</p>
                     </li>
                 </ul>
 
-                <p style="text-align: justify; margin-bottom: 0;">En resumen, iVisa es tu aliado para un viaje sin
+                <p class="many-text">En resumen, iVisa es tu aliado para un viaje sin
                     complicaciones, ¡haciendo que planificar tu aventura sea pan comido!
                 </p>
             </div>
@@ -442,7 +442,7 @@
             </div>
         </div>
         <div class="card-container">
-            <a class="card" href="#">
+            <a class="card-0" href="#">
                 <img class="xy hg zp ie entered loaded"
                     data-src="https://ivisa.s3.amazonaws.com/website-assets/blog/man-working-laptop-hat-outdoor.webp"
                     alt="Guía de tarjetas de llegada: Información clave para viajeros cover image" width="425" height="200"
