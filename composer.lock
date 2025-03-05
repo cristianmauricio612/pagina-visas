@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "baa036001a0cd37cbf2b9cace6f76dac",
+    "content-hash": "078f5508bd537e1d00759ff4b3d2c29a",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -1430,6 +1430,70 @@
             "time": "2025-01-19T11:01:27+00:00"
         },
         {
+            "name": "leafs/csrf",
+            "version": "v0.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafsphp/csrf.git",
+                "reference": "a4be0d6991d0f3c82a98153ee784fdac78ac5acb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafsphp/csrf/zipball/a4be0d6991d0f3c82a98153ee784fdac78ac5acb",
+                "reference": "a4be0d6991d0f3c82a98153ee784fdac78ac5acb",
+                "shasum": ""
+            },
+            "require": {
+                "leafs/anchor": "*",
+                "leafs/http": "*",
+                "leafs/session": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Leaf\\Anchor\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Darko",
+                    "email": "mickdd22@gmail.com",
+                    "homepage": "https://mychi.netlify.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Leaf CSRF security patch for leaf anchor",
+            "homepage": "https://leafphp.netlify.app/#/",
+            "keywords": [
+                "framework",
+                "leaf",
+                "php",
+                "util"
+            ],
+            "support": {
+                "issues": "https://github.com/leafsphp/csrf/issues",
+                "source": "https://github.com/leafsphp/csrf/tree/v0.5.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/leafsphp",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/leaf",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2025-01-20T09:30:00+00:00"
+        },
+        {
             "name": "leafs/date",
             "version": "v2.1",
             "source": {
@@ -2049,6 +2113,74 @@
                 }
             ],
             "time": "2025-02-20T11:23:33+00:00"
+        },
+        {
+            "name": "leafs/session",
+            "version": "v2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafsphp/session.git",
+                "reference": "7d9358b3832504490896f59c998c877119b9fe69"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafsphp/session/zipball/7d9358b3832504490896f59c998c877119b9fe69",
+                "reference": "7d9358b3832504490896f59c998c877119b9fe69",
+                "shasum": ""
+            },
+            "require": {
+                "leafs/anchor": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "pestphp/pest": "^1.21"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Leaf\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Darko",
+                    "email": "mickdd22@gmail.com",
+                    "homepage": "https://mychi.netlify.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Leaf PHP session + flash modules",
+            "homepage": "https://leafphp.dev/modules/session/",
+            "keywords": [
+                "flash",
+                "framework",
+                "http",
+                "leaf",
+                "php",
+                "session"
+            ],
+            "support": {
+                "issues": "https://github.com/leafsphp/session/issues",
+                "source": "https://github.com/leafsphp/session/tree/v2.3.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/leafsphp",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/leaf",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2025-01-20T18:48:05+00:00"
         },
         {
             "name": "nesbot/carbon",
