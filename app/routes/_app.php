@@ -18,3 +18,10 @@ app()->get('/price-canadience-visa', ['name' => 'price-canadience-visa', functio
 app()->get('/visa-validity', ['name' => 'visa-validity', function () {render('articles.visa-validity');}]);
 
 app()->get('/kenia/p/e-visa', ['name' => 'kenia-e-visa', function () {render('articles.kenia-e-visa');}]);
+
+//SESSION
+
+app()->get('/iniciar-sesion', ['name' => 'login', function () {render('session.login');}]);
+
+app()->get('/registrarse', ['name' => 'register', function () {render('session.register');}]);
+

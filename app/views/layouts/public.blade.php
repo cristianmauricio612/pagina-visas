@@ -83,7 +83,7 @@
                     <span>S/. PEN</span>
                 </div>
                 <div class="ms-4">
-                    <a href="">
+                    <a href="{{route('login')}}">
                         <button class="button-login">Iniciar sesión</button>
                     </a>
                 </div>
