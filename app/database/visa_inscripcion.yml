@@ -1,0 +1,28 @@
+columns:
+  visas_id:
+    type: string
+    nullable: false
+  fecha_llegada:
+    type: timestamp
+    nullable: false
+  fecha_salida:
+    type: timestamp
+    nullable: true
+  correo:
+    type: string
+    nullable: false
+  pago_hoy:
+    type: decimal
+    total: 20
+    places: 2
+    nullable: true
+  pago_posterior:
+    type: decimal
+    total: 20
+    places: 2
+    nullable: true
+  tasa_gobierno_total:
+    type: decimal
+    total: 20
+    places: 2
+    nullable: true

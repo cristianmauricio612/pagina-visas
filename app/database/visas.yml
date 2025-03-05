@@ -1,0 +1,36 @@
+columns:
+  pais1_id:
+    type: string
+    nullable: false
+    unique: true
+  pais2_id:
+    type: string
+    nullable: false
+    unique: true
+  nombre:
+    type: string
+    nullable: false
+    unique: true
+  tiempo_validez:
+    type: string
+    nullable: true
+  numero_entradas:
+    type: string
+    nullable: true
+  estancia_maxima:
+    type: string
+    nullable: true
+  necesita_visa:
+    type: boolean
+    nullable: false
+    default: true
+  precio:
+    type: decimal
+    total: 20
+    places: 2
+    nullable: false
+  tasa_gobierno:
+    type: decimal
+    total: 20
+    places: 2
+    nullable: true

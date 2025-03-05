@@ -25,3 +25,8 @@ app()->get('/iniciar-sesion', ['name' => 'login', function () {render('session.l
 
 app()->get('/registrarse', ['name' => 'register', function () {render('session.register');}]);
 
+app()->get('/visas/{pais1}/{pais2}', ['name' => 'visas', 'VisaController@getVisasByPaises']);
+
+app()->get('/visa-inscripcion/{id}', ['name' => 'visa-inscripcion', 'VisaController@getVisaById']);
+
+app()->get('/pago/{id}', ['name' => 'pago', 'VisaInscripcionController@createVisaInscripcion']);

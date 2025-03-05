@@ -4,6 +4,9 @@
 
 @section('content')
     <div class="hero">
+        @php
+            $paises = \App\Models\Pais::all();
+        @endphp
         <div class="hero-form-container">
             <h1 class="hero-title">
                 Obtén tu visa para cualquier destino   
@@ -14,25 +17,23 @@
                         <div class="select-container">
                             <label for="origen">¿De dónde soy?</label>
                             <select id="origen">
-                                <option value="peru">Perú</option>
-                                <option value="alemania">🇩🇪 Alemania</option>
-                                <option value="australia">🇦🇺 Australia</option>
-                                <option value="canada">🇨🇦 Canadá</option>
+                                @foreach ($paises as $pais)
+                                    <option value="{{ $pais->id }}"><img src="{{ $pais->imagen }}" alt="" style="width: 32; height: 32; margin-right: 10px">{{ $pais->nombre }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="select-container">
                             <label for="destino">¿A dónde viajo?</label>
                             <select id="destino">
-                                <option value="canada">🇨🇦 Canadá</option>
-                                <option value="usa">🇺🇸 Estados Unidos</option>
-                                <option value="india">🇮🇳 India</option>
-                                <option value="israel">🇮🇱 Israel</option>
+                                @foreach ($paises as $pais)
+                                    <option value="{{ $pais->id }}"><img src="{{ $pais->imagen }}" alt="" style="width: 32; height: 32; margin-right: 10px">{{ $pais->nombre }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="hero-form-button-container">
                         <div class="hero-form-button">
-                            <button class="hero-button">¡Comenzar ahora! <i class="fa fa-arrow-right"></i></button>
+                            <button class="hero-button" id="buscarVisas">¡Comenzar ahora! <i class="fa fa-arrow-right"></i></button>
                         </div>
                     </div>
                 </div>
@@ -124,5 +125,24 @@
     </div>
     <!-- NUESTRO PROCESO DE APLICACION END-->
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("buscarVisas").addEventListener("click", function() {
+                // Obtener los valores seleccionados de los selects
+                let pais1 = document.getElementById("origen").value;
+                let pais2 = document.getElementById("destino").value;
+
+                // Verificar que ambos países hayan sido seleccionados
+                if (!pais1 || !pais2) {
+                    alert("Por favor, selecciona ambos países.");
+                    return;
+                }
+
+                // Construir la URL de la ruta y redirigir
+                let url = `/visas/${pais1}/${pais2}`;
+                window.location.href = url;
+            });
+        });
+    </script>
     <link rel="stylesheet" href="{{ assets("css/index.css") }}">
 @endsection

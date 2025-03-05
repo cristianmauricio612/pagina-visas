@@ -1,0 +1,8 @@
+columns:
+  nombre:
+    type: string
+    nullable: false
+    unique: true
+  imagen:
+    type: longtext
+    nullable: false
