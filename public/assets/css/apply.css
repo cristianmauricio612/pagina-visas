@@ -1,0 +1,100 @@
+.circle-invert {
+    font-size: var(--font-size); /* Tamaño de la fuente */
+    width: 1.8em; /* Se adapta al tamaño de la fuente */
+    height: 1.8em;
+    background-color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Manrope,Arial,sans-serif;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    margin-right: 10px;
+}
+
+.how-request-container{
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #eff7fa;
+    margin: 10px;
+    padding: 20px;
+}
+
+.how-request-container p, .how-request-container h2{
+    text-align: center;
+}
+
+.subheader-container{
+    background-color: #eff7fa;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+h1{
+    text-align: center;
+    font-weight: bold;
+}
+
+h2{
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 28px;
+    margin: 12px 0px 12px;
+}
+
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card img {
+    height: 180px;
+    object-fit: cover;
+}
+.badge {
+    background-color: #d0ebff;
+    color: #1c7ed6;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+.nav-section {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+.nav-link {
+    cursor: pointer;
+    position: relative;
+    padding: 10px 15px;
+    display: inline-block;
+}
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 3px;
+    background-color: #0b3946;
+}
+
+section {
+    scroll-margin-top: 160px; /* Ajusta para evitar que el navbar y nav-section tapen la sección */
+}
+
+.accordion-header{
+    margin: 0;
+}

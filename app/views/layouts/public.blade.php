@@ -13,7 +13,7 @@
     @stack('resources')
 </head>
 <body>
-    <div class="header">
+    <div class="header" id="principal-nav">
         <div class="header-container">
             <div class="logo-container">
                 <img src="{{ assets("img/av.png") }}" alt="" style="height: 32px">
@@ -239,6 +239,89 @@
     </div>
 
 @yield('content')
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Sección de Visas más solicitadas -->
+                <div class="col-md-4">
+                    <h5>Visas más solicitadas</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Marruecos ETA</a></li>
+                        <li><a href="#">Australia ETA</a></li>
+                        <li><a href="#">Malasia Visa de Turista</a></li>
+                        <li><a href="#">Jamaica Formulario C5</a></li>
+                        <li><a href="#">Egipto eVisa</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sección de Blogs sobre viajes -->
+                <div class="col-md-4">
+                    <h5>Nuestros blogs sobre viajes</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Visa de Vietnam para Argentinos</a></li>
+                        <li><a href="#">Requisitos y costos de la visa para Turquía</a></li>
+                        <li><a href="#">¿Puedo visitar Canadá con una visa de EE. UU.?</a></li>
+                        <li><a href="#">Visa EAU - Visa de tránsito para los Emiratos Árabes Unidos</a></li>
+                        <li><a href="#">¿Puedo ir a México una Green Card?</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sección de la Empresa -->
+                <div class="col-md-4">
+                    <h5>Empresa</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Sobre Visa Asesores</a></li>
+                        <li><a href="#">Contáctate con nosotros</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Redes Sociales -->
+            <div class="text-center my-4">
+                <h5>Conéctate con nosotros:</h5>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- Línea divisoria -->
+            <hr class="border-light">
+
+            <!-- Sección inferior -->
+            <div class="row text-center">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2014-2025 Visa Asesores. Todos los derechos reservados.</p>
+                    <p>
+                        <a href="#">Condiciones del servicio</a> |
+                        <a href="#">Política de privacidad</a>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="fas fa-phone"></i> +34 518 88 00 30</p>
+                    <p>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Spain.svg" width="20"> Español
+                        | S/. PEN ▼
+                    </p>
+                    <!-- Botones de descarga -->
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="me-2">
+                            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width="120">
+                        </a>
+                        <a href="#">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="135">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 @stack('js')
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
@@ -253,7 +336,7 @@
 
             dropdownButton.addEventListener("click", function () {
                 const isExpanded = this.getAttribute("aria-expanded") === "true";
-                
+
                 // Alternar visibilidad de las flechas
                 iconDown.hidden = isExpanded;
                 iconUp.hidden = !isExpanded;
