@@ -2,11 +2,9 @@ columns:
   pais1_id:
     type: string
     nullable: false
-    unique: true
   pais2_id:
     type: string
     nullable: false
-    unique: true
   nombre:
     type: string
     nullable: false

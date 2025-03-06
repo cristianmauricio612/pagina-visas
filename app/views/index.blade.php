@@ -131,6 +131,7 @@
                 // Obtener los valores seleccionados de los selects
                 let pais1 = document.getElementById("origen").value;
                 let pais2 = document.getElementById("destino").value;
+                let posicion = "0";
 
                 // Verificar que ambos países hayan sido seleccionados
                 if (!pais1 || !pais2) {
@@ -139,7 +140,7 @@
                 }
 
                 // Construir la URL de la ruta y redirigir
-                let url = `/visas/${pais1}/${pais2}`;
+                let url = `/visas/${pais1}/${pais2}/${posicion}`;
                 window.location.href = url;
             });
         });

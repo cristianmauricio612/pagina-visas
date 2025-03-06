@@ -381,9 +381,12 @@
                 // Seleccionar un país
                 optionsList.forEach(option => {
                     option.addEventListener("click", function () {
-                        const imgSrc = this.querySelector("img").src;
-                        selectedOption.innerHTML = `<img src="${imgSrc}" alt=""> ${this.textContent}`;
-                        selectedOption.style.display = "flex";
+                        const selectedId = this.getAttribute("data-value"); // Obtener ID del país seleccionado
+                        const optionText = this.textContent.trim(); // Obtener solo el texto
+                        let optionHTML = this.innerHTML; // Copiar contenido HTML (imagen + texto si hay)
+
+                        // **Actualizar UI del select**
+                        selectedOption.innerHTML = optionHTML;
                         dropdown.style.display = "none";
                         searchInput.value = "";
                         optionsList.forEach(opt => (opt.style.display = "flex"));

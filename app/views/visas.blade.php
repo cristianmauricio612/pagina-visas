@@ -10,7 +10,7 @@
         $visa_temp = "";
 
         if($visas->isNotEmpty()){
-            $visa_temp = $visas[0];
+            $visa_temp = $visas[intval($posicion)];
         }
 
     @endphp
@@ -67,13 +67,19 @@
                 <div class="origen-warning">Asegúrate de seleccionar la nacionalidad del pasaporte con el que viajarás.</div>
             </div>
 
-            <div class="visa-select">
+            <div class="visa-select" style="margin-bottom: 32px;">
                 <label class="origen-label">Solicitar</label>
                 <div class="custom-select" id="visa">
                     @if ($visas->isNotEmpty())
-                        <div class="selected-option" data-value="{{ $visa_temp->id }}">
-                            {{ $visa_temp->nombre }}
-                        </div>
+                        @if ($visa_temp->necesita_visa !== 0)
+                            <div class="selected-option" data-value="{{ $visa_temp->id }}">
+                                {{ $visa_temp->nombre }} - {{ $visa_temp->tiempo_validez }}, {{ $visa_temp->numero_entradas }}
+                            </div>
+                        @else
+                            <div class="selected-option">
+                                No hay visas
+                            </div>
+                        @endif
                     @else
                         <div class="selected-option">
                             No hay visas
@@ -83,13 +89,19 @@
                         <input type="text" class="search-input">
                         <div class="options-list">
                             @if ($visas->isNotEmpty())
-                                @foreach ($visas as $visa)
-                                    <div class="option" data-value="{{ $visa->id }}">
-                                        {{ $visa->nombre }}
+                                @if ($visa_temp->necesita_visa !== 0)
+                                    @foreach ($visas as $visa)
+                                        <div class="option" data-value="{{ $visa->id }}">
+                                            {{ $visa->nombre }} - {{ $visa->tiempo_validez }}, {{ $visa->numero_entradas }}
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="option" data-value="No hay visas">
+                                        No hay visas
                                     </div>
-                                @endforeach
+                                @endif
                             @else
-                                <div class="option">
+                                <div class="option" data-value="No hay visas">
                                     No hay visas
                                 </div>
                             @endif
@@ -100,12 +112,87 @@
         </div>
 
         <div class="visas-information">
-            
-            <button id="solicitarVisa">Solicitar ahora</button>
+            @if ($visas->isNotEmpty())
+                @if ($visa_temp->necesita_visa !== 0)
+                    <div class="visa-information-container">
+                        <span class="visa-information-span">
+                            <div style="display: inline;">
+                                <i class="fa-solid fa-fire"></i>
+                            </div>
+                            El más solicitado
+                        </span>
+
+                        <div class="visa-information-title">
+                            {{ $visa_temp->nombre }}
+                        </div>
+
+                        <div class="visa-information">
+                            <div class="visa-information-item">
+                                <div class="visa-information-icon">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </div>
+                                <div class="visa-information-text">
+                                    <div class="visa-text-label">Válido por</div>
+                                    <div class="visa-text-content">{{ $visa_temp->tiempo_validez }} desde la emisión</div>
+                                </div>
+                            </div>
+
+                            <div class="visa-information-item">
+                                <div class="visa-information-icon">
+                                    <i class="fa-solid fa-plane-arrival"></i>
+                                </div>
+                                <div class="visa-information-text">
+                                    <div class="visa-text-label">Número de entradas</div>
+                                    <div class="visa-text-content">{{ $visa_temp->numero_entradas }}</div>
+                                </div>
+                            </div>
+
+                            <div class="visa-information-item">
+                                <div class="visa-information-icon">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </div>
+                                <div class="visa-information-text">
+                                    <div class="visa-text-label">Estancia máxima</div>
+                                    <div class="visa-text-content">{{ $visa_temp->estancia_maxima }} por entrada</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="visa-information-button">
+                        <button id="solicitarVisa">Solicitar ahora</button>
+                    </div>
+                @else
+                    <div class="visa-information-button">
+                        <button id="solicitarVisa" disabled>Solicitar ahora</button>
+                    </div>
+                @endif
+            @else
+                <div class="visa-information-button">
+                    <button id="solicitarVisa" disabled>Solicitar ahora</button>
+                </div>
+            @endif
         </div>
     </div>
 
     <script>
+        const paises = @json($paises);
+        const visas = @json($visas);
+        let pais1 = @json($pais1);
+        let pais2 = @json($pais2);
+        let posicion = @json($posicion);
+
+        function actualizarPagina() {
+
+            if (!pais1 || !pais2) return;
+
+            // Construir la nueva URL con los países seleccionados
+            const nuevaURL = `/visas/${pais1.id}/${pais2.id}/${posicion}`;
+            
+            // Redirigir a la nueva URL (esto recarga la página)
+            window.location.href = nuevaURL;
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("solicitarVisa").addEventListener("click", function() {
                 // Obtener los valores seleccionados de los selects
@@ -123,14 +210,15 @@
                 const dropdown = select.querySelector(".dropdown-form");
                 const searchInput = select.querySelector(".search-input");
                 const optionsList = select.querySelectorAll(".option");
+                const isPaisSelect = select.querySelector(".option img") !== null; // Si hay imágenes, es el select de países
 
-                // Mostrar dropdown en el lugar del select
+                // Mostrar dropdown
                 selectedOption.addEventListener("click", function () {
                     dropdown.style.display = "block";
                     searchInput.focus();
                 });
 
-                // Buscar país en el input
+                // Filtrar búsqueda
                 searchInput.addEventListener("input", function () {
                     const filter = searchInput.value.toLowerCase();
                     optionsList.forEach(option => {
@@ -139,19 +227,42 @@
                     });
                 });
 
-                // Seleccionar un país
+                // Seleccionar opción
                 optionsList.forEach(option => {
                     option.addEventListener("click", function () {
-                        const imgSrc = this.querySelector("img").src;
-                        selectedOption.innerHTML = `<img src="${imgSrc}" alt=""> ${this.textContent}`;
-                        selectedOption.style.display = "flex";
+                        const selectedId = this.getAttribute("data-value"); // Obtener ID del país seleccionado
+                        const optionText = this.textContent.trim(); // Obtener solo el texto
+                        let optionHTML = this.innerHTML; // Copiar contenido HTML (imagen + texto si hay)
+
+                        // **Actualizar UI del select**
+                        selectedOption.innerHTML = optionHTML;
                         dropdown.style.display = "none";
                         searchInput.value = "";
                         optionsList.forEach(opt => (opt.style.display = "flex"));
+
+                        // **Si es el select de países, buscar en el array `paises`**
+                        if (isPaisSelect) {
+                            const selectedPais = paises.find(pais => pais.id == selectedId);
+                            if (selectedPais) {
+                                pais1 = selectedPais;
+                                console.log("País 1 actualizado:", pais1);
+                                actualizarPagina(); // 🔹 Redirigir a la nueva URL
+                            }
+                        }else{
+                            if(selectedId != "No hay visas"){
+                                // Buscar la posición del elemento en la lista de visas
+                                const selectedVisaIndex = visas.findIndex(visa => visa.id == selectedId);
+                                if (selectedVisaIndex != null) {
+                                    posicion = selectedVisaIndex;
+                                    console.log("Posicion actualizada:", posicion);
+                                    actualizarPagina(); // 🔹 Redirigir a la nueva URL
+                                }
+                            }
+                        }
                     });
                 });
 
-                // Cerrar dropdown si el usuario hace clic fuera
+                // Cerrar dropdown al hacer clic fuera
                 document.addEventListener("click", function (event) {
                     if (!select.contains(event.target)) {
                         dropdown.style.display = "none";
