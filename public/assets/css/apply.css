@@ -166,4 +166,14 @@ section {
     font-weight: 600;
 }
 
+.principal-image{
+    width: 50%;
+}
+
+@media (max-width: 768px) {
+    .principal-image{
+        width: 100%;
+    }
+}
+
 

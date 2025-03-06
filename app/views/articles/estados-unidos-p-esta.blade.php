@@ -6,7 +6,7 @@
 @section('content')
 
     <div id="navSection" class="nav-section text-center row row-cols-1 row-cols-lg-2">
-        <div class="col d-flex justify-content-center align-items-center ">
+        <div class="col d-flex justify-content-center align-items-center order-2 order-lg-1">
             <div style="height: 100%">
                 <ul class="list-inline m-0 d-flex align-items-end align-content-end justify-content-end" id="navbar">
                     <li class="list-inline-item"><a class="nav-link active" href="#mas-informacion">Más información</a></li>
@@ -15,7 +15,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col d-flex justify-content-center align-items-center ">
+        <div class="col d-flex justify-content-center align-items-center order-1 order-lg-2">
             <div class="d-flex justify-content-center align-items-center py-3">
                 <span class="me-3">United States ESTA</span>
                 <button class="button-apply-now" href="/a/estados-unidos">Aplica ahora</button>
@@ -49,7 +49,7 @@
             ¡Prepárate para vivir una aventura inolvidable con el ESTA de Estados Unidos (Sistema Electrónico para la Autorización de Viajes)!
 
                 <div class="d-flex justify-content-center my-4">
-                    <img class="rounded-4 w-50" src="{{assets('img/elegirnos.jpg')}}" alt="Estados unidos">
+                    <img class="rounded-4 principal-image" src="{{assets('img/elegirnos.jpg')}}" alt="Estados unidos">
                 </div>
 
             Nuestra plataforma, en conjunto con nuestra aplicación móvil y nuestro equipo de expertos, te acercarán aún más a hacer realidad tu sueño americano, ¡a tan solo unos clics de distancia!
