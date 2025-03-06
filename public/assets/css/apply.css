@@ -77,8 +77,8 @@ h1{
     object-fit: cover;
 }
 .badge {
-    background-color: #d0ebff;
-    color: #1c7ed6;
+    background-color: #dbeff5;
+    color: #0070c0;
     font-size: 0.75rem;
     padding: 5px 10px;
     border-radius: 10px;
@@ -149,3 +149,21 @@ section {
     background: white;
     color: #21356b;
 }
+
+.section-content li{
+    margin-top: 1rem;
+}
+
+.section-content ul{
+    padding-left: 1rem;
+}
+
+#como-solicitar .card-body{
+    height: 10rem;
+}
+
+#como-solicitar .card-body h5{
+    font-weight: 600;
+}
+
+

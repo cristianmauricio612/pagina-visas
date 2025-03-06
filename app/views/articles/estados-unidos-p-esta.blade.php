@@ -48,6 +48,9 @@
 
             ¡Prepárate para vivir una aventura inolvidable con el ESTA de Estados Unidos (Sistema Electrónico para la Autorización de Viajes)!
 
+                <div class="d-flex justify-content-center my-4">
+                    <img class="rounded-4 w-50" src="{{assets('img/elegirnos.jpg')}}" alt="Estados unidos">
+                </div>
 
             Nuestra plataforma, en conjunto con nuestra aplicación móvil y nuestro equipo de expertos, te acercarán aún más a hacer realidad tu sueño americano, ¡a tan solo unos clics de distancia!
 
@@ -191,42 +194,48 @@
                     </div></div>
             </div>
             <div class="d-flex justify-content-center">
-                <button class="button-apply-now">Aplica ahora</button>
+                <button class="button-apply-now mt-5">Aplica ahora</button>
             </div>
+
+            <div class="mt-5">
+
+                <h2 class="text-start fw-bold pb-5">Artículos relacionados </h2>
+
+                <div class="row row-cols-1 row-cols-lg-3">
+                    <div class="col d-flex justify-content-center mb-3 mb-lg-0">
+                        <div class="card w-100">
+                            <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
+                            <div class="card-body">
+                                <span class="badge">Artículo</span>
+                                <h5 class="card-title mt-2">Formulario DS-160: Qué es, Cómo llenarlo y Tiempos de Procesamiento</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center mb-3 mb-lg-0">
+                        <div class="card w-100">
+                            <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
+                            <div class="card-body">
+                                <span class="badge">Artículo</span>
+                                <h5 class="card-title mt-2">Cómo solicitar una ESTA para EE. UU. como ciudadano italiano</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center mb-3 mb-lg-0">
+                        <div class="card w-100">
+                            <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
+                            <div class="card-body">
+                                <span class="badge">Artículo</span>
+                                <h5 class="card-title mt-2">Cómo solicitar la Lotería de la Green Card para ciudadanos del Reino Unido (DV-2026)</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </section>
 
-        <div class="mt-5">
-            <div class="row row-cols-1 row-cols-lg-3">
-                <div class="col d-flex justify-content-center">
-                    <div class="card w-100">
-                        <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
-                        <div class="card-body">
-                            <span class="badge">Artículo</span>
-                            <h6 class="card-title mt-2">Requisitos para Renovar la Visa Americana Vencida en Perú</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col d-flex justify-content-center">
-                    <div class="card w-100">
-                        <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
-                        <div class="card-body">
-                            <span class="badge">Artículo</span>
-                            <h6 class="card-title mt-2">Requisitos para Renovar la Visa Americana Vencida en Perú</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col d-flex justify-content-center">
-                    <div class="card w-100">
-                        <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
-                        <div class="card-body">
-                            <span class="badge">Artículo</span>
-                            <h6 class="card-title mt-2">Requisitos para Renovar la Visa Americana Vencida en Perú</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-        </div>
 
         {{--    SECCION 3--}}
 
