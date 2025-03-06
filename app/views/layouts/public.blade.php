@@ -12,6 +12,9 @@
     <link href="{{assets('css/styles.css') }}" rel="stylesheet">
     @stack('resources')
 </head>
+@php
+    $usuario = session()->get('usuario');
+@endphp
 <body>
     <div class="header" id="principal-nav">
         <div class="header-container">
@@ -82,11 +85,39 @@
                     <span class="mx-2 vr" style="height: 16px; margin-top: 2px;"></span>
                     <span>S/. PEN</span>
                 </div>
-                <div class="ms-4">
-                    <a href="{{route('login')}}">
-                        <button class="button-login">Iniciar sesión</button>
-                    </a>
-                </div>
+                @if (!$usuario)
+                    <div class="ms-4">
+                        <a href="{{route('iniciar-sesion')}}">
+                            <button class="button-login">Iniciar sesión</button>
+                        </a>
+                    </div>
+                @else
+                    <div class="dropdown ms-4">
+                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user"></i>
+                            <span>{{$usuario['nombre']}}</span>
+                            <i class="fa-solid fa-angle-down i-content"></i>
+                            <i class="fa-solid fa-angle-up i-content" hidden></i>
+                        </span>
+
+                        <ul class="dropdown-menu dropdown-menu-end mt-3">
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item" href="{{route('account')}}">Mi cuenta
+                                </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item" href="#">Mis pedidos
+                                </a>
+                            </li>
+                            <hr>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item" onclick="logout()">Cerrar Sesion
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
+                
                 <button class="menu-toggle ms-auto" id="menuToggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -326,6 +357,28 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <script>
+    function logout() {
+        fetch("/logout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf()->token() }}" // Token CSRF
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("✅ Sesión cerrada correctamente");
+                window.location.href = "/iniciar-sesion"; // Redirigir al login
+            } else {
+                alert("❌ Error: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error inesperado: ", error);
+            alert("❌ Ocurrió un error inesperado.");
+        });
+    }
     document.addEventListener("DOMContentLoaded", function () {
         // ===============================
         // 🔽 MANEJO DE DROPDOWN PRINCIPAL

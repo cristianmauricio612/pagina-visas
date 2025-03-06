@@ -19,11 +19,33 @@ app()->get('/visa-validity', ['name' => 'visa-validity', function () {render('ar
 
 app()->get('/estados-unidos/p/esta', ['name' => 'kenia-e-visa', function () {render('articles.estados-unidos-p-esta');}]);
 
+app()->get('/account', ['name' => 'account', function () {render('session.account');}]);
+
+app()->get('/account/mis-pedidos', ['name' => 'account-mis-pedidos', function () {render('session.myorders');}]);
+
+app()->get('/account/datos-personales', ['name' => 'account-datos-personales', function () {render('session.personal-data');}]);
+
+app()->get('/account/seguridad-privacidad', ['name' => 'account-seguridad-privacidad', function () {render('session.security-privacy');}]);
+
 //SESSION
 
-app()->get('/iniciar-sesion', ['name' => 'login', function () {render('session.login');}]);
+app()->get('/iniciar-sesion', ['name' => 'iniciar-sesion', function () {render('session.login');}]);
 
-app()->get('/registrarse', ['name' => 'register', function () {render('session.register');}]);
+app()->get('/registrarse', ['name' => 'registrarse', function () {render('session.register');}]);
+
+app()->post('/register', ['name' => 'register', 'UsuarioController@register']);
+
+app()->put('/account/datos-personales/actualizar/{id}', ['name' => 'account-update-email', 'UsuarioController@updateUserEmail']);
+
+app()->put('/account/seguridad-privacidad/actualizar/{id}', ['name' => 'account-update-password', 'UsuarioController@updateUserPassword']);
+
+app()->post('/login-check', ['name' => 'login-check', 'UsuarioController@login_check']);
+
+app()->post('/login', ['name' => 'login', 'UsuarioController@login']);
+
+app()->post('/logout', 'UsuarioController@logout');
+
+//FIN SESSION
 
 app()->get('/visas/{pais1}/{pais2}/{posicion}', ['name' => 'visas', 'VisaController@getVisasByPaises']);
 

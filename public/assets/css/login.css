@@ -76,7 +76,21 @@ input:hover {
     border: 1px solid black;
 }
 
-.apply-now-btn {
+.txt-contraseña {
+    width: 100%;
+    padding: 14px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.txt-contraseña:hover {
+    border: 1px solid black;
+}
+
+.continuar-btn {
     background: linear-gradient(to right, #25CBD6, #00EE8A);
     --tw-bg-opacity: 1;
     border: 2px solid white;
@@ -96,9 +110,70 @@ input:hover {
     cursor: pointer;
 }
 
-.apply-now-btn:hover {
+.continuar-btn:hover {
     background: transparent;    
     border: 2px solid black;
+}
+
+.iniciar-sesion-btn {
+    background: linear-gradient(to right, #25CBD6, #00EE8A);
+    --tw-bg-opacity: 1;
+    border: 2px solid white;
+    padding: 12px 32px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 700;
+    color: black;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    text-decoration: none;
+    margin-top: 32px;
+    margin-bottom: 20px ;
+    cursor: pointer;
+}
+
+.iniciar-sesion-btn:hover {
+    background: transparent;    
+    border: 2px solid black;
+}
+
+.password-container{
+    width: 85%;
+    display: none;
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.forgetpassword-link{
+    margin-top: 15px;
+    font-size: .875rem;
+}
+
+.forgetpassword-link a {
+    font-weight: 600;
+}
+
+.forgetpassword-link a:hover {
+    color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+}
+
+/* Ícono del ojo */
+.toggle-password {
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    margin-top: 5px;
 }
 
 /* Texto de registro */
@@ -126,6 +201,10 @@ input:hover {
         gap: 23vh;
     }
 
+    .password-container{
+        width: 100%;
+    }
+
     label {
         width: 100%;
     }
@@ -134,7 +213,7 @@ input:hover {
         width: 100%;
     }
     
-    .apply-now-btn {
+    .continuar-btn {
         width: 100%;
     }
 }
@@ -156,7 +235,7 @@ input:hover {
     }
 
     .main-container {
-        height: 50vh;
+        height: 60vh;
     }
 
     h4 {
@@ -170,17 +249,21 @@ input:hover {
     input {
         width: 85%;
     }
-    
-    .apply-now-btn {
+
+    .password-container{
         width: 85%;
     }
-
-    .login-container {
+    
+    .continuar-btn {
         width: 85%;
     }
 
     .login-form {
         padding: 40px;
+    }
+
+    .login-container {
+        width: 60%;
     }
 }
 
@@ -189,11 +272,19 @@ input:hover {
         font-size: 1.25rem;
     }
 
+    .login-container {
+        width: 85%;
+    }
+
     input {
         width: 100%;
     }
+
+    .password-container{
+        width: 100%;
+    }
     
-    .apply-now-btn {
+    .continuar-btn {
         width: 100%;
     }
 
@@ -211,6 +302,6 @@ input:hover {
 
 @media (max-width: 480px) {
     .main-container {
-        height: 55vh;
+        height: 80vh;
     }
 }
