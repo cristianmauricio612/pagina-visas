@@ -15,6 +15,14 @@
     margin-right: 10px;
 }
 
+#como-solicitar .col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
 .how-request-container{
     border-radius: 20px;
     display: flex;
@@ -24,6 +32,24 @@
     background-color: #eff7fa;
     margin: 10px;
     padding: 20px;
+}
+
+.subheader-container h2{
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 28px;
+    padding-left: 1rem;
+}
+
+.subheader-container h2, .subheader-container li{
+    margin: 1rem 0px 1rem;
+}
+
+.section-content h2{
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 28px;
+    margin: 3rem 0px 3rem;
 }
 
 .how-request-container p, .how-request-container h2{
@@ -39,13 +65,6 @@
 h1{
     text-align: center;
     font-weight: bold;
-}
-
-h2{
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 28px;
-    margin: 12px 0px 12px;
 }
 
 .card {
@@ -69,11 +88,13 @@ html {
     scroll-behavior: smooth;
 }
 .nav-section {
-    background-color: #f8f9fa;
-    padding: 10px 0;
+    border-top: 1px solid #e9ecef;
+    background-color: white;
+    padding: 10px 0 0 0;
     position: sticky;
     top: 0;
     z-index: 1020;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .nav-link {
     cursor: pointer;
@@ -91,10 +112,40 @@ html {
     background-color: #0b3946;
 }
 
+.list-inline-item, .list-inline, .nav-link{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-inline-item{
+    display: flex;
+    align-items: end;
+    align-content: end;
+    justify-content: end;
+}
+
 section {
     scroll-margin-top: 160px; /* Ajusta para evitar que el navbar y nav-section tapen la sección */
 }
 
 .accordion-header{
     margin: 0;
+}
+
+.button-apply-now{
+    padding: 0.75rem 2rem;
+    border-radius: 1rem;
+/*    BACKGROUND DEGRADADO DE AZUL A ROJO*/
+    background: linear-gradient(to right, #c7161e, #21356b);
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+.button-apply-now:hover{
+    border-color: #c7161e;
+    background: white;
+    color: #21356b;
 }

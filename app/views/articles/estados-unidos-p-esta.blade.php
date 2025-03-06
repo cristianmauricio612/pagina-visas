@@ -1,23 +1,24 @@
 @extends('layouts.public')
+@section('title', 'ESTA de EE. UU.: ¡Aplica en línea ahora! | Visa Asesores')
 @push('resources')
     <link href="{{assets('css/apply.css') }}" rel="stylesheet">
 @endpush
 @section('content')
 
     <div id="navSection" class="nav-section text-center row row-cols-1 row-cols-lg-2">
-        <div class="col d-flex justify-content-center align-items-center">
-            <div>
-                <ul class="list-inline m-0" id="navbar">
+        <div class="col d-flex justify-content-center align-items-center ">
+            <div style="height: 100%">
+                <ul class="list-inline m-0 d-flex align-items-end align-content-end justify-content-end" id="navbar">
                     <li class="list-inline-item"><a class="nav-link active" href="#mas-informacion">Más información</a></li>
                     <li class="list-inline-item"><a class="nav-link" href="#como-solicitar">Cómo solicitarlo</a></li>
                     <li class="list-inline-item"><a class="nav-link" href="#preguntas">Preguntas</a></li>
                 </ul>
             </div>
         </div>
-        <div class="col d-flex justify-content-center align-items-center">
-            <div class="d-flex justify-content-center align-items-center pt-3">
+        <div class="col d-flex justify-content-center align-items-center ">
+            <div class="d-flex justify-content-center align-items-center py-3">
                 <span class="me-3">United States ESTA</span>
-                <a href="/a/estados-unidos" class="btn btn-primary">Aplica ahora</a>
+                <button class="button-apply-now" href="/a/estados-unidos">Aplica ahora</button>
             </div>
         </div>
 
@@ -28,7 +29,7 @@
         {{--    SECCION 1--}}
         <section id="mas-informacion" class="section-container pt-5">
             <h1>ESTA de EE. UU.: ¡Aplica en línea ahora! | Visa Asesores</h1>
-            <div class="subheader-container">
+            <div class="subheader-container my-5">
                 <h2>Lo que debes saber</h2>
                 <ul>
                     <li>
@@ -39,6 +40,14 @@
                     </li>
                 </ul>
             </div>
+
+            <div class="section-content">
+
+            <h2>¡Solicita hoy mismo tu ESTA de Estados Unidos con nosotros!</h2>
+            <p class="fw-bold fst-italic">Última actualización: marzo de 2024</p>
+
+            ¡Prepárate para vivir una aventura inolvidable con el ESTA de Estados Unidos (Sistema Electrónico para la Autorización de Viajes)!
+
 
             Nuestra plataforma, en conjunto con nuestra aplicación móvil y nuestro equipo de expertos, te acercarán aún más a hacer realidad tu sueño americano, ¡a tan solo unos clics de distancia!
 
@@ -151,53 +160,46 @@
 
             <h2>¿Dónde puedo obtener más información sobre el ESTA de Estados Unidos?</h2>
             Si tienes preguntas sobre el ESTA de Estados Unidos u otro documento de viaje, no dudes en ponerte en contacto con nuestro equipo de atención al cliente a través de nuestra página web o por WhatsApp. Estaremos encantados de ayudarte.
+
+            </div>
         </section>
 
         {{--    SECCION 2--}}
-        <section id="como-solicitar" class="pt-5">
-            <h2 class="text-center">Cómo solicitarlo: ESTA</h2>
+        <section id="como-solicitar">
+            <h2 class="text-center fw-bold py-5">Cómo solicitarlo: ESTA</h2>
             <div class="row row-cols-1 row-cols-lg-3">
                 <div class="col"><div class="how-request-container">
                         <div class="circle-invert">
-                            02
+                            01
                         </div>
-                        <h2>Cómo solicitarlo: ESTA</h2>
-                        <p>
-                            Completa nuestro formulario en línea
-                            Rellena nuestra sencilla aplicación con tus datos de viaje y paga con tarjeta de crédito o Paypal.
-                        </p>
+                        <h2>Completa nuestro formulario en línea</h2>
+                        <p>Rellena nuestra sencilla aplicación con tus datos de viaje y paga con tarjeta de crédito o Paypal.</p>
                     </div></div>
                 <div class="col"><div class="how-request-container">
                         <div class="circle-invert">
                             02
                         </div>
-                        <h2>Cómo solicitarlo: ESTA</h2>
-                        <p>
-                            Completa nuestro formulario en línea
-                            Rellena nuestra sencilla aplicación con tus datos de viaje y paga con tarjeta de crédito o Paypal.
-                        </p>
+                        <h2>Recibe tu documento por correo electrónico</h2>
+                        <p>Te enviamos tu visa 100% online, sin necesidad de acudir a la embajada.</p>
                     </div></div>
                 <div class="col"><div class="how-request-container">
                         <div class="circle-invert">
-                            02
+                            03
                         </div>
-                        <h2>Cómo solicitarlo: ESTA</h2>
-                        <p>
-                            Completa nuestro formulario en línea
-                            Rellena nuestra sencilla aplicación con tus datos de viaje y paga con tarjeta de crédito o Paypal.
-                        </p>
+                        <h2>Ingresa a tu destino</h2>
+                        <p>Presenta tu pasaporte y tu e-visa cuando llegues a tu país de destino..</p>
                     </div></div>
             </div>
             <div class="d-flex justify-content-center">
-                <button class="btn btn-primary">Solicitar ESTA</button>
+                <button class="button-apply-now">Aplica ahora</button>
             </div>
         </section>
 
         <div class="mt-5">
             <div class="row row-cols-1 row-cols-lg-3">
                 <div class="col d-flex justify-content-center">
-                    <div class="card" style="width: 18rem;">
-                        <img src="https://source.unsplash.com/300x180/?newyork" class="card-img-top" alt="Ciudad de Nueva York">
+                    <div class="card w-100">
+                        <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
                         <div class="card-body">
                             <span class="badge">Artículo</span>
                             <h6 class="card-title mt-2">Requisitos para Renovar la Visa Americana Vencida en Perú</h6>
@@ -205,8 +207,8 @@
                     </div>
                 </div>
                 <div class="col d-flex justify-content-center">
-                    <div class="card" style="width: 18rem;">
-                        <img src="https://source.unsplash.com/300x180/?newyork" class="card-img-top" alt="Ciudad de Nueva York">
+                    <div class="card w-100">
+                        <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
                         <div class="card-body">
                             <span class="badge">Artículo</span>
                             <h6 class="card-title mt-2">Requisitos para Renovar la Visa Americana Vencida en Perú</h6>
@@ -214,8 +216,8 @@
                     </div>
                 </div>
                 <div class="col d-flex justify-content-center">
-                    <div class="card" style="width: 18rem;">
-                        <img src="https://source.unsplash.com/300x180/?newyork" class="card-img-top" alt="Ciudad de Nueva York">
+                    <div class="card w-100">
+                        <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
                         <div class="card-body">
                             <span class="badge">Artículo</span>
                             <h6 class="card-title mt-2">Requisitos para Renovar la Visa Americana Vencida en Perú</h6>
@@ -228,7 +230,10 @@
 
         {{--    SECCION 3--}}
 
-        <section id="preguntas" class="accordion pt-5">
+        <section id="preguntas" class="accordion pb-5">
+
+            <h2 class="text-center fw-bold py-5">¿Tienes preguntas?</h2>
+
                 <?php
                 $preguntas = [
                     "¿Cómo puedo verificar la acreditación de Visa Asesores?" =>

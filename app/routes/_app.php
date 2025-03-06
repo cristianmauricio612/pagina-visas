@@ -17,7 +17,7 @@ app()->get('/price-canadience-visa', ['name' => 'price-canadience-visa', functio
 
 app()->get('/visa-validity', ['name' => 'visa-validity', function () {render('articles.visa-validity');}]);
 
-app()->get('/kenia/p/e-visa', ['name' => 'kenia-e-visa', function () {render('articles.kenia-e-visa');}]);
+app()->get('/estados-unidos/p/esta', ['name' => 'kenia-e-visa', function () {render('articles.estados-unidos-p-esta');}]);
 
 //SESSION
 
