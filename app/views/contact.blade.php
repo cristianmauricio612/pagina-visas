@@ -21,26 +21,27 @@
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-3 contact-container rounded-5 p-5 my-5">
-        <div class="col">
-            <h2>LLÁMANOS</h2>
-            <p>+51 959 590 094 / +51 980 514 075</p>
-            <p>+51 967 284 888 / +51 967 911 764</p>
-            <p>+51 960 308 837</p>
-        </div>
-        <div class="col">
-            <h2>E-MAIL</h2>
-            <p>visastravel.info@gmail.com</p>
-        </div>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 contact-container rounded-5 p-5 my-5">
+            <div class="col">
+                <h2>LLÁMANOS</h2>
+                <p>+51 959 590 094 / +51 980 514 075</p>
+                <p>+51 967 284 888 / +51 967 911 764</p>
+                <p>+51 960 308 837</p>
+            </div>
+            <div class="col">
+                <h2>E-MAIL</h2>
+                <p>visastravel.info@gmail.com</p>
+            </div>
 
-        <div class="col">
-            <h2>VISÍTANOS</h2>
-            <p>Calle Monitor Huascar 165, Santiago de Surco, Lima, Perú</p>
-            <p>Lunes – Viernes de 08:00 am a 06:00 pm</p>
-            <p>Lunes – Viernes de 08:00 am a 06:00 pm</p>
+            <div class="col">
+                <h2>VISÍTANOS</h2>
+                <p>Calle Monitor Huascar 165, Santiago de Surco, Lima, Perú</p>
+                <p>Lunes – Viernes de 08:00 am a 06:00 pm</p>
+                <p>Lunes – Viernes de 08:00 am a 06:00 pm</p>
+            </div>
         </div>
     </div>
-
     <div class="container mt-5">
     <h2 class="text-center fw-bold">FORMULARIO <br> DE CONTACTO</h2>
     <p class="text-center">Nuestros asesores se pondrán en contacto contigo.</p>
