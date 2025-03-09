@@ -9,7 +9,7 @@
     <h1 class="fw-bold text-center py-5">Contacto</h1>
     <div class="row row-cols-1 row-cols-md-2 my-5">
         <div class="col d-flex justify-content-center mb-3">
-            <img class="rounded-5" src="{{assets('img/elegirnos.jpg')}}" alt="">
+            <img style="max-width: 100%" class="rounded-5" src="{{assets('img/elegirnos.jpg')}}" alt="">
         </div>
         <div class="col">
             <h2 class="fw-bold">
