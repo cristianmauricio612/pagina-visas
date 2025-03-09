@@ -210,7 +210,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col d-flex justify-content-center mb-3 mb-lg-0">
+                    <div class="col d-flex justify-content-center mb-3 mb-lg-0 hide-mobile">
                         <div class="card w-100">
                             <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
                             <div class="card-body">
@@ -219,7 +219,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col d-flex justify-content-center mb-3 mb-lg-0">
+                    <div class="col d-flex justify-content-center mb-3 mb-lg-0 hide-mobile">
                         <div class="card w-100">
                             <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
                             <div class="card-body">
@@ -228,6 +228,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="d-flex justify-content-center my-4">
+                    <button class="btn btn-outline-info">Leer mas</button>
                 </div>
 
             </div>

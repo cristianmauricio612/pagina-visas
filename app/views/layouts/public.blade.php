@@ -277,8 +277,13 @@
             <div class="row">
                 <!-- Sección de Visas más solicitadas -->
                 <div class="col-md-4">
-                    <h5>Visas más solicitadas</h5>
-                    <ul class="list-unstyled">
+                    <h5>
+                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#visasList" aria-expanded="false">
+                            Visas más solicitadas
+                        </button>
+                        <span class="desktop-title">Visas más solicitadas</span>
+                    </h5>
+                    <ul class="list-unstyled collapse d-md-block" id="visasList">
                         <li><a href="{{route('canada-p-eta')}}">Canada ETA</a></li>
                         <li><a href="{{route('estados-unidos-p-esta')}}">Estados Unidos ESTA</a></li>
                         <li><a href="{{route('india-p-tourist-e-visa')}}">India eVISA</a></li>
@@ -287,8 +292,13 @@
 
                 <!-- Sección de Blogs sobre viajes -->
                 <div class="col-md-4">
-                    <h5>Nuestros blogs sobre viajes</h5>
-                    <ul class="list-unstyled">
+                    <h5>
+                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#blogsList" aria-expanded="false">
+                            Nuestros blogs sobre viajes
+                        </button>
+                        <span class="desktop-title">Nuestros blogs sobre viajes</span>
+                    </h5>
+                    <ul class="list-unstyled collapse d-md-block" id="blogsList">
                         <li><a href="#">Visa de Vietnam para Argentinos</a></li>
                         <li><a href="#">Requisitos y costos de la visa para Turquía</a></li>
                         <li><a href="#">¿Puedo visitar Canadá con una visa de EE. UU.?</a></li>
@@ -299,8 +309,13 @@
 
                 <!-- Sección de la Empresa -->
                 <div class="col-md-4">
-                    <h5>Empresa</h5>
-                    <ul class="list-unstyled">
+                    <h5>
+                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#empresaList" aria-expanded="false">
+                            Empresa
+                        </button>
+                        <span class="desktop-title">Empresa</span>
+                    </h5>
+                    <ul class="list-unstyled collapse d-md-block" id="empresaList">
                         <li><a href="{{route('about-us')}}">Sobre Visa Asesores</a></li>
                         <li><a href="{{route('contact')}}">Contáctate con nosotros</a></li>
                         <li><a href="#">Sitemap</a></li>

@@ -11,6 +11,42 @@
     --font-size: 3rem; /* Tamaño base de la fuente */
 }
 
+.mobile-dropdown, .mobile-dropdown:hover, .mobile-dropdown:focus, .mobile-dropdown:active, .mobile-dropdown:checked {
+    text-decoration: none;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+    text-decoration: none;
+    color: white;
+    font-size: 1.25rem;
+}
+
+
+
+@media (max-width: 768px) {
+    .dropdown-toggle::after {
+        display: inline-block;
+    }
+    .desktop-title {
+        display: none;
+    }
+    .list-unstyled {
+        margin-left: 1rem;
+    }
+    .footer li{
+        margin-top: 0 !important;
+        padding-bottom: 1rem;
+    }
+}
+@media (min-width: 769px) {
+    .mobile-dropdown {
+        display: none;
+    }
+
+}
+
 .circle {
     font-size: var(--font-size); /* Tamaño de la fuente */
     width: 1.8em; /* Se adapta al tamaño de la fuente */

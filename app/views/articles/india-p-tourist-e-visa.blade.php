@@ -222,7 +222,7 @@
 
                 Para aquellos países exentos de las tarifas gubernamentales de visa, el único costo será nuestra tarifa de servicio de iVisa. Los países exentos de estas tarifas incluyen:
 
-                Argentina <br>
+                <br> Argentina <br>
                 Islas Cook<br>
                 Fiyi<br>
                 Micronesia<br>
@@ -245,7 +245,7 @@
                 Samoa<br>
                 Sudáfrica<br>
 
-                Puedes verificar si debes pagar tasas gubernamentales en la parte superior de esta página. Ten en cuenta que, independientemente de la nacionalidad, aquellos que soliciten sus documentos a través de nosotros deberán abonar nuestras tarifas de procesamiento. Durante el proceso de solicitud, se te presentará un desglose detallado de los costos.
+                <br>Puedes verificar si debes pagar tasas gubernamentales en la parte superior de esta página. Ten en cuenta que, independientemente de la nacionalidad, aquellos que soliciten sus documentos a través de nosotros deberán abonar nuestras tarifas de procesamiento. Durante el proceso de solicitud, se te presentará un desglose detallado de los costos.
 
                 Por lo general, el tiempo necesario para procesar una visa electrónica de turista para India oscila entre 2 y 5 días. No obstante, en algunas situaciones particulares, este proceso podría prolongarse hasta algunas semanas.
 
@@ -310,7 +310,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col d-flex justify-content-center mb-3 mb-lg-0">
+                    <div class="col d-flex justify-content-center mb-3 mb-lg-0 hide-mobile">
                         <div class="card w-100">
                             <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
                             <div class="card-body">
@@ -319,7 +319,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col d-flex justify-content-center mb-3 mb-lg-0">
+                    <div class="col d-flex justify-content-center mb-3 mb-lg-0 hide-mobile">
                         <div class="card w-100">
                             <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Ciudad de Nueva York">
                             <div class="card-body">
@@ -329,6 +329,10 @@
                         </div>
                     </div>
                 </div>
+            <div class="d-flex justify-content-center my-4">
+                <button class="btn btn-outline-info">Leer mas</button>
+            </div>
+
 
             </div>
 
