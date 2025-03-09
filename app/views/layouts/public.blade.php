@@ -18,10 +18,10 @@
 <body>
     <div class="header" id="principal-nav">
         <div class="header-container">
-            <div class="logo-container">
+            <a href="/" class="logo-container nav-link" >
                 <img src="{{ assets("img/av.png") }}" alt="" style="height: 32px">
                 <span>Visa Asesores</span>
-            </div>
+            </a>
 
             <div class="menu-container">
                 <nav class="nav-container">
@@ -117,7 +117,7 @@
                         </ul>
                     </div>
                 @endif
-                
+
                 <button class="menu-toggle ms-auto" id="menuToggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -303,8 +303,8 @@
                 <div class="col-md-4">
                     <h5>Empresa</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#">Sobre Visa Asesores</a></li>
-                        <li><a href="#">Contáctate con nosotros</a></li>
+                        <li><a href="{{route('about-us')}}">Sobre Visa Asesores</a></li>
+                        <li><a href="{{route('contact')}}">Contáctate con nosotros</a></li>
                         <li><a href="#">Sitemap</a></li>
                     </ul>
                 </div>

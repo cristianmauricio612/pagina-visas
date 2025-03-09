@@ -29,6 +29,8 @@ app()->get('/account/seguridad-privacidad', ['name' => 'account-seguridad-privac
 
 app()->get('/about-us', ['name' => 'about-us', function () {render('about-us');}]);
 
+app()->get('/contact', ['name' => 'contact', function () {render('contact');}]);
+
 //SESSION
 
 app()->get('/iniciar-sesion', ['name' => 'iniciar-sesion', function () {render('session.login');}]);

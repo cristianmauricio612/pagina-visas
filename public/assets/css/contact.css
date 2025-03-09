@@ -1,0 +1,25 @@
+.contact-container{
+    background-color: #eff7fa;
+    text-align: center;
+}
+
+.contact-container h2{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.button-send-form{
+    padding: 0.75rem 2rem;
+    border-radius: 1rem;
+    background: linear-gradient(to right, #c7161e, #21356b);
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+.button-send-form:hover{
+    border-color: #c7161e;
+    background: white;
+    color: #21356b;
+}
