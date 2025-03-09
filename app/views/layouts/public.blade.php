@@ -277,7 +277,7 @@
             <div class="row">
                 <!-- Sección de Visas más solicitadas -->
                 <div class="col-md-4">
-                    <h5>
+                    <h5 class="m-0">
                         <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#visasList" aria-expanded="false">
                             Visas más solicitadas
                         </button>
@@ -292,7 +292,7 @@
 
                 <!-- Sección de Blogs sobre viajes -->
                 <div class="col-md-4">
-                    <h5>
+                    <h5 class="m-0">
                         <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#blogsList" aria-expanded="false">
                             Nuestros blogs sobre viajes
                         </button>
@@ -309,7 +309,7 @@
 
                 <!-- Sección de la Empresa -->
                 <div class="col-md-4">
-                    <h5>
+                    <h5 class="m-0">
                         <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#empresaList" aria-expanded="false">
                             Empresa
                         </button>
@@ -324,8 +324,8 @@
             </div>
 
             <!-- Redes Sociales -->
-            <div class="text-center my-4">
-                <h5>Conéctate con nosotros:</h5>
+            <div class="text-center py-4">
+                <h5 class="m-0 pb-3">Conéctate con nosotros:</h5>
                 <div class="social-icons">
                     <a href="#"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-linkedin"></i></a>

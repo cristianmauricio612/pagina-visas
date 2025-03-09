@@ -8,7 +8,7 @@
 }
 
 :root {
-    --font-size: 3rem; /* Tamaño base de la fuente */
+    --font-size: 24px; /* Tamaño base de la fuente */
 }
 
 .mobile-dropdown, .mobile-dropdown:hover, .mobile-dropdown:focus, .mobile-dropdown:active, .mobile-dropdown:checked {
@@ -23,9 +23,88 @@
     font-size: 1.25rem;
 }
 
+.pick-us-sub-container{
+    background-color: #eff7fa;
+    padding: 2rem;
+    border-radius: 20px;
+    margin: 10px;
+}
+
+.pick-us-sub-container i {
+    font-size: 1.5rem;
+}
+
+.pick-us-sub-container h3{
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.most-visited-container{
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+}
+
+.most-visited-container .card:hover{
+    cursor: pointer;
+}
+
+.most-visited-container .card{
+    width: 20rem;
+    min-width: 20rem !important;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    background-color: transparent;
+}
+
+.most-visited-container a{
+    text-decoration: none;
+    color: white;
+}
+
+.most-visited-container .card img{
+    height: 20rem;
+    object-fit: cover;
+}
+
+.most-visited-container .card-body{
+    background-color: black;
+    text-decoration: none;
+}
+
+.most-visited-container .card-body i {
+    color: #00d273;
+}
+
+.most-visited-container .card-body h5, .most-visited-container .card-body p{
+    text-align: start;
+}
+
+.button-apply-now{
+    padding: 0.75rem 2rem;
+    border-radius: 1rem;
+    /*    BACKGROUND DEGRADADO DE AZUL A ROJO*/
+    background: linear-gradient(to right, #c7161e, #21356b);
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+.button-apply-now:hover{
+    border-color: #c7161e;
+    background: white;
+    color: #21356b;
+}
+
+
 
 
 @media (max-width: 768px) {
+
+    .button-apply-now{
+        width: 100%;
+    }
+
     .dropdown-toggle::after {
         display: inline-block;
     }
@@ -33,13 +112,24 @@
         display: none;
     }
     .list-unstyled {
-        margin-left: 1rem;
+        padding-left: 1rem;
+        margin: 0;
     }
     .footer li{
         margin-top: 0 !important;
         padding-bottom: 1rem;
     }
+
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .most-visited-container{
+        justify-content: start;
+    }
+
 }
+
 @media (min-width: 769px) {
     .mobile-dropdown {
         display: none;
@@ -48,11 +138,11 @@
 }
 
 .circle {
-    font-size: var(--font-size); /* Tamaño de la fuente */
-    width: 1.8em; /* Se adapta al tamaño de la fuente */
-    height: 1.8em;
+    font-size: 3rem; /* Tamaño de la fuente */
+    min-width: 5rem;
+    width: 5rem; /* Se adapta al tamaño de la fuente */
+    height: 5rem;
     background-color: #e5eced;
-    font-weight: bold;
     border-radius: 50%;
     display: flex;
     justify-content: center;
