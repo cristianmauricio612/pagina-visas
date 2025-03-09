@@ -1,0 +1,58 @@
+.custom-card {
+    background-color: #eff7fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    font-size: 1.25rem;
+    height: 100%;
+}
+
+.custom-card i{
+    color: #0b3946 !important;
+    font-size: 2rem !important;
+}
+
+.row-accreditations .col{
+    text-align: center;
+}
+
+.au-image{
+    border-radius: 1.5rem;
+    min-height: 20rem;
+    width: 50%;
+}
+
+.au-subtitle{
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+
+@media (max-width: 768px) {
+    .custom-container {
+        background-color: #eff7fa;
+        border-radius: 1.5rem;
+    }
+
+    .col-12{
+        margin: 0;
+    }
+
+    .col-12:not(:last-child) > .custom-card{
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 1rem;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        /*padding: 0rem 1.5rem 1.5rem 0;*/
+    }
+
+    .row-accreditations .col{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .au-image{
+        width: 100%;
+        object-fit: cover;
+    }
+
+}
