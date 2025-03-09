@@ -34,9 +34,9 @@
 
                         <ul class="dropdown-menu dropdown-menu-end mt-3">
                             <li>
-                                <a class="dropdown-item" href="{{route('kenia-e-visa')}}">
+                                <a class="dropdown-item" href="{{route('estados-unidos-p-esta')}}">
                                     <img class="gn gv hr entered loaded" data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" alt="KE Flag" data-ll-status="loaded" src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" style="height:16px; width:16px">
-                                    Kenia ETA Visa
+                                    Estados Unidos ESTA
                                 </a>
                             </li>
                             <li><a class="dropdown-item" href="#">Otro</a></li>
@@ -279,11 +279,9 @@
                 <div class="col-md-4">
                     <h5>Visas más solicitadas</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#">Marruecos ETA</a></li>
-                        <li><a href="#">Australia ETA</a></li>
-                        <li><a href="#">Malasia Visa de Turista</a></li>
-                        <li><a href="#">Jamaica Formulario C5</a></li>
-                        <li><a href="#">Egipto eVisa</a></li>
+                        <li><a href="{{route('canada-p-eta')}}">Canada ETA</a></li>
+                        <li><a href="{{route('estados-unidos-p-esta')}}">Estados Unidos ESTA</a></li>
+                        <li><a href="{{route('india-p-tourist-e-visa')}}">India eVISA</a></li>
                     </ul>
                 </div>
 

@@ -17,7 +17,12 @@ app()->get('/price-canadience-visa', ['name' => 'price-canadience-visa', functio
 
 app()->get('/visa-validity', ['name' => 'visa-validity', function () {render('articles.visa-validity');}]);
 
-app()->get('/estados-unidos/p/esta', ['name' => 'kenia-e-visa', function () {render('articles.estados-unidos-p-esta');}]);
+app()->get('/estados-unidos/p/esta', ['name' => 'estados-unidos-p-esta', function () {render('articles.estados-unidos-p-esta');}]);
+
+app()->get('/canada/p/eta', ['name' => 'canada-p-eta', function () {render('articles.canada-p-eta');}]);
+
+app()->get('/india/p/tourist-e-visa', ['name' => 'india-p-tourist-e-visa', function () {render('articles.india-p-tourist-e-visa');}]);
+
 
 app()->get('/account', ['name' => 'account', function () {render('session.account');}]);
 
