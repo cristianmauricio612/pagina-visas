@@ -8,7 +8,13 @@
 }
 
 :root {
-    --font-size: 24px; /* Tamaño base de la fuente */
+    font-size: 16px; /* Tamaño base de la fuente */
+}
+
+@media (max-width: 768px) {
+    :root {
+        font-size: 12px; /* Tamaño base de la fuente para dispositivos móviles */
+    }
 }
 
 .mobile-dropdown, .mobile-dropdown:hover, .mobile-dropdown:focus, .mobile-dropdown:active, .mobile-dropdown:checked {
