@@ -31,7 +31,7 @@ class VisaController extends Controller
 
     public function getVisaById($id) {
         // Buscar visas donde pais1_id y pais2_id coincidan con los parámetros
-        $visa = Visa::where('id', $id)->get();
+        $visa = Visa::find($id);
 
         // Renderizar la vista con los resultados
         render('visa-inscripcion', compact('visa'));

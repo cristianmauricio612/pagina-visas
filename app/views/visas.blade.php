@@ -69,10 +69,10 @@
 
             <div class="visa-select" style="margin-bottom: 32px;">
                 <label class="origen-label">Solicitar</label>
-                <div class="custom-select" id="visa">
+                <div class="custom-select">
                     @if ($visas->isNotEmpty())
                         @if ($visa_temp->necesita_visa !== 0)
-                            <div class="selected-option" data-value="{{ $visa_temp->id }}">
+                            <div id="visa" class="selected-option" data-value="{{ $visa_temp->id }}">
                                 {{ $visa_temp->nombre }} - {{ $visa_temp->tiempo_validez }}, {{ $visa_temp->numero_entradas }}
                             </div>
                         @else
@@ -196,7 +196,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("solicitarVisa").addEventListener("click", function() {
                 // Obtener los valores seleccionados de los selects
-                let id = document.getElementById("visa").value;
+                let id = document.getElementById("visa").getAttribute("data-value");
 
                 // Construir la URL de la ruta y redirigir
                 let url = `/visa-inscripcion/${id}`;

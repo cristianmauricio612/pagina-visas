@@ -2,6 +2,10 @@ columns:
   visas_id:
     type: string
     nullable: false
+  numero_pedido:
+    type: string
+    nullable: false
+    unique: true
   fecha_llegada:
     type: timestamp
     nullable: false
@@ -16,7 +20,7 @@ columns:
     total: 20
     places: 2
     nullable: true
-  pago_posterior:
+  pago_total:
     type: decimal
     total: 20
     places: 2

@@ -1,8 +1,643 @@
 .visa-inscripcion{
+    margin-left: 24px;
+    margin-right: 24px;
+    max-width: 1312px;
+}
+
+.visa-inscripcion-container{
+    margin-bottom: 230px;
+    grid-column: 1 / -1;
+}
+.inscripcion-title-text{
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 28px;
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.visa-inscripcion-progress{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    justify-content: space-between;
+    align-items: center;
+    display: none;
+}
+.inscripcion-progress-points{
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+.inscripcion-point-container{
+    margin-right: 6px;
+    display: flex;
+    height: 20px;
+    width: 20px;
+    justify-content: center;
+    border-radius: 9999px;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(11 57 71 / var(--tw-border-opacity, 1));
+    border-style: solid;
+    /*--tw-bg-opacity: 1;
+    background-color: rgb(11 57 71 / var(--tw-bg-opacity, 1));
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity, 1));*/
+}
+.inscripcion-point{
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 16px;
+    margin-top: 1px;
+}
+.inscripcion-point-text{
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 16px;
+}
+.inscripcion-progress-bar{
+    --tw-space-x-reverse: 0;
+    margin-right: calc(32px* var(--tw-space-x-reverse));
+    margin-left: calc(32px* calc(1 - var(--tw-space-x-reverse)));
+    --tw-bg-opacity: 1;
+    background-color: rgb(213 225 226 / var(--tw-bg-opacity, 1));
+    border-radius: 9999px;
     width: 100%;
+    height: 3px;
+    position: relative;
+}
+
+.tab{
+    margin-top: 24px;
+}
+.tab-information{
+    top: 7rem;
+    grid-column: 1 / -1;
+    top: 64px;
+    position: sticky;
+
+}
+.tab-form-title{
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    margin-bottom: 8px;
+}
+.form-title-text{
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 28px;
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+}
+.tab-form-box{
+    padding-top: 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    width: 100%;
+}
+.form-box-input{
+    margin-bottom: 16px;
+}
+.form-box-date{
+    width: 100%;
+    height: 100%;
+}
+.form-label{
     align-items: center;
-    padding: 50px;
+    display: flex;
+    margin-bottom: 4px;
+    display: block;
+    --tw-text-opacity: 1;
+    color: rgb(66 102 113 / var(--tw-text-opacity, 1));
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 24px;
+}
+.form-input-content{
+    display: flex;
+    flex-direction: column;
+}
+.form-input{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 40px;
+    line-height: 20px;
+    border-radius: 16px;
+    padding: 20px 16px;
+    font-size: 1rem;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    --tw-shadow: 0 0 #0000;
+    outline-offset: -2px;
+    border-style: solid;
+}
+.form-icon-content{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    --tw-translate-y: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    display: inline;
+    top: 35%;
+    right: 20px;
+    position: absolute;
+}
+.form-icon-content i{
+    font-size: 16px;
+    display: block;
+}
+.form-alert{
+    font-size: .75rem;
+    line-height: 20px;
+    --tw-text-opacity: 1;
+    color: rgb(66 102 113 / var(--tw-text-opacity, 1));
+    margin-top: 4px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.form-box-accept{
+    display: flex;
+    align-items: flex-start;
+}
+.form-accept-checkbox{
+    margin-right: 8px;
+    height: 20px;
+    width: 20px;
+    --tw-translate-y: 2px;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    border-radius: 6px;
+    --tw-border-opacity: 1;
+    border-color: rgb(66 102 113 / var(--tw-border-opacity, 1));
+    padding: 0;
+    font-size: 1rem;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-width: 1px;
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    appearance: none;
+    user-select: none;
+    background-color: #fff;
+    --tw-shadow: 0 0 #0000;
+    border-style: solid;
+}
+[type=checkbox]:checked {
+    background-color: #000;
+}
+[type=checkbox]:checked::after {
+    content: "✔";
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+.form-accept-text{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    line-height: 24px;
+    font-size: .75rem;
+}
+
+.tab-information-container{
+    top: 64px;
+    position: sticky;
+}
+.tab-information-box{
+    display: none;
+}
+.information-box{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    padding-top: 24px;
+    padding-bottom: 24px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    border-style: solid;
+}
+.information-box-title{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    justify-content: space-between;
+    align-items: flex-start;
+    display: flex;
+    margin-bottom: 8px;
+}
+.information-title-text{
+    padding: 0;
+    list-style-type: none;
+    list-style-position: inside;
+    flex: 1 1 0%;
+    list-style: none;
+    margin: 0;
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 24px;
+}
+.information-pago-hoy{
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 24px;
+    --tw-text-opacity: 1;
+    color: rgb(13 183 112 / var(--tw-text-opacity, 1));
+    padding-bottom: 16px;
+    --tw-border-opacity: 1;
+    justify-content: space-between;
+    display: flex;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border-width: 0;
+    border-bottom: 1px;
+    border-color: rgb(231 238 239 / var(--tw-border-opacity, 1));
+    border-style: solid;
+}
+.information-pago-extra{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+}
+.information-pago-despues{
+    font-size: .875rem;
+    line-height: 24px;
+    justify-content: space-between;
+    display: flex;
+    margin-bottom: 8px;
+}
+.pago-despues-text{
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 24px;
+    flex: 1 1 0%;
+}
+.pago-despues-price{
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 24px;
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    text-wrap: nowrap;
+    width: fit-content;
+}
+.information-pago-tasas{
+    font-size: .875rem;
+    line-height: 24px;
+    --tw-text-opacity: 1;
+    color: rgb(121 148 155 / var(--tw-text-opacity, 1));
+    justify-content: space-between;
+    display: flex;
+}
+.information-box-total{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    padding-left: 24px;
+    padding-right: 24px;
+}
+.box-total-text{
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 24px;
+    justify-content: space-between;
+    display: flex;
+}
+.tab-information-buttons{
+    display: block;
+    margin-top: 24px;
+}
+.tab-button-continuar{
+    position: relative;
+    width: 100%;
+    padding: 16px 40px;
+    font-size: 1.125rem;
+    font-weight: 550;
+    line-height: 24px;
+
+    background: linear-gradient(to right, #00ff87, #00c3ff);
+    border: 2px solid white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+}
+.tab-button-continuar:hover{
+    border: 2px solid black;
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
+    --tw-gradient-from: #25CBD6 var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(37 203 214 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+    --tw-gradient-to: #00EE8A var(--tw-gradient-to-position);
+    outline-width: 2px;
+    outline-color: transparent;
+}
+.tab-button-retroceder{
+    position: relative;
+    padding: 0;
+    --tw-text-opacity: 1;
+    color: rgb(57 79 225 / var(--tw-text-opacity, 1));
+    border: none;
+    outline-offset: 2px;
+    width: 100%;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 16px;
+    background-color: transparent;
+}
+.tab-button-retroceder:hover{
+    background-color: transparent;
+    border: none;
+}
+
+/* 🔥 Ajusta el calendario al ancho del input */
+.flatpickr-calendar {
+    background: #ffffff;
+    border-radius: 12px !important;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    font-family: "Poppins", sans-serif;
+    padding: 10px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+}
+
+/* 🔥 Encabezado del mes */
+.flatpickr-months {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    color: #333;
+    border-radius: 12px 12px 0 0;
+    padding: 10px;
+    font-weight: bold;
+}
+
+/* 🔥 Flechas de navegación */
+.flatpickr-prev-month, .flatpickr-next-month {
+    color: #007bff !important;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.flatpickr-prev-month:hover, .flatpickr-next-month:hover {
+    color: #0056b3 !important;
+}
+
+/* 🔥 Días de la semana */
+.flatpickr-weekdays {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f8f9fa;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* 🔥 Días del calendario */
+.flatpickr-day {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+/* 🔥 Día seleccionado (exactamente como en la imagen) */
+.flatpickr-day.selected {
+    background: #00c26e !important;
+    color: white !important;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+/* 🔥 Día actual con borde azul */
+.flatpickr-day.today {
+    border: 2px solid #007bff !important;
+    font-weight: bold;
+}
+
+/* 🔥 Días deshabilitados */
+.flatpickr-day.disabled {
+    color: #ccc !important;
+    background: #f5f5f5 !important;
+    cursor: not-allowed;
+}
+
+/* 🔥 Animación de apertura */
+.flatpickr-calendar {
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.form-title-warning{
+    font-size: .875rem;
+    line-height: 24px;
+    --tw-text-opacity: 1;
+    color: rgb(66 102 113 / var(--tw-text-opacity, 1));
+    margin-bottom: 24px;
+}
+.tab-viajero-box{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    --tw-border-opacity: 1;
+    border-style: solid;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    border-width: 1px;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+.tab-viajero-select{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 24px;
+    padding-right: 24px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(248 249 249 / var(--tw-bg-opacity, 1));
+    border-radius: 16px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+}
+.tab-viajero-text{
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.viajero-text{
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 22px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+    .visa-inscripcion {
+        margin-left: 48px;
+        margin-right: 48px;
+    }
+    .inscripcion-title-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 32px;
+    }
+    .tab-form-box {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .tab-viajero-text{
+        display: flex;
+    }
+}
+
+@media (min-width: 1200px) {
+    .visa-inscripcion {
+        margin-left: 120px;
+        margin-right: 120px;
+    }
+    .inscripcion-title-text {
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 40px;
+    }
+    .visa-inscripcion-progress {
+        padding-bottom: 24px;
+    }
+    .tab {
+        display: grid;
+        max-width: 1312px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        -moz-column-gap: 16px;
+        column-gap: 16px;
+    }
+    .tab-form {
+        grid-column: span 7 / span 7;
+    }
+    .tab-information{
+        grid-column-start: 9;
+    }
+    .tab-form-title {
+        margin-bottom: 12px;
+    }
+    .form-title-text {
+        font-size: 1.5rem;
+        line-height: 32px;
+    }
+    .form-box-input{
+        margin-bottom: 40px;
+    }
+    .form-input{
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+    .form-icon-content{
+        right: 24px;
+    }
+    .form-alert {
+        margin-top: 8px;
+    }
+    .form-accept-text {
+        font-size: .875rem;
+        line-height: 24px;
+    }
+    .tab-information-box{
+        display: block;
+    }
+    .information-box{
+        padding-left: 24px;
+        padding-right: 24px;
+        --tw-bg-opacity: 1;
+        background-color: rgb(248 249 249 / var(--tw-bg-opacity, 1));
+        --tw-border-opacity: 1;
+        border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+        border-width: 1px;
+        border-radius: 24px;
+    }
+    .tab-button-retroceder {
+        width: auto;
+    }
+    .form-title-warning {
+        font-size: 1rem;
+        line-height: 28px;
+    }
+    .tab-viajero-box{
+        margin-top: 12px;
+        margin-bottom: 0;
+    }
+    .tab-viajero-select{
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .viajero-text{
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 24px;
+    }
+}
+
+@media (min-width: 1200px) {
+    @media (min-width: 768px) {
+        .tab {
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            -moz-column-gap: 20px;
+            column-gap: 20px;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .tab {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        -moz-column-gap: 32px;
+        column-gap: 32px;
+    }
+    .tab-information {
+        grid-column-end: 13;
+    }
+}
+
+@media (min-width: 1536px) {
+    .visa-inscripcion {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .visa-inscripcion-title {
+        margin-top: 7px;
+    }
+    .inscripcion-title-text {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+    .visa-inscripcion-progress {
+        display: flex;
+    }
 }
