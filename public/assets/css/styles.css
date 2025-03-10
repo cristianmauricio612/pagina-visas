@@ -27,7 +27,11 @@
     background-color: #eff7fa;
     padding: 2rem;
     border-radius: 20px;
-    margin: 10px;
+    height: 100%;
+}
+
+.pick-us-squares .col{
+    padding: 1rem;
 }
 
 .pick-us-sub-container i {

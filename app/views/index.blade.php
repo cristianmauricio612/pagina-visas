@@ -43,7 +43,7 @@
 
     <!-- PORQUE ELEGIRNOS -->
     <div class="container mt-5">
-        <div class="row row-cols-1 row-cols-lg-2">
+        <div class="row row-cols-1 row-cols-xl-2">
             <div class="col d-flex flex-column align-items-center">
                 <img style="max-width: 100%" class="rounded-4" src="{{assets('img/elegirnos.jpg')}}" alt="">
                 <div class="d-flex justify-content-start w-100">
@@ -52,32 +52,32 @@
                 <p>Estos son los motivos por los cuales iVisa es la mejor opción para ti y por qué deberías probar nuestros servicios.</p>
             </div>
             <div class="col">
-                <div class="row row-cols-1 row-cols-md-2">
+                <div class="row row-cols-1 row-cols-md-2 pick-us-squares">
                     <div class="col">
                         <div class="pick-us-sub-container d-flex flex-column align-items-center">
                             <i class="fa-solid fa-hourglass-start"></i>
-                            <h3>Sencillez</h3>
+                            <h3 class="text-center">Sencillez</h3>
                             <p style="text-align: center">Nuestro proceso es mucho más sencillo y ágil que el del gobierno.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="pick-us-sub-container d-flex flex-column align-items-center">
                             <i class="fa-solid fa-user-shield"></i>
-                            <h3>Seguro</h3>
+                            <h3 class="text-center">Seguro</h3>
                             <p style="text-align: center">Tu información siempre está segura con nosotros.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="pick-us-sub-container d-flex flex-column align-items-center">
                             <i class="fa-solid fa-circle-check"></i>
-                            <h3>Orientación al éxito</h3>
+                            <h3 class="text-center">Orientación al éxito</h3>
                             <p style="text-align: center">El 99% de nuestras solicitudes son aprobadas.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="pick-us-sub-container d-flex flex-column align-items-center">
                             <i class="fa-solid fa-circle-question"></i>
-                            <h3>Compromiso</h3>
+                            <h3 class="text-center">Compromiso</h3>
                             <p style="text-align: center">Estamos aquí para ayudarte 24/7.</p>
                         </div>
                     </div>
