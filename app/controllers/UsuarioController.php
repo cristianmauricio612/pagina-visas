@@ -125,14 +125,19 @@ class UsuarioController extends Controller
 
         $data = request()->get(['email']);
 
+        // Validación del email
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return response()->json(['status' => 'error', 'message' => 'El email no es válido'], 400);
+        }
+
         $user = User::where('email', $data['email'])->first();
 
-        // Verificar si el usuario existe y si la contraseña es correcta
+        // Verificar si el usuario existe
         if (!$user) {
             return response()->json(['status' => 'error', 'message' => 'Correo incorrecto'], 401);
         }
 
-        return response()->json(['status' => 'success', 'message' => 'Correo Valido']);
+        return response()->json(['status' => 'success', 'message' => 'Correo Valido'], 200);
     }
 
     public function login(){
@@ -140,16 +145,16 @@ class UsuarioController extends Controller
 
         $data = request()->get(['email', 'contraseña']);
 
-        // Verificar si se enviaron los datos requeridos
-        if (empty($data['email']) || empty($data['contraseña'])) {
-            return response()->json(['status' => 'error', 'message' => 'Email y contraseña son obligatorios'], 400);
-        }
-
         $user = User::where('email', $data['email'])->first();
 
-        // Verificar si el usuario existe y si la contraseña es correcta
-        if (!$user || !password_verify($data['contraseña'], $user->contraseña)) {
-            return response()->json(['status' => 'error', 'message' => 'Usuario o contraseña incorrectos'], 401);
+        // Verificar si el usuario existe
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'Correo incorrecto'], 400);
+        }
+
+        // Verificar si la contraseña es correcta
+        if (!password_verify($data['contraseña'], $user->contraseña)) {
+            return response()->json(['status' => 'error', 'message' => 'Contraseña incorrecta'], 401);
         }
 
         // Guardar el usuario en sesión
@@ -159,9 +164,9 @@ class UsuarioController extends Controller
             'email' => $user->email
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'Sesion Iniciada']);
+        return response()->json(['status' => 'success', 'message' => 'Sesion Iniciada'],200);
     }
-
+    
     public function logout()
     {
         csrf()->validate(); 

@@ -215,15 +215,14 @@
 
 /* Estilos del botón */
 .apply-btn {
-    background: linear-gradient(to right, #25CBD6, #00EE8A);
+    background: linear-gradient(to right, #c7161e, #21356b);
     --tw-bg-opacity: 1;
     border: 2px solid rgb(241 249 252 / var(--tw-bg-opacity));
-    outline: 1px solid transparent; 
     padding: 15px;
     width: 100%;
     font-size: 18px;
     font-weight: bold;
-    color: black;
+    color: white;
     border-radius: 16px;
     display: flex;
     justify-content: center;
@@ -234,8 +233,9 @@
 }
 
 .apply-btn:hover {
-    background: transparent;    
-    outline: 1px solid black;
+    border-color: #c7161e;
+    background: transparent;
+    color: #21356b;
 }
 /* STYLES FORMULARIO */
 
@@ -336,31 +336,6 @@
 .many-text{
     text-align: justify;
     margin-bottom: 0;
-}
-
-.apply-now-btn {
-    background: linear-gradient(to right, #25CBD6, #00EE8A);
-    --tw-bg-opacity: 1;
-    border: 2px solid white;
-    outline: 2px solid transparent; 
-    padding: 15px;
-    width: 100%;
-    font-size: 18px;
-    font-weight: bold;
-    color: black;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    box-sizing: border-box;
-    margin-top: 25px;
-    text-decoration: none;
-}
-
-.apply-now-btn:hover {
-    background: transparent;    
-    outline: 2px solid black;
 }
 
 /*------------------------------------------------------------*/

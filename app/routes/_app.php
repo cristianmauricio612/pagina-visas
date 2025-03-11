@@ -48,6 +48,8 @@ app()->put('/account/datos-personales/actualizar/{id}', ['name' => 'account-upda
 
 app()->put('/account/seguridad-privacidad/actualizar/{id}', ['name' => 'account-update-password', 'UsuarioController@updateUserPassword']);
 
+app()->get('/account/mis-pedidos/show/{id}', ['name' => 'account-show-order', 'VisaInscripcionController@getVisaInscripcion']);
+
 app()->post('/login-check', ['name' => 'login-check', 'UsuarioController@login_check']);
 
 app()->post('/login', ['name' => 'login', 'UsuarioController@login']);

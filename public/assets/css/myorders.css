@@ -40,48 +40,18 @@
     font-weight: 700;
 }
 
-.editar-container {
+.orders-container {
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    width: 35%;
+    width: 70%;
     margin-top: 2%;
 }
 
-.card {
-    --tw-bg-opacity: 1;
-    background-color: rgb(248 249 249 / var(--tw-bg-opacity, 1));
-    border-radius: 24px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 32px;
-    width: 32%;
-    transition: transform 0.3s ease-in-out;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card-link{
-    text-decoration: none;
-}
-
-.icon {
-    font-size: 40px;
-    margin-bottom: 10px;
-    color: black;
-}
-
-h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-    margin-top: 7%;
-}
-
 p {
-    font-size: .875rem;
-    color: #666;
+    --tw-text-opacity: 1;
+    color: rgb(121 148 155 / var(--tw-text-opacity, 1));
+    font-size: 1rem;
+    margin-bottom: 32px;
 }
 
 /*FORMULARIO*/
@@ -96,65 +66,205 @@ p {
 }
 
 h2 {
-    margin-bottom: 24px;
+    margin-bottom: 8px;
     font-size: 1.5rem;
     color: #333;
 }
 
-hr {
-    margin: 0;
-    border: 0.5px solid #ddd;
-}
-
-form {
+.orders-part {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-top: 35px;
-}
-
-label {
-    --tw-text-opacity: 1;
-    color: rgb(66 102 113 / var(--tw-text-opacity, 1));
-    font-size: .875rem;
-    font-weight: 600;
-    margin: 10px 0 5px;
-    color: #333;
-}
-
-input, select {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #ccc;
-    border-radius: 16px;
-    font-size: 14px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-input:hover, select:hover {
-    border: 1px solid black;
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    -webkit-overflow-scrolling: touch; /* Suaviza el desplazamiento en móviles */
 }
 
 .btn-container{
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
 }
 
-.btn-guardar {
-    padding: 10px 24px;
+.btn-inicio {
+    padding: 14px 32px;
     border: 2px solid white;
-    border-radius: 16px;
-    background: linear-gradient(to right, #25CBD6, #00EE8A);
-    font-size: .875rem;
+    border-radius: 18px;
+    background: linear-gradient(to right, #c7161e, #21356b);
+    font-size: 1rem;
     font-weight: 600;
     box-sizing: border-box;
     cursor: pointer;
+    color: white;
+
 }
 
-.btn-guardar:hover {
-    background: transparent;    
-    border: 2px solid black;
+.btn-inicio:hover {
+    border-color: #c7161e;
+    background: transparent;
+    color: #21356b;
+}
+
+/*TABLA ORDERS*/
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.orders-table thead {
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.orders-table th, .orders-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* Estado de la visa */
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status.approved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* Botón de Ver */
+.btn-view {
+    background: none;
+    border: none;
+    color: #6a11cb;
+    font-size: 18px;
+}
+
+.btn-view:hover {
+    color: #2575fc;
+}
+
+/*MODAL DEL SHOW*/
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 5%;
+}
+
+/* Estilos para el encabezado del modal */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Estilos del cuerpo del modal */
+.modal-body {
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+/* Diseño de dos columnas para la información general */
+.modal-body .info-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.modal-body .info-item {
+    width: 48%;
+    margin-bottom: 15px;
+}
+
+.modal-body h6 {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.fw-bold{
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para los badges */
+.badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.bg-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.bg-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+/* Estilos de la tabla */
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 15px;
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    table-layout: auto;
+    word-wrap: break-word;
+}
+
+.table th, .table td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+    white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+    text-align: center;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
 }
 
 @media (max-width: 1670px) {
@@ -166,8 +276,8 @@ input:hover, select:hover {
         width: 80%; 
     }
 
-    .editar-container {
-        width: 40%;
+    .orders-container {
+        width: 80%;
     }
 }
 
@@ -181,11 +291,20 @@ input:hover, select:hover {
         width: 90%; 
     }
 
-    .editar-container {
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    p {
+        font-size: .875rem;
+        margin-bottom: 24px;
+    }
+
+    .orders-container {
         width: 90%;
     }
 
-    form {
+    .orders-part {
         margin-top: 35px;
     }
 
@@ -199,15 +318,50 @@ input:hover, select:hover {
 
     .return-page {
         width: 90%; 
-        padding-top: 8px;
+        padding-top: 22px;
     }
 
     .saludo {
         font-size: 1.25rem;
-        margin-bottom: 18px;
+        margin-bottom: 5px;
     }
 
     .back-link {
+        font-size: .75rem;
         margin-bottom: 9px;
+    }
+
+    .orders-table {
+        overflow-x: auto; /* Activa el scroll horizontal en dispositivos pequeños */
+        display: block;
+        width: 100%;
+    }
+
+    .modal-dialog {
+        max-width: 95%;
+    }
+
+    .modal-body .info-item {
+        width: 100%;
+    }
+
+    .modal-content{
+        margin-top: 10%;
+        margin-left: 5px;
+    }
+
+    .modal-title {
+        font-size: 15px;
+    }
+
+    .modal-body {
+        padding: 0;
+        padding-top: 15px;
+    }
+}
+
+@media (max-width: 460px) {
+    .modal-content{
+        margin-top: 15%;
     }
 }

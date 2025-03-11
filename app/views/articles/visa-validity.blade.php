@@ -570,7 +570,7 @@
         </div>
     </div>
 
-    <link href="{{ assets('css/price-canadience-visa.css') }}" rel="stylesheet">
+    <link href="{{ assets('css/visa-validity.css') }}" rel="stylesheet">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const customSelects = document.querySelectorAll(".custom-select");

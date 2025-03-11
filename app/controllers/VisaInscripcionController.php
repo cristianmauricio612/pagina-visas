@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Viajero;
 use App\Models\VisaInscripcion;
+use App\Models\Visa;
 use Carbon\Carbon;
 
 class VisaInscripcionController extends Controller
@@ -26,7 +27,7 @@ class VisaInscripcionController extends Controller
             ], 400);
         }
 
-        $visa = \App\Models\Visa::find($data['visas_id']);
+        $visa = Visa::find($data['visas_id']);
 
         $visaInscripcion = new VisaInscripcion();
         $visaInscripcion->visas_id = $data['visas_id'];
@@ -57,5 +58,12 @@ class VisaInscripcionController extends Controller
             'message' => 'Visa Inscripcion creada exitosamente con sus viajeros',
             'product' => $visaInscripcion
         ], 201);
+    }
+
+    public function getVisaInscripcion($id){
+        $pedido_visa = VisaInscripcion::find($id);
+        $visa = Visa::find($pedido_visa->visas_id);
+
+        render('session.show-order', compact('pedido_visa','visa'));
     }
 }

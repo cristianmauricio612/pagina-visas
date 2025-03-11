@@ -177,6 +177,11 @@ body{
     position: sticky;
     top: 0;
     z-index: 9999;
+    border: none;
+    border-bottom-width: 1px;
+    border-style: solid;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
 }
 
 .header-container{

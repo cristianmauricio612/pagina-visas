@@ -14,15 +14,15 @@
                 {{ csrf()->form() }}
                 <h4>Regístrate</h4>
                 <label for="nombre">Nombre</label>
-                <input type="text" name="nombre">
+                <input type="text" name="nombre" required>
                 <label for="apellidos">Apellidos</label>
-                <input type="text" name="apellidos">
+                <input type="text" name="apellidos" required>
                 <label for="email">E-Mail Address</label>
-                <input type="text" name="email">
+                <input type="email" name="email" required>
                 <label for="contraseña">Contraseña</label>
-                <input type="password" name="contraseña">
+                <input type="password" name="contraseña" required>
                 <label for="contraseña-confirm">Confirm Password</label>
-                <input type="password" name="contraseña-confirm">
+                <input type="password" name="contraseña-confirm" required>
                 <button class="apply-now-btn" type="submit">Registrate</button>
             </form>
         </div>

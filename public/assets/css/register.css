@@ -77,14 +77,14 @@ input:hover {
 }
 
 .apply-now-btn {
-    background: linear-gradient(to right, #25CBD6, #00EE8A);
+    background: linear-gradient(to right, #c7161e, #21356b);
     --tw-bg-opacity: 1;
     border: 2px solid white;
     padding: 12px 32px;
     width: 85%;
     font-size: 1rem;
     font-weight: 700;
-    color: black;
+    color: white;
     border-radius: 16px;
     display: flex;
     justify-content: center;
@@ -97,8 +97,9 @@ input:hover {
 }
 
 .apply-now-btn:hover {
-    background: transparent;    
-    border: 2px solid black;
+    border-color: #c7161e;
+    background: transparent;
+    color: #21356b;
 }
 
 @media (max-width: 1670px) {
