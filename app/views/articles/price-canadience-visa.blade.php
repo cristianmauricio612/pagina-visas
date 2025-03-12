@@ -354,6 +354,7 @@
 
     <link href="{{ assets('css/price-canadience-visa.css') }}" rel="stylesheet">
     <script>
+        const csrfToken = "{{ csrf()->token() }}";
         document.addEventListener("DOMContentLoaded", function () {
             const customSelects = document.querySelectorAll(".custom-select");
 

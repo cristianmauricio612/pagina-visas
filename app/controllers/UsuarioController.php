@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Visa;
+use App\Models\VisaInscripcion;
 
 class UsuarioController extends Controller
 {
@@ -138,6 +140,46 @@ class UsuarioController extends Controller
         }
 
         return response()->json(['status' => 'success', 'message' => 'Correo Valido'], 200);
+    }
+
+    public function order_check()
+    {
+        csrf()->validate(); // Validar el token CSRF automáticamente
+
+        $data = request()->get(['email']);
+        $input = $data['email']; // Puede ser un número
+
+        // Buscar el pedido en la base de datos
+        $pedido_visa = VisaInscripcion::where('numero_pedido', $input)->first();
+
+        if (!$pedido_visa) {
+            return response()->json(['status' => 'error', 'message' => 'Número de pedido incorrecto'], 402);
+        }
+
+        // Buscar la visa asociada
+        $visa = Visa::find($pedido_visa->visas_id);
+
+        // Guardar en sesión
+        session()->set('pedido_visa', [
+            'id' => $pedido_visa->id
+        ]);
+        session()->set('visa', [
+            'id' => $visa->id
+        ]);
+
+        // Enviar respuesta con la URL de redirección
+        return response()->json([
+            'status' => 'success',
+            'redirect' => '/pedido'
+        ], 200);
+    }
+
+    public function close_order()
+    {
+        csrf()->validate(); 
+
+        session()->delete(['pedido_visa', 'visa']);
+        return response()->json(['status' => 'success', 'message' => 'Sesiones cerradas']);
     }
 
     public function login(){

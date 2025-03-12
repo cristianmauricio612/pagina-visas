@@ -36,6 +36,12 @@ app()->get('/about-us', ['name' => 'about-us', function () {render('about-us');}
 
 app()->get('/contact', ['name' => 'contact', function () {render('contact');}]);
 
+app()->post('/order-check', ['name' => 'order-check', 'UsuarioController@order_check']);
+
+app()->get('/pedido', ['name' => 'order', function () {render('view-order-code');}]);
+
+app()->post('/close-order', 'UsuarioController@close_order');
+
 //SESSION
 
 app()->get('/iniciar-sesion', ['name' => 'iniciar-sesion', function () {render('session.login');}]);

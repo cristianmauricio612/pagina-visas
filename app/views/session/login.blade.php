@@ -2,7 +2,11 @@
 @section('title', 'Visa')
 
 @section('content')
-
+    @php
+        if (session()->has('pedido_visa')) {
+            redirect('/pedido');
+        }
+    @endphp
     <div class="main-container">
         <div class="login-container">
             <div class="login-image">
@@ -42,6 +46,10 @@
                     <i class="fa-solid fa-circle-check"></i>
                     <span>There is no account associated with that email address</span>
                 </div>
+                <div class="alert invalid-number">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>There is no account associated with that order number</span>
+                </div>
                 <p class="register-text">¿No tienes una cuenta? <br class="salto"> <a
                         href="{{route('registrarse')}}">Regístrate gratis</a></p>
             </form>
@@ -53,7 +61,8 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Error Icon">
             </div>
             <h2>Error</h2>
-            <p class="msg-error">Email address is valid but your password is wrong. We have sent you an automatic login link to your email</p>
+            <p class="msg-error">Email address is valid but your password is wrong. We have sent you an automatic login link
+                to your email</p>
             <button class="close-btn" onclick="closeModal('errorModal')">Cerrar</button>
         </div>
     </div>
@@ -67,7 +76,7 @@
             <button class="close-btn" onclick="closeModal('invalidModal')">Cerrar</button>
         </div>
     </div>
-    
+
     <link href="{{ assets('css/login.css') }}" rel="stylesheet">
     <script>
         const csrfToken = "{{ csrf()->token() }}";
@@ -92,41 +101,77 @@
             const passwordContainer = document.querySelector(".password-container");
             const error_email = document.querySelector(".error-email");
             const invalid_email = document.querySelector(".invalid-email");
+            const invalid_number = document.querySelector(".invalid-number");
 
+            // Verificar si es una cadena de números
+            const isNumeric = /^[0-9]+$/.test(email);
 
-            fetch("login-check", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken
-                },
-                body: JSON.stringify({ email: email })
-            })
-                .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Convertir en JSON y capturar el código de estado
-                .then(result => {
-                    if (result.status === 200) {
-                        console.log("✅ Correo validado:", result.body.message);
-                        passwordContainer.style.display = "block";
-                        continuarBtn.style.display = "none";
-                        invalid_email.style.display = "none";
-                        error_email.style.display = "none";
-                    } else if (result.status === 400) {
-                        console.error("❌ ", result.body.message);
-                        invalid_email.style.display = "flex";
-                        error_email.style.display = "none";
-                    } else if (result.status === 401) {
-                        console.error("❌ ", result.body.message);
-                        error_email.style.display = "flex";
-                        invalid_email.style.display = "none";
-                    } else {
-                        console.error("❌ Error desconocido:", result.body);
-                        alert("❌ Error inesperado, intenta nuevamente.");
-                    }
+            if (isNumeric) {
+                console.log("✅ Entrada detectada como número válido:", email);
+                fetch("order-check", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    body: JSON.stringify({ email: email })
                 })
-                .catch(error => {
-                    console.error("❌ Error inesperado:", error);
-                    alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
-                });
+                    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+                    .then(result => {
+                        if (result.status === 200 && result.body.redirect) {
+                            window.location.href = result.body.redirect; // Redirigir a la nueva vista
+                        } else if (result.status === 402) {
+                            console.error("❌ ", result.body.message);
+                            invalid_number.style.display = "flex";
+                            error_email.style.display = "none";
+                            invalid_email.style.display = "none";
+                        } else {
+                            console.error("❌ Error desconocido:", result.body);
+                            alert("❌ Error inesperado, intenta nuevamente.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Error inesperado:", error);
+                        alert("❌ Ocurrió un error inesperado.");
+                    });
+            } else {
+                fetch("login-check", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    body: JSON.stringify({ email: email })
+                })
+                    .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Convertir en JSON y capturar el código de estado
+                    .then(result => {
+                        if (result.status === 200) {
+                            console.log("✅ Correo validado:", result.body.message);
+                            passwordContainer.style.display = "block";
+                            continuarBtn.style.display = "none";
+                            invalid_email.style.display = "none";
+                            error_email.style.display = "none";
+                            invalid_number.style.display = "none";
+                        } else if (result.status === 400) {
+                            console.error("❌ ", result.body.message);
+                            invalid_email.style.display = "flex";
+                            error_email.style.display = "none";
+                            invalid_number.style.display = "none";
+                        } else if (result.status === 401) {
+                            console.error("❌ ", result.body.message);
+                            error_email.style.display = "flex";
+                            invalid_email.style.display = "none";
+                            invalid_number.style.display = "none";
+                        } else {
+                            console.error("❌ Error desconocido:", result.body);
+                            alert("❌ Error inesperado, intenta nuevamente.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Error inesperado:", error);
+                        alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
+                    });
+            }
         }
 
         document.getElementById("loginForm").addEventListener("submit", function (event) {
@@ -142,26 +187,26 @@
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Convertir en JSON y capturar el código de estado
-            .then(result => {
-                if (result.status === 200) {
-                    console.log("✅ Sesión iniciada correctamente");
-                    window.location.href = "/account";
-                } else if (result.status === 400) {
-                    //alert("❌ Error: " + result.body.message);
-                    document.getElementById("invalidModal").style.display = "flex";
-                } else if (result.status === 401) {
-                    //alert("❌ Error: " + result.body.message);
-                    document.getElementById("errorModal").style.display = "flex";
-                } else {
-                    console.error("❌ Error desconocido:", result.body);
-                    alert("❌ Error inesperado, intenta nuevamente.");
-                }
-            })
-            .catch(error => {
-                console.error("❌ Error inesperado: ", error);
-                alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
-            });
+                .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Convertir en JSON y capturar el código de estado
+                .then(result => {
+                    if (result.status === 200) {
+                        console.log("✅ Sesión iniciada correctamente");
+                        window.location.href = "/account";
+                    } else if (result.status === 400) {
+                        //alert("❌ Error: " + result.body.message);
+                        document.getElementById("invalidModal").style.display = "flex";
+                    } else if (result.status === 401) {
+                        //alert("❌ Error: " + result.body.message);
+                        document.getElementById("errorModal").style.display = "flex";
+                    } else {
+                        console.error("❌ Error desconocido:", result.body);
+                        alert("❌ Error inesperado, intenta nuevamente.");
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Error inesperado: ", error);
+                    alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
+                });
         });
 
         function closeModal(modal) {

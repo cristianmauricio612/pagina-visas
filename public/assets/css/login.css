@@ -207,6 +207,10 @@ input:hover {
     display: none;
 }
 
+.invalid-number{
+    display: none;
+}
+
 /* Texto de registro */
 .register-text {
     margin-top: 15px;

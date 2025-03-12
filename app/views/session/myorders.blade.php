@@ -33,7 +33,7 @@
         <div class="orders-container">
             <a href="/account" class="back-link">← Mi cuenta</a>
             <div class="orders-part">
-                @if (!$pedidos)
+                @if ($pedidos->count() == 0)
                     <h2>No tienes pedidos en curso</h2>
                     <p>No has iniciado una solicitud para ningún viaje próximo.</p>
                     <div class="btn-container">
