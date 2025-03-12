@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <title>@yield('title')</title>
     <meta charset="utf-8">
@@ -15,10 +16,11 @@
 @php
     $usuario = session()->get('usuario');
 @endphp
+
 <body>
     <div class="header" id="principal-nav">
         <div class="header-container">
-            <a href="/" class="logo-container nav-link" >
+            <a href="/" class="logo-container nav-link">
                 <img src="{{ assets("img/av.png") }}" alt="" style="height: 32px">
                 <span>Visa Asesores</span>
             </a>
@@ -26,7 +28,8 @@
             <div class="menu-container">
                 <nav class="nav-container">
                     <div class="dropdown">
-                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <span>Obtener mi visa</span>
                             <i class="fa-solid fa-angle-down i-content"></i>
                             <i class="fa-solid fa-angle-up i-content" hidden></i>
@@ -35,15 +38,39 @@
                         <ul class="dropdown-menu dropdown-menu-end mt-3">
                             <li>
                                 <a class="dropdown-item" href="{{route('estados-unidos-p-esta')}}">
-                                    <img class="gn gv hr entered loaded" data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" alt="KE Flag" data-ll-status="loaded" src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png" style="height:16px; width:16px">
+                                    <img class="gn gv hr entered loaded"
+                                        data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
+                                        alt="KE Flag" data-ll-status="loaded"
+                                        src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
+                                        style="height:16px; width:16px">
                                     Estados Unidos ESTA
                                 </a>
                             </li>
-                            <li><a class="dropdown-item" href="#">Otro</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{route('india-p-tourist-e-visa')}}">
+                                    <img class="ne nm oi entered loaded"
+                                        data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
+                                        alt="Bandera IN" data-ll-status="loaded"
+                                        src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
+                                        style="height:16px; width:16px">
+                                    Visa de turista de la India
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{route('canada-p-eta')}}">
+                                    <img class="ne nm oi entered loaded"
+                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
+                                    alt="Bandera de CA" data-ll-status="loaded"
+                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
+                                    style="height:16px; width:16px">
+                                    Autorizacion electronica de viaje de Canada
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div class="dropdown ms-4">
-                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <span>Viaja con seguridad</span>
                             <i class="fa-solid fa-angle-down i-content"></i>
                             <i class="fa-solid fa-angle-up i-content" hidden></i>
@@ -55,17 +82,20 @@
                                     <i class="fa-solid fa-angle-down sub-icon"></i>
                                 </a>
                                 <ul class="submenu">
-                                    <li><a class="dropdown-item" href="{{route('about-visa')}}">¿Qué es una visa?</a></li>
-                                    <li><a class="dropdown-item" href="#">Opción 2</a></li>
+                                    <li><a class="dropdown-item" href="{{route('about-visa')}}">¿Qué es una visa?</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
-                                <a class="dropdown-item sub-dropdown-toggle" href="#">Documentación y visados más comunes
+                                <a class="dropdown-item sub-dropdown-toggle" href="#">Documentación y visados más
+                                    comunes
                                     <i class="fa-solid fa-angle-down sub-icon"></i>
                                 </a>
                                 <ul class="submenu">
-                                    <li><a class="dropdown-item" href="{{route('electronic-visa')}}">Visa electrónica (eVisa)</a></li>
-                                    <li><a class="dropdown-item" href="{{route('arrived-visa')}}">Visa de llegada</a></li>
+                                    <li><a class="dropdown-item" href="{{route('electronic-visa')}}">Visa electrónica
+                                            (eVisa)</a></li>
+                                    <li><a class="dropdown-item" href="{{route('arrived-visa')}}">Visa de llegada</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
@@ -73,8 +103,10 @@
                                     <i class="fa-solid fa-angle-down sub-icon"></i>
                                 </a>
                                 <ul class="submenu">
-                                    <li><a class="dropdown-item" href="{{route('price-canadience-visa')}}">Precio de la visa canadiense</a></li>
-                                    <li><a class="dropdown-item" href="{{route('visa-validity')}}">Vigencia visado de Estados Unidos</a></li>
+                                    <li><a class="dropdown-item" href="{{route('price-canadience-visa')}}">Precio de la
+                                            visa canadiense</a></li>
+                                    <li><a class="dropdown-item" href="{{route('visa-validity')}}">Vigencia visado de
+                                            Estados Unidos</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -93,7 +125,8 @@
                     </div>
                 @else
                     <div class="dropdown ms-4">
-                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <i class="fa-solid fa-user"></i>
                             <span>{{$usuario['nombre']}}</span>
                             <i class="fa-solid fa-angle-down i-content"></i>
@@ -163,7 +196,8 @@
 
                 <!-- Botón separado del contenido -->
                 <div class="modal-footer custom-footer">
-                    <button type="button" class="btn custom-btn" data-bs-dismiss="modal">Actualizar preferencias</button>
+                    <button type="button" class="btn custom-btn" data-bs-dismiss="modal">Actualizar
+                        preferencias</button>
                 </div>
             </div>
         </div>
@@ -185,8 +219,36 @@
                         <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
                     </div>
                     <ul class="modal-vertical-submenu">
-                        <li class="modal-vertical-title"><a href="#">Opción 1</a></li>
-                        <li class="modal-vertical-title"><a href="#">Opción 2</a></li>
+                        <li class="modal-vertical-title">
+                            <a href="{{route('estados-unidos-p-esta')}}">
+                                <img class="gn gv hr entered loaded"
+                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
+                                    alt="KE Flag" data-ll-status="loaded"
+                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
+                                    style="height:16px; width:16px">
+                                Estados Unidos ESTA
+                            </a>
+                        </li>
+                        <li class="modal-vertical-title">
+                            <a href="{{route('india-p-tourist-e-visa')}}">
+                                <img class="ne nm oi entered loaded"
+                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
+                                    alt="Bandera IN" data-ll-status="loaded"
+                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
+                                    style="height:16px; width:16px">
+                                Visa de turista de la India
+                            </a>
+                        </li>
+                        <li class="modal-vertical-title">
+                            <a href="{{route('canada-p-eta')}}">
+                                <img class="ne nm oi entered loaded"
+                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
+                                    alt="Bandera de CA" data-ll-status="loaded"
+                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
+                                    style="height:16px; width:16px">
+                                Autorizacion electronica de viaje de Canada
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -203,8 +265,8 @@
                                 <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
                             </div>
                             <ul class="modal-vertical-submenu">
-                                <li class="modal-vertical-title"><a href="#">Opción 1</a></li>
-                                <li class="modal-vertical-title"><a href="#">Opción 2</a></li>
+                                <li class="modal-vertical-title"><a href="{{route('about-visa')}}">¿Qué es una visa?</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="modal-vertical-item modal-vertical-has-submenu">
@@ -213,8 +275,10 @@
                                 <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
                             </div>
                             <ul class="modal-vertical-submenu">
-                                <li class="modal-vertical-title"><a href="#">Opción 3</a></li>
-                                <li class="modal-vertical-title"><a href="#">Opción 4</a></li>
+                                <li class="modal-vertical-title"><a href="{{route('electronic-visa')}}">Visa electrónica
+                                        (eVisa)</a></li>
+                                <li class="modal-vertical-title"><a href="{{route('arrived-visa')}}">Visa de llegada</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="modal-vertical-item modal-vertical-has-submenu">
@@ -223,8 +287,10 @@
                                 <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
                             </div>
                             <ul class="modal-vertical-submenu">
-                                <li class="modal-vertical-title"><a href="#">Opción 3</a></li>
-                                <li class="modal-vertical-title"><a href="#">Opción 4</a></li>
+                                <li class="modal-vertical-title"><a href="{{route('price-canadience-visa')}}">Precio de
+                                        la visa canadiense</a></li>
+                                <li class="modal-vertical-title"><a href="{{route('visa-validity')}}">Vigencia visado de
+                                        Estados Unidos</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -269,7 +335,7 @@
         </div>
     </div>
 
-@yield('content')
+    @yield('content')
 
     <!-- Footer -->
     <footer class="footer">
@@ -278,7 +344,8 @@
                 <!-- Sección de Visas más solicitadas -->
                 <div class="col-md-4">
                     <h5 class="m-0">
-                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#visasList" aria-expanded="false">
+                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#visasList" aria-expanded="false">
                             Visas más solicitadas
                         </button>
                         <span class="desktop-title">Visas más solicitadas</span>
@@ -293,7 +360,8 @@
                 <!-- Sección de Blogs sobre viajes -->
                 <div class="col-md-4">
                     <h5 class="m-0">
-                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#blogsList" aria-expanded="false">
+                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#blogsList" aria-expanded="false">
                             Nuestros blogs sobre viajes
                         </button>
                         <span class="desktop-title">Nuestros blogs sobre viajes</span>
@@ -310,7 +378,8 @@
                 <!-- Sección de la Empresa -->
                 <div class="col-md-4">
                     <h5 class="m-0">
-                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button" data-bs-toggle="collapse" data-bs-target="#empresaList" aria-expanded="false">
+                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#empresaList" aria-expanded="false">
                             Empresa
                         </button>
                         <span class="desktop-title">Empresa</span>
@@ -349,16 +418,19 @@
                 <div class="col-md-6">
                     <p><i class="fas fa-phone"></i> +34 518 88 00 30</p>
                     <p>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Spain.svg" width="20"> Español
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Spain.svg" width="20">
+                        Español
                         | S/. PEN ▼
                     </p>
                     <!-- Botones de descarga -->
                     <div class="d-flex justify-content-center">
                         <a href="#" class="me-2">
-                            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width="120">
+                            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                                width="120">
                         </a>
                         <a href="#">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="135">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                                width="135">
                         </a>
                     </div>
                 </div>
@@ -366,191 +438,194 @@
         </div>
     </footer>
 
-@stack('js')
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-<script>
-    function logout() {
-        fetch("/logout", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf()->token() }}" // Token CSRF
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "success") {
-                alert("✅ Sesión cerrada correctamente");
-                window.location.href = "/iniciar-sesion"; // Redirigir al login
-            } else {
-                alert("❌ Error: " + data.message);
-            }
-        })
-        .catch(error => {
-            console.error("❌ Error inesperado: ", error);
-            alert("❌ Ocurrió un error inesperado.");
-        });
-    }
-    document.addEventListener("DOMContentLoaded", function () {
-        // ===============================
-        // 🔽 MANEJO DE DROPDOWN PRINCIPAL
-        // ===============================
-        document.querySelectorAll(".dropdown-toggle-custom").forEach((dropdownButton) => {
-            const iconDown = dropdownButton.querySelector(".fa-angle-down");
-            const iconUp = dropdownButton.querySelector(".fa-angle-up");
-
-            dropdownButton.addEventListener("click", function () {
-                const isExpanded = this.getAttribute("aria-expanded") === "true";
-
-                // Alternar visibilidad de las flechas
-                iconDown.hidden = isExpanded;
-                iconUp.hidden = !isExpanded;
-            });
-        });
-
-        // ===============================
-        // 🔽 MANEJO DE SUBMENÚS INTERNOS
-        // ===============================
-        document.querySelectorAll(".sub-dropdown-toggle").forEach((toggle) => {
-            toggle.addEventListener("click", function (e) {
-                e.preventDefault();
-                const parent = this.closest(".dropdown-submenu");
-                const submenu = parent.querySelector(".submenu");
-                const icon = this.querySelector(".sub-icon");
-
-                // Alternar visibilidad del submenú
-                submenu.classList.toggle("show");
-
-                // Rotar la flecha de submenú
-                icon.style.transform = submenu.classList.contains("show") ? "rotate(180deg)" : "rotate(0deg)";
-            });
-        });
-
-        // ===============================
-        // 🚫 EVITAR CIERRE AL CLICKEAR SUBMENÚ
-        // ===============================
-        document.querySelectorAll(".dropdown-menu").forEach((menu) => {
-            menu.addEventListener("click", function (e) {
-                e.stopPropagation();
-            });
-        });
-
-        // ===============================
-        // 🌍 ABRIR MODAL DE PAÍSES
-        // ===============================
-        const countryContainer = document.querySelector(".country-container");
-        const countryModalElement = document.getElementById("countryModal");
-
-        if (countryContainer && countryModalElement) {
-            const countryModal = new bootstrap.Modal(countryModalElement);
-            countryContainer.addEventListener("click", function () {
-                countryModal.show();
-            });
+    @stack('js')
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+    <script>
+        function logout() {
+            fetch("/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf()->token() }}" // Token CSRF
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("✅ Sesión cerrada correctamente");
+                        window.location.href = "/iniciar-sesion"; // Redirigir al login
+                    } else {
+                        alert("❌ Error: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Error inesperado: ", error);
+                    alert("❌ Ocurrió un error inesperado.");
+                });
         }
+        document.addEventListener("DOMContentLoaded", function () {
+            // ===============================
+            // 🔽 MANEJO DE DROPDOWN PRINCIPAL
+            // ===============================
+            document.querySelectorAll(".dropdown-toggle-custom").forEach((dropdownButton) => {
+                const iconDown = dropdownButton.querySelector(".fa-angle-down");
+                const iconUp = dropdownButton.querySelector(".fa-angle-up");
 
-        // ===============================
-        // 📜 MENÚ LATERAL (ABRIR / CERRAR)
-        // ===============================
-        const menuToggle = document.getElementById("menuToggle");
-        const sideMenu = document.getElementById("sideMenu");
-        const closeMenu = document.getElementById("closeMenu");
+                dropdownButton.addEventListener("click", function () {
+                    const isExpanded = this.getAttribute("aria-expanded") === "true";
 
-        if (menuToggle && sideMenu && closeMenu) {
-            // Abrir menú
-            menuToggle.addEventListener("click", function () {
-                sideMenu.classList.add("show");
+                    // Alternar visibilidad de las flechas
+                    iconDown.hidden = isExpanded;
+                    iconUp.hidden = !isExpanded;
+                });
             });
 
-            // Cerrar menú
-            closeMenu.addEventListener("click", function () {
-                sideMenu.classList.remove("show");
+            // ===============================
+            // 🔽 MANEJO DE SUBMENÚS INTERNOS
+            // ===============================
+            document.querySelectorAll(".sub-dropdown-toggle").forEach((toggle) => {
+                toggle.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const parent = this.closest(".dropdown-submenu");
+                    const submenu = parent.querySelector(".submenu");
+                    const icon = this.querySelector(".sub-icon");
+
+                    // Alternar visibilidad del submenú
+                    submenu.classList.toggle("show");
+
+                    // Rotar la flecha de submenú
+                    icon.style.transform = submenu.classList.contains("show") ? "rotate(180deg)" : "rotate(0deg)";
+                });
             });
 
-            // Cerrar menú al hacer clic fuera
-            document.addEventListener("click", function (event) {
-                if (!sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            // ===============================
+            // 🚫 EVITAR CIERRE AL CLICKEAR SUBMENÚ
+            // ===============================
+            document.querySelectorAll(".dropdown-menu").forEach((menu) => {
+                menu.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                });
+            });
+
+            // ===============================
+            // 🌍 ABRIR MODAL DE PAÍSES
+            // ===============================
+            const countryContainer = document.querySelector(".country-container");
+            const countryModalElement = document.getElementById("countryModal");
+
+            if (countryContainer && countryModalElement) {
+                const countryModal = new bootstrap.Modal(countryModalElement);
+                countryContainer.addEventListener("click", function () {
+                    countryModal.show();
+                });
+            }
+
+            // ===============================
+            // 📜 MENÚ LATERAL (ABRIR / CERRAR)
+            // ===============================
+            const menuToggle = document.getElementById("menuToggle");
+            const sideMenu = document.getElementById("sideMenu");
+            const closeMenu = document.getElementById("closeMenu");
+
+            if (menuToggle && sideMenu && closeMenu) {
+                // Abrir menú
+                menuToggle.addEventListener("click", function () {
+                    sideMenu.classList.add("show");
+                });
+
+                // Cerrar menú
+                closeMenu.addEventListener("click", function () {
                     sideMenu.classList.remove("show");
-                }
+                });
+
+                // Cerrar menú al hacer clic fuera
+                document.addEventListener("click", function (event) {
+                    if (!sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                        sideMenu.classList.remove("show");
+                    }
+                });
+            }
+
+            // ===============================
+            // 🔽 MENÚ VERTICAL CON SUBMENÚS
+            // ===============================
+            document.querySelectorAll(".modal-vertical-title").forEach(item => {
+                item.addEventListener("click", function () {
+                    const parent = this.parentElement;
+                    const submenu = parent.querySelector(".modal-vertical-submenu");
+
+                    if (submenu) {
+                        const isActive = parent.classList.contains("active");
+
+                        // Cerrar todos los submenús hermanos
+                        parent.parentElement.querySelectorAll(".modal-vertical-item.active").forEach(el => {
+                            el.classList.remove("active");
+                            el.querySelector(".modal-vertical-submenu").style.display = "none";
+                        });
+
+                        // Alternar el submenú actual
+                        parent.classList.toggle("active", !isActive);
+                        submenu.style.display = isActive ? "none" : "block";
+                    }
+                });
             });
-        }
 
-        // ===============================
-        // 🔽 MENÚ VERTICAL CON SUBMENÚS
-        // ===============================
-        document.querySelectorAll(".modal-vertical-title").forEach(item => {
-            item.addEventListener("click", function () {
-                const parent = this.parentElement;
-                const submenu = parent.querySelector(".modal-vertical-submenu");
 
-                if (submenu) {
-                    const isActive = parent.classList.contains("active");
-
-                    // Cerrar todos los submenús hermanos
-                    parent.parentElement.querySelectorAll(".modal-vertical-item.active").forEach(el => {
-                        el.classList.remove("active");
-                        el.querySelector(".modal-vertical-submenu").style.display = "none";
-                    });
-
-                    // Alternar el submenú actual
-                    parent.classList.toggle("active", !isActive);
-                    submenu.style.display = isActive ? "none" : "block";
-                }
-            });
         });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const openLanguageModal = document.getElementById("openLanguageModal");
+            const closeLanguageModal = document.getElementById("closeLanguageModal");
+            const languageModal = document.getElementById("languageModal");
 
+            if (openLanguageModal && closeLanguageModal && languageModal) {
+                openLanguageModal.addEventListener("click", function () {
+                    languageModal.classList.add("show");
+                });
 
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const openLanguageModal = document.getElementById("openLanguageModal");
-        const closeLanguageModal = document.getElementById("closeLanguageModal");
-        const languageModal = document.getElementById("languageModal");
-
-        if (openLanguageModal && closeLanguageModal && languageModal) {
-            openLanguageModal.addEventListener("click", function () {
-                languageModal.classList.add("show");
-            });
-
-            closeLanguageModal.addEventListener("click", function () {
-                languageModal.classList.remove("show");
-            });
-
-            // Cerrar modal si se hace clic fuera del contenido
-            document.addEventListener("click", function (event) {
-                if (!languageModal.contains(event.target) && !openLanguageModal.contains(event.target)) {
+                closeLanguageModal.addEventListener("click", function () {
                     languageModal.classList.remove("show");
-                }
-            });
-        }
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const openCurrencyModal = document.getElementById("openCurrencyModal");
-        const closeCurrencyModal = document.getElementById("closeCurrencyModal");
-        const currencyModal = document.getElementById("currencyModal");
+                });
 
-        if (openCurrencyModal && closeCurrencyModal && currencyModal) {
-            openCurrencyModal.addEventListener("click", function () {
-                currencyModal.classList.add("show");
-            });
+                // Cerrar modal si se hace clic fuera del contenido
+                document.addEventListener("click", function (event) {
+                    if (!languageModal.contains(event.target) && !openLanguageModal.contains(event.target)) {
+                        languageModal.classList.remove("show");
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const openCurrencyModal = document.getElementById("openCurrencyModal");
+            const closeCurrencyModal = document.getElementById("closeCurrencyModal");
+            const currencyModal = document.getElementById("currencyModal");
 
-            closeCurrencyModal.addEventListener("click", function () {
-                currencyModal.classList.remove("show");
-            });
+            if (openCurrencyModal && closeCurrencyModal && currencyModal) {
+                openCurrencyModal.addEventListener("click", function () {
+                    currencyModal.classList.add("show");
+                });
 
-            // Cerrar modal si se hace clic fuera del contenido
-            document.addEventListener("click", function (event) {
-                if (!currencyModal.contains(event.target) && !openCurrencyModal.contains(event.target)) {
+                closeCurrencyModal.addEventListener("click", function () {
                     currencyModal.classList.remove("show");
-                }
-            });
-        }
-    });
-</script>
+                });
+
+                // Cerrar modal si se hace clic fuera del contenido
+                document.addEventListener("click", function (event) {
+                    if (!currencyModal.contains(event.target) && !openCurrencyModal.contains(event.target)) {
+                        currencyModal.classList.remove("show");
+                    }
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>
-
-
