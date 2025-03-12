@@ -62,7 +62,7 @@
                             <h4 class="label-form">Where are you going?</h4>
                             <div class="custom-select" id="to-select">
                                 <div class="selected-option">
-                                    <img src="flags/canada.png" alt="Canadá"> Canadá
+                                    <img src="flags/canada.png" alt="EEUU"> Estados Unidos
                                 </div>
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
@@ -518,7 +518,7 @@
         <div class="related-container">
             <h2 class="related-title">Artículos relacionados</h2>
             <div class="related-space">
-                <a href="#" tabindex="-1" style="text-decoration: none">
+                <a href="/leer-mas" tabindex="-1" style="text-decoration: none">
                     <button class="related-button" type="submit">
                         Leer más
                     </button>
@@ -561,7 +561,7 @@
             </a>
 
             <div class="other-button">
-                <a href="#" tabindex="-1" class="viewmore-button">
+                <a href="/leer-mas" tabindex="-1" class="viewmore-button">
                     <button class="related-button" type="submit">
                         Leer más
                     </button>

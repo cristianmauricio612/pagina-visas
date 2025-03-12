@@ -23,6 +23,8 @@ app()->get('/canada/p/eta', ['name' => 'canada-p-eta', function () {render('arti
 
 app()->get('/india/p/tourist-e-visa', ['name' => 'india-p-tourist-e-visa', function () {render('articles.india-p-tourist-e-visa');}]);
 
+app()->get('/leer-mas', ['name' => 'leer-mas', function () {render('articles.leer-mas');}]);
+
 
 app()->get('/account', ['name' => 'account', function () {render('session.account');}]);
 

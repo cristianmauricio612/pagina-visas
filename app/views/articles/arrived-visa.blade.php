@@ -434,7 +434,7 @@
         <div class="related-container">
             <h2 class="related-title">Artículos relacionados</h2>
             <div class="related-space">
-                <a href="#" tabindex="-1" style="text-decoration: none">
+                <a href="/leer-mas" tabindex="-1" style="text-decoration: none">
                     <button class="related-button" type="submit">
                         Leer más
                     </button>
@@ -477,7 +477,7 @@
             </a>
 
             <div class="other-button">
-                <a href="#" tabindex="-1" class="viewmore-button">
+                <a href="/leer-mas" tabindex="-1" class="viewmore-button">
                     <button class="related-button" type="submit">
                         Leer más
                     </button>
