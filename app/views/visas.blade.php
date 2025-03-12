@@ -2,6 +2,10 @@
 
 @section('title', 'Visas')
 
+@push('resources')
+    <link rel="stylesheet" href="{{ assets("css/visas.css") }}">
+@endpush
+
 @section('content')
     
     @php
@@ -271,5 +275,4 @@
             });
         });
     </script>
-    <link rel="stylesheet" href="{{ assets("css/visas.css") }}">
 @endsection
