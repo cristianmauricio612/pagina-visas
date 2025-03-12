@@ -41,10 +41,12 @@
     --tw-border-opacity: 1;
     border-color: rgb(11 57 71 / var(--tw-border-opacity, 1));
     border-style: solid;
-    /*--tw-bg-opacity: 1;
+}
+.inscripcion-progress-points:nth-of-type(1) .inscripcion-point-container {
+    --tw-bg-opacity: 1;
     background-color: rgb(11 57 71 / var(--tw-bg-opacity, 1));
     --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity, 1));*/
+    color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 .inscripcion-point{
     font-size: .75rem;
@@ -77,7 +79,6 @@
     grid-column: 1 / -1;
     top: 64px;
     position: sticky;
-
 }
 .tab-form-title{
     justify-content: space-between;
@@ -327,7 +328,7 @@
     font-weight: 550;
     line-height: 24px;
 
-    background: linear-gradient(to right, #00ff87, #00c3ff);
+    background: linear-gradient(to right, #c7161e, #21356b);
     border: 2px solid white;
 
     display: flex;
@@ -335,15 +336,15 @@
     justify-content: center;
     border-radius: 16px;
     --tw-text-opacity: 1;
-    color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+    color: white;
 }
 .tab-button-continuar:hover{
+    color: rgb(0 0 0 / var(--tw-text-opacity, 1));
     border: 2px solid black;
     background-image: linear-gradient(to right, var(--tw-gradient-stops));
     --tw-gradient-from: #25CBD6 var(--tw-gradient-from-position);
     --tw-gradient-to: rgb(37 203 214 / 0) var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-    --tw-gradient-to: #00EE8A var(--tw-gradient-to-position);
     outline-width: 2px;
     outline-color: transparent;
 }
@@ -427,7 +428,7 @@
 
 /* 🔥 Día seleccionado (exactamente como en la imagen) */
 .flatpickr-day.selected {
-    background: #00c26e !important;
+    background: linear-gradient(to right, #c7161e, #21356b) !important;
     color: white !important;
     font-weight: bold;
     border-radius: 50%;
@@ -435,7 +436,7 @@
 
 /* 🔥 Día actual con borde azul */
 .flatpickr-day.today {
-    border: 2px solid #007bff !important;
+    border: 2px solid black !important;
     font-weight: bold;
 }
 
@@ -481,6 +482,16 @@
     cursor: pointer;
     display: flex;
 }
+.viajero-select-active{
+    border-width: 0;
+    border-style: solid;
+    border-radius: 0px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    border-bottom-width: 1px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
 .tab-viajero-text{
     width: 100%;
     align-items: center;
@@ -491,6 +502,351 @@
     font-weight: 700;
     line-height: 22px;
 }
+.tab-viajero-icon{
+    --tw-bg-opacity: 1;
+    background-color: rgb(231 238 239 / var(--tw-bg-opacity, 1));
+    border-radius: 9999px;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    display: flex;
+}
+.viajero-icon-rotated{
+    transform: rotate(180deg);
+    transition: transform 0.3s ease-in-out;
+}
+.tab-viajero-form{
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 8px;
+    padding-top: 16px;
+}
+.tab-viajero-form.hidden {
+    display: none;
+}
+.tab-viajero-item{
+    margin-bottom: 16px;
+}
+.viajero-item-label{
+    margin-bottom: 4px;
+    display: flex;
+    --tw-text-opacity: 1;
+    color: rgb(66 102 113 / var(--tw-text-opacity, 1));
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 24px;
+    align-items: center;
+}
+.viajero-item-input{
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    border-radius: 16px;
+    padding: 20px 16px;
+    font-size: 1rem;
+    line-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 40px;
+    line-height: 20px;
+}
+.viajero-item-warning{
+    max-width: 100%;
+    overflow-x: hidden;
+    font-size: .75rem;
+    line-height: 20px;
+    margin-top: 4px;
+    --tw-text-opacity: 1;
+    color: rgb(66 102 113 / var(--tw-text-opacity, 1));
+}
+.tab-viajero-date{
+    appearance: none;
+    background-color: #fff;
+    border-color: #0b3947;
+    border-width: 0;
+    border-radius: 0;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    --tw-shadow: 0 0 #0000;
+}
+.viajero-date-container{
+    display: flex;
+    align-items: center;
+}
+.viajero-date-container select{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 12px 40px 12px 16px;
+    line-height: 20px;
+    --tw-text-opacity: 1;
+    border-radius: 16px;
+    padding: 20px 40px 20px 16px;
+    font-size: 1rem;
+
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    margin-right: 8px;
+    text-transform: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    padding-right: 30px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="gray" d="M7 10l5 5 5-5z"/></svg>') no-repeat;
+    background-position: right 20px center;
+    background-size: 18px;
+}
+
+.viajero-date-container select:nth-of-type(3) {
+    margin-right: 0px;
+}
+
+input::placeholder {
+    color: rgb(194, 194, 194); /* Cambia el color del placeholder */
+    opacity: 1;  /* Asegura que el color se vea correctamente en algunos navegadores */
+}
+
+.add-form{
+    margin-top: 32px;
+}
+.add-form-button{
+    box-sizing: border-box;
+    border: 2px solid #b0c1c5;
+    position: relative;
+    width: 100%;
+    padding: 12px 24px;
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 16px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(205 219 255 / var(--tw-bg-opacity, 1));
+    --tw-text-opacity: 1;
+    color: rgb(57 79 225 / var(--tw-text-opacity, 1));
+    outline-width: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    outline-style: solid;
+}
+
+.delete-form{
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 16px;
+    --tw-text-opacity: 1;
+    color: rgb(57 79 225 / var(--tw-text-opacity, 1));
+    padding-top: 16px;
+    padding-bottom: 8px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    border-top-width: 1px;
+    gap: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SELECT PAIS */
+.custom-select {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.selected-option {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    padding-left: 20px;
+    border-radius: 18px;
+}
+
+.selected-option img {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.dropdown-form {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    width: 100%;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-width: 0;
+    padding: 20px 24px;
+    outline-width: 0px;
+    font-size: 1rem;
+    line-height: 16px;
+}
+
+.options-list {
+    max-height: 218px;
+    overflow-y: auto;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-left: 20px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: #f1f1f1;
+}
+
+.option img {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.revisar-solicitud{
+    margin-left: 24px;
+    margin-right: 24px;
+    max-width: 1312px;
+}
+.revisar-solicitud-container{
+    margin-bottom: 230px;
+    grid-column: 1 / -1;
+}
+.inscripcion-title-span{
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 32px;
+}
+.informacion-completa{
+    border-style: solid;
+    padding-bottom: 16px;
+    padding: 24px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    border-width: 1px;
+    border-radius: 24px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    position: relative;
+}
+.informacion-general{
+    padding-bottom: 24px;
+    gap: 16px;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    display: flex;
+
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #b0c1c5;
+}
+.informacion-general-box{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    text-align: left;
+    width: 100%;
+
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #b0c1c5;
+}
+.informacion-general-nombre{
+    gap: 4px;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.informacion-general-nombre h2{
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 24px;
+}
+.informacion-general-item{
+    font-size: .75rem;
+    line-height: 20px;
+    margin-bottom: 16px;
+}
+.info-general-item-black{
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 20px;
+    display: block;
+}
+.viajeros-box{
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    padding-top: 24px;
+    --tw-border-opacity: 1;
+    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+    border-top-width: 1px;
+}
+.viajeros-box-title{
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 24px;
+    text-transform: capitalize;
+    margin-bottom: 12px;
+    margin: 0;
+}
+.viajeros-box-item{
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 22px;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+    margin-bottom: 8px;
+}
+.information-box-final{
+    --tw-text-opacity: 1;
+    color: rgb(11 57 71 / var(--tw-text-opacity, 1));
+    padding-top: 24px;
+    padding-bottom: 24px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
@@ -499,6 +855,10 @@
 
 @media (min-width: 768px) {
     .visa-inscripcion {
+        margin-left: 48px;
+        margin-right: 48px;
+    }
+    .revisar-solicitud {
         margin-left: 48px;
         margin-right: 48px;
     }
@@ -518,6 +878,10 @@
 
 @media (min-width: 1200px) {
     .visa-inscripcion {
+        margin-left: 120px;
+        margin-right: 120px;
+    }
+    .revisar-solicitud {
         margin-left: 120px;
         margin-right: 120px;
     }
@@ -599,6 +963,71 @@
         font-weight: 700;
         line-height: 24px;
     }
+    .tab-viajero-form{
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-top: 24px;
+    }
+    .tab-viajero-item{
+        margin-bottom: 40px;
+    }
+    .viajero-item-input{
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+    .viajero-item-warning{
+        margin-top: 8px;
+    }
+    .viajero-date-container select{
+        padding-top: 16px;
+        padding-bottom: 16px;
+        padding-left: 16px;
+        line-height: 18px;
+        margin-right: 24px;
+    }
+    .viajero-date-container select:nth-of-type(3) {
+        margin-right: 0px;
+    }
+    .add-form-button{
+        width: auto;
+    }
+    .informacion-completa{
+        margin-bottom: 24px;
+    }
+    .informacion-general{
+        gap: 32px;
+        align-items: center;
+        flex-direction: row-reverse;
+    }
+    .informacion-general-box{
+        flex: 1 1 0%;
+    }
+    .informacion-general-nombre h2{
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 28px;
+    }
+    .informacion-general-item{
+        font-size: .875rem;
+        line-height: 16px;
+    }
+    .info-general-item-black{
+        font-size: .875rem;
+        font-weight: 600;
+        line-height: 20px;
+        display: inline;
+    }
+    .information-box-final{
+        padding-left: 24px;
+        padding-right: 24px;
+        --tw-bg-opacity: 1;
+        background-color: rgb(248 249 249 / var(--tw-bg-opacity, 1));
+        --tw-border-opacity: 1;
+        border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
+        border-width: 1px;
+        border-radius: 24px;
+        border-style: solid;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -624,6 +1053,10 @@
 
 @media (min-width: 1536px) {
     .visa-inscripcion {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .revisar-solicitud {
         margin-left: auto;
         margin-right: auto;
     }
