@@ -306,8 +306,15 @@
                     <i class="fa-solid fa-dollar-sign"></i> Peruvian Nuevo Sol
                 </li>
             </ul>
-
-            <button class="btn-login">Iniciar sesión</button>
+            @if (!$usuario)
+                <a href="{{route('iniciar-sesion')}}">
+                    <button class="btn-login">Iniciar sesión</button>
+                </a>
+            @else
+                <button class="btn-login" onclick="logout()">Cerrar sesión</button>
+            @endif
+            
+            
         </div>
     </div>
 
