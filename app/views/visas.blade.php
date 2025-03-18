@@ -143,7 +143,7 @@
 
                             <div class="visa-information-item">
                                 <div class="visa-information-icon">
-                                    <i class="fa-solid fa-plane-arrival"></i>
+                                    <i style="font-size: 16px;" class="fa-solid fa-plane-arrival"></i>
                                 </div>
                                 <div class="visa-information-text">
                                     <div class="visa-text-label">Número de entradas</div>
@@ -203,7 +203,7 @@
                 let id = document.getElementById("visa").getAttribute("data-value");
 
                 // Construir la URL de la ruta y redirigir
-                let url = `/visa-inscripcion/${id}`;
+                let url = `/visa-inscripcion/${id}/${posicion}`;
                 window.location.href = url;
             });
 

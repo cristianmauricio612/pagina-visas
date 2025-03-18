@@ -68,6 +68,6 @@ app()->post('/logout', 'UsuarioController@logout');
 
 app()->get('/visas/{pais1}/{pais2}/{posicion}', ['name' => 'visas', 'VisaController@getVisasByPaises']);
 
-app()->get('/visa-inscripcion/{id}', ['name' => 'visa-inscripcion', 'VisaController@getVisaById']);
+app()->get('/visa-inscripcion/{id}/{posicion}', ['name' => 'visa-inscripcion', 'VisaController@getVisaById']);
 
 app()->get('/pago/{id}', ['name' => 'pago', 'VisaInscripcionController@createVisaInscripcion']);

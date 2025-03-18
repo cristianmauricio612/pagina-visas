@@ -29,11 +29,11 @@ class VisaController extends Controller
         render('visas', compact('visas', 'pais1', 'pais2', 'posicion'));
     }
 
-    public function getVisaById($id) {
+    public function getVisaById($id, $posicion) {
         // Buscar visas donde pais1_id y pais2_id coincidan con los parámetros
         $visa = Visa::find($id);
 
         // Renderizar la vista con los resultados
-        render('visa-inscripcion', compact('visa'));
+        render('visa-inscripcion', compact('visa', 'posicion'));
     }
 }

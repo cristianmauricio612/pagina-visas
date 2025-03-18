@@ -29,25 +29,25 @@
             <div>
                 <div class="visa-inscripcion-progress">
                     <div class="inscripcion-progress-points">
-                        <span class="inscripcion-point-container">
+                        <span id="point1" class="inscripcion-point-container inscripcion-point-active">
                             <span class="inscripcion-point">1</span>
                         </span>
                         <span class="inscripcion-point-text">Detalles del viaje</span>
                     </div>
 
-                    <div class="inscripcion-progress-bar"></div>
+                    <div id="bar1" class="inscripcion-progress-bar"></div>
 
                     <div class="inscripcion-progress-points" style="--tw-space-x-reverse: 0; margin-right: calc(32px* var(--tw-space-x-reverse)); margin-left: calc(32px* calc(1 - var(--tw-space-x-reverse)));">
-                        <span class="inscripcion-point-container">
+                        <span id="point2" class="inscripcion-point-container">
                             <span class="inscripcion-point">2</span>
                         </span>
                         <span class="inscripcion-point-text">Información personal</span>
                     </div>
 
-                    <div class="inscripcion-progress-bar"></div>
+                    <div id="bar2" class="inscripcion-progress-bar"></div>
 
                     <div class="inscripcion-progress-points" style="--tw-space-x-reverse: 0; margin-right: calc(32px* var(--tw-space-x-reverse)); margin-left: calc(32px* calc(1 - var(--tw-space-x-reverse)));">
-                        <span class="inscripcion-point-container">
+                        <span id="point3" class="inscripcion-point-container">
                             <span class="inscripcion-point">3</span>
                         </span>
                         <span class="inscripcion-point-text">Pago</span>
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="tab" id="tab-1">
+            <div class="tab" id="tab1" style="">
                 <div class="tab-form">
                     <div>
                         <div class="tab-form-title">
@@ -72,8 +72,7 @@
 
                                         <div columns="2" disabled="false">
                                             <div style="position: relative;">
-                                                <input placeholder="DD/MM/YYYY" class="form-input" type="text" readonly
-                                                    name="fecha-llegada" id="date-picker">
+                                                <input placeholder="DD/MM/YYYY" class="form-input" name="fecha-llegada" id="date-picker">
 
                                                 <div class="form-icon-content" id="calendar-icon">
                                                     <i class="fa-solid fa-calendar-days"></i>
@@ -190,7 +189,7 @@
                 </div>
             </div>
 
-            <div class="tab" id="tab-2" style="display: none;">
+            <div class="tab" id="tab2" style="display: none;">
                 <div class="tab-form">
                     <div>
                         <div class="tab-form-title">
@@ -263,11 +262,7 @@
                                                         
                                                         <select name="mes[]" class="select-mes">
                                                             <option disabled="" selected value="">Mes</option>
-                                                            @foreach ([
-                                                                1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 
-                                                                5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 
-                                                                9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
-                                                                ] as $num => $mes)
+                                                            @foreach ([1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'] as $num => $mes)
                                                                 <option value="{{ $num }}">{{ $mes }}</option>
                                                             @endforeach
                                                         </select>
@@ -364,9 +359,9 @@
                 </div>
             </div>
 
-            <div class="tab" id="tab-3" style="display: none;">
+            <div class="tab" id="tab3" style="display: none;">
                 <div class="tab-form">
-                    <div>
+                    <div id="viajeros-info-extra">
                         <div class="tab-form-title">
                             <span class="form-title-text">Tu información del pasaporte</span>
                         </div>
@@ -408,6 +403,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="tab-viajero-item">
                                         <div class="w-100 h-100">
                                             <div class="">
@@ -421,11 +417,12 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="tab-viajero-item">
                                         <div class="w-100 h-100">
                                             <div class="">
                                                 <label class="viajero-item-label">
-                                                    <span>Fecha de nacimiento</span>
+                                                    <span>Fecha de caducidad del pasaporte</span>
                                                 </label>
 
                                                 <div style="position: relative;">
@@ -440,11 +437,7 @@
                                                             
                                                             <select name="mes[]" class="select-mes">
                                                                 <option disabled="" selected value="">Mes</option>
-                                                                @foreach ([
-                                                                    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 
-                                                                    5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 
-                                                                    9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
-                                                                    ] as $num => $mes)
+                                                                @foreach ([1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'] as $num => $mes)
                                                                     <option value="{{ $num }}">{{ $mes }}</option>
                                                                 @endforeach
                                                             </select>
@@ -452,8 +445,8 @@
                                                             <select name="anio[]" class="select-anio">
                                                                 <option disabled="" selected value="">Año</option>
                                                                 @php $anioActual = date('Y'); @endphp
-                                                                @for ($i = 0; $i <= 100; $i++)
-                                                                    <option value="{{ $anioActual - $i }}">{{ $anioActual - $i }}</option>
+                                                                @for ($i = 0; $i <= 50; $i++)
+                                                                    <option value="{{ $anioActual + $i }}">{{ $anioActual + $i }}</option>
                                                                 @endfor
                                                             </select>
                                                         </div>
@@ -462,6 +455,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="tab-viajero-item">
                                         <div class="w-100 h-100">
                                             <label class="viajero-item-label">
@@ -536,13 +530,6 @@
                                                 <span>Se consideran hijos hasta los 21 años.</span>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="delete-form" onclick="eliminarViajero(this)" style="display: none;">
-                                        <div style="display: inline; margin-right: 10px; font-size: 16px;">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </div>
-                                        <span>Eliminar viajero</span>
                                     </div>
                                 </div>
                             </div>
@@ -636,7 +623,7 @@
                                     <div style="display: inline;">
                                         <i class="fa-solid fa-user"></i>
                                     </div>
-                                    <p style="word-break: break-word;">{{ $viajero->nombres_pasaporte }} {{ $viajero->apellidos_pasaporte }}</p>
+                                    <p style="word-break: break-word; margin-bottom: 0;">{{ $viajero->nombres_pasaporte }} {{ $viajero->apellidos_pasaporte }}</p>
                                 </div>
                             @endforeach
                         </div>
@@ -671,7 +658,7 @@
                             </div>
                         </div>
                         <div class="information-box-total">
-                            <div class="box-total-text">
+                            <div id="precioTotal" class="box-total-text">
                                 <span>Total a pagar hoy</span>
                                 <span>USD $. {{ ($visa->precio + $visa->tasa_gobierno) * $contadorViajero }}</span>
                             </div>
@@ -682,8 +669,7 @@
                                 <span class="">Continuar con el pago</span>
                             </button>
 
-                            <div
-                                style="--tw-space-y-reverse: 0; margin-top: calc(24px* calc(1 - var(--tw-space-y-reverse))); margin-bottom: calc(24px* var(--tw-space-y-reverse));">
+                            <div style="--tw-space-y-reverse: 0; margin-top: calc(24px* calc(1 - var(--tw-space-y-reverse))); margin-bottom: calc(24px* var(--tw-space-y-reverse));">
                                 <button class="tab-button-retroceder" id="btnPreviousSidebar">
                                     <i class="fa-solid fa-arrow-left-long"></i>
                                     <span>Atrás</span>
@@ -696,7 +682,11 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
+        let calendar;
+
         document.addEventListener("DOMContentLoaded", function () {
             const input = document.getElementById("date-picker");
             const icon = document.getElementById("calendar-icon");
@@ -705,68 +695,88 @@
             const minDays = 3;
 
             // Inicializar Flatpickr con opciones mejoradas
-            const calendar = flatpickr(input, {
+            calendar = flatpickr(input, {
                 dateFormat: "d/m/Y",
                 minDate: new Date().fp_incr(minDays),
                 allowInput: false,
                 clickOpens: true,
-                inline: false,
-                defaultHour: 0,
-                defaultMinute: 0,
                 positionElement: input,
                 showMonths: 2,
             });
 
-            // Evento para abrir el calendario al hacer clic en el icono
-            icon.addEventListener("click", function () {
-                calendar.open();
+            const openCalendar = () => {
+                input.focus();
+                setTimeout(() => {
+                    calendar.open();
+                }, 100);
+            };
+
+            // Escuchar eventos en el icono
+            icon.addEventListener("click", openCalendar);
+            input.addEventListener("click", openCalendar);
+
+            document.addEventListener("click", function (event) {
+                // Obtener todos los dropdowns
+                const allDropdowns = document.querySelectorAll(".dropdown-form");
+
+                // Si el clic fue en una opción dentro del dropdown
+                const option = event.target.closest(".option");
+                if (option) {
+                    const dropdown = option.closest(".dropdown-form");
+                    const select = dropdown.closest(".custom-select");
+                    const selectedOption = select.querySelector(".selected-option");
+
+                    const selectedId = option.getAttribute("data-value"); // Obtener el ID seleccionado
+                    const optionHTML = option.innerHTML; // Copiar contenido HTML (imagen + texto si hay)
+
+                    // **Actualizar UI del select**
+                    selectedOption.innerHTML = optionHTML;
+                    selectedOption.setAttribute("data-value", selectedId);
+
+                    // Cerrar dropdown
+                    dropdown.style.display = "none";
+                    return;
+                }
+                
+                // Verificar si el clic fue dentro de un custom-select
+                const select = event.target.closest(".custom-select");
+                
+                if (select) {
+                    const selectedOption = select.querySelector(".selected-option");
+                    const dropdown = select.querySelector(".dropdown-form");
+
+                    // Cerrar todos los dropdowns antes de abrir el actual
+                    allDropdowns.forEach(d => {
+                        if (d !== dropdown) d.style.display = "none";
+                    });
+
+                    // Alternar visibilidad
+                    dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+
+                    // Enfocar en el input de búsqueda cuando se abre
+                    const searchInput = dropdown.querySelector(".search-input");
+                    if (dropdown.style.display === "block") {
+                        searchInput.focus();
+                    }
+
+                    return; // Evita que se cierre inmediatamente
+                }
+
+                // Si el clic fue fuera de cualquier select, cerrar todos los dropdowns abiertos
+                allDropdowns.forEach(d => d.style.display = "none");
             });
 
-            const customSelects = document.querySelectorAll(".custom-select");
+            // Manejar el filtrado de opciones en el dropdown
+            document.addEventListener("input", function (event) {
+                if (event.target.classList.contains("search-input")) {
+                    const searchTerm = event.target.value.toLowerCase();
+                    const optionsList = event.target.closest(".dropdown-form").querySelectorAll(".option");
 
-            customSelects.forEach(select => {
-                const selectedOption = select.querySelector(".selected-option");
-                const dropdown = select.querySelector(".dropdown-form");
-                const searchInput = select.querySelector(".search-input");
-                const optionsList = select.querySelectorAll(".option");
-                const isPaisSelect = select.querySelector(".option img") !== null; // Si hay imágenes, es el select de países
-
-                // Mostrar dropdown
-                selectedOption.addEventListener("click", function () {
-                    dropdown.style.display = "block";
-                    searchInput.focus();
-                });
-
-                // Filtrar búsqueda
-                searchInput.addEventListener("input", function () {
-                    const filter = searchInput.value.toLowerCase();
                     optionsList.forEach(option => {
                         const text = option.textContent.toLowerCase();
-                        option.style.display = text.includes(filter) ? "flex" : "none";
+                        option.style.display = text.includes(searchTerm) ? "flex" : "none";
                     });
-                });
-
-                // Seleccionar opción
-                optionsList.forEach(option => {
-                    option.addEventListener("click", function () {
-                        const selectedId = this.getAttribute("data-value"); // Obtener ID del país seleccionado
-                        const optionText = this.textContent.trim(); // Obtener solo el texto
-                        let optionHTML = this.innerHTML; // Copiar contenido HTML (imagen + texto si hay)
-
-                        // **Actualizar UI del select**
-                        selectedOption.innerHTML = optionHTML;
-                        dropdown.style.display = "none";
-                        searchInput.value = "";
-                        optionsList.forEach(opt => (opt.style.display = "flex"));
-                    });
-                });
-
-                // Cerrar dropdown al hacer clic fuera
-                document.addEventListener("click", function (event) {
-                    if (!select.contains(event.target)) {
-                        dropdown.style.display = "none";
-                    }
-                });
+                }
             });
         });
 
@@ -901,6 +911,47 @@
                 icono.classList.toggle("viajero-icon-rotated");
                 formulario.classList.toggle("hidden");
             }
+
+            if (event.target.closest(".tab-button-retroceder")) {
+                let buttons = Array.from(document.querySelectorAll(".tab-button-retroceder"));
+                let button = event.target.closest(".tab-button-retroceder");
+                let index = buttons.indexOf(button);
+                
+                let tab1 = document.getElementById("tab1");
+                let tab2 = document.getElementById("tab2");
+                let tab3 = document.getElementById("tab3");
+                let form = document.getElementById("visa-inscripcion");
+                let revision = document.getElementById("revisar-solicitud");
+                let point1 = document.getElementById("point1");
+                let bar1 = document.getElementById("bar1");
+                let point2 = document.getElementById("point2");
+                let bar2 = document.getElementById("bar2");
+                let point3 = document.getElementById("point3");
+
+                switch (index) {
+                    case 0:
+                        window.history.back(); // Regresar a la página anterior
+                        break;
+                    case 1:
+                        tab1.style.display = "grid";
+                        tab2.style.display = "none";
+                        bar1.classList.remove("inscripcion-bar-active");
+                        point2.classList.remove("inscripcion-point-active");
+                        break;
+                    case 2:
+                        tab2.style.display = "grid";
+                        tab3.style.display = "none";
+                        bar2.classList.remove("inscripcion-bar-active");
+                        point3.classList.remove("inscripcion-point-active");
+                        break;
+                    case 3:
+                        form.style.display = "grid";
+                        revision.style.display = "none";
+                        break;
+                    default:
+                        console.warn("Botón no reconocido");
+                }
+            }
         });
 
         function actualizarDias(selectMes, selectAnio, selectDia) {
@@ -955,5 +1006,355 @@
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        const paises = @json($paises);
+        let pais1 = @json($pais1);
+        let pais2 = @json($pais2);
+
+        let formData = {
+            visas_id: visa.id,
+            fecha_llegada: "",
+            fecha_salida: "",
+            correo: "",
+            viajeros: []
+        };
+
+        document.addEventListener("click", function (event) {
+            if (event.target.closest(".tab-button-continuar")) {
+                let buttons = Array.from(document.querySelectorAll(".tab-button-continuar"));
+                let button = event.target.closest(".tab-button-continuar");
+                let index = buttons.indexOf(button);
+                
+                let tab1 = document.getElementById("tab1");
+                let tab2 = document.getElementById("tab2");
+                let tab3 = document.getElementById("tab3");
+                let form = document.getElementById("visa-inscripcion");
+                let revision = document.getElementById("revisar-solicitud");
+                let point1 = document.getElementById("point1");
+                let bar1 = document.getElementById("bar1");
+                let point2 = document.getElementById("point2");
+                let bar2 = document.getElementById("bar2");
+                let point3 = document.getElementById("point3");
+
+                let errores = [];
+
+                // Validaciones y recolección de datos
+                if (index === 0) {
+
+                    // Capturar datos
+                    let fechaLlegada = document.getElementById("date-picker").value.trim();
+                    let correo = document.querySelector("input[name='correo']").value.trim();
+
+                    // Verificar fecha de llegada
+                    if (!fechaLlegada) {
+                        errores.push("📅 Debes ingresar una fecha de llegada.");
+                    } else {
+                        formData.fecha_llegada = fechaLlegada; // Guardar la fecha en el objeto
+                    }
+
+                    // Verificar correo electrónico con regex
+                    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!correo || !emailRegex.test(correo)) {
+                        errores.push("📧 Ingresa un correo válido.");
+                    } else {
+                        formData.correo = correo; // Guardar el correo en el objeto
+                    }
+
+                    // Si hay errores, mostrar alertas y detener el avance
+                    if (errores.length > 0) {
+                        alert(errores.join("\n"));
+                        return;
+                    }
+                }else if (index === 1) {
+                    let viajeros = [];
+                    let nombres = document.querySelectorAll('input[name="nombres[]"]');
+                    let apellidos = document.querySelectorAll('input[name="apellidos[]"]');
+                    let dias = document.querySelectorAll('select[name="dia[]"]');
+                    let meses = document.querySelectorAll('select[name="mes[]"]');
+                    let anios = document.querySelectorAll('select[name="anio[]"]');
+
+                    for (let i = 0; i < nombres.length; i++) {
+                        let nombre = nombres[i]?.value.trim();
+                        let apellido = apellidos[i]?.value.trim();
+                        let dia = dias[i]?.value;
+                        let mes = meses[i]?.value;
+                        let anio = anios[i]?.value;
+
+                        if (!nombre || !apellido || !dia || !mes || !anio) {
+                            errores.push(`⚠️ Completa todos los datos del viajero ${i + 1}.`);
+                        }
+
+                        // Calcular edad
+                        let fechaNacimiento = new Date(anio, mes - 1, dia);
+                        let edad = calcularEdad(fechaNacimiento);
+
+                        if (edad < 18) {
+                            errores.push(`🚫 El viajero ${i + 1} debe ser mayor de 18 años.`);
+                        } else {
+                            viajeros.push({
+                                nombres: nombre,
+                                apellidos: apellido,
+                                fecha_nacimiento: `${dia.padStart(2, "0")}-${mes.padStart(2, "0")}-${anio}`
+                            });
+                        }
+                    }
+
+                    if (viajeros.length === 0) {
+                        errores.push("⚠️ Debes ingresar al menos un viajero.");
+                    } else {
+                        formData.viajeros = viajeros;
+                        actualizarViajeroInfoExtra();
+                    }
+
+                    // Si hay errores, mostrar alertas y detener el avance
+                    if (errores.length > 0) {
+                        alert(errores.join("\n"));
+                        return;
+                    }
+                }else if (index === 2) {
+                    let viajerosBoxes = document.querySelectorAll(".tab-viajero-box");
+                    let mitad = viajerosBoxes.length / 2;
+                    let viajerosInfo = Array.from(viajerosBoxes).slice(mitad);
+                    
+                    viajerosInfo.forEach((viajeroBox, i) => {
+                        let nacionalidad = viajeroBox.querySelector(".selected-option[name='nacionalidad_pasaporte[]']")?.getAttribute("data-value");
+                        let numeroPasaporte = viajeroBox.querySelector("input[name='numero_pasaporte[]']")?.value.trim();
+                        let diaCaducidad = viajeroBox.querySelector("select[name='dia[]']")?.value;
+                        let mesCaducidad = viajeroBox.querySelector("select[name='mes[]']")?.value;
+                        let anioCaducidad = viajeroBox.querySelector("select[name='anio[]']")?.value;
+                        let paisNacimiento = viajeroBox.querySelector(".selected-option[name='pais_nacimiento[]']")?.getAttribute("data-value");
+                        let nivelEstudios = viajeroBox.querySelector(".selected-option[name='nivel_estudios[]']")?.getAttribute("data-value");
+
+                        if (!nacionalidad || !numeroPasaporte || isNaN(diaCaducidad) || diaCaducidad === "" ||isNaN(mesCaducidad) || mesCaducidad === "" || isNaN(anioCaducidad) || anioCaducidad === "" || !paisNacimiento || !nivelEstudios) {
+                            errores.push(`⚠️ Completa todos los datos del viajero ${i + 1}.`);
+                        } else {
+                            formData.viajeros[i] = {
+                                ...formData.viajeros[i],
+                                nacionalidad_pasaporte: nacionalidad,
+                                numero_pasaporte: numeroPasaporte,
+                                fecha_caducidad_pasaporte: `${diaCaducidad.padStart(2, "0")}-${mesCaducidad.padStart(2, "0")}-${anioCaducidad}`,
+                                pais_nacimiento: paisNacimiento,
+                                nivel_estudios: nivelEstudios
+                            };
+
+                            actualizarListaViajeros();
+                            actualizarTotalPago();
+                        }
+                    });
+
+                    if (errores.length > 0) {
+                        alert(errores.join("\n"));
+                        return;
+                    }
+                }
+
+                switch (index) {
+                    case 0:
+                        tab1.style.display = "none";
+                        tab2.style.display = "grid";
+                        bar1.classList.add("inscripcion-bar-active");
+                        point2.classList.add("inscripcion-point-active");
+                        break;
+                    case 1:
+                        tab2.style.display = "none";
+                        tab3.style.display = "grid";
+                        bar2.classList.add("inscripcion-bar-active");
+                        point3.classList.add("inscripcion-point-active");
+                        break;
+                    case 2:
+                        form.style.display = "none";
+                        revision.style.display = "grid";
+                        break;
+                    case 3:
+                        console.log("Datos guardados en formData:", JSON.stringify(formData, null, 2));
+                        break;
+                    default:
+                        console.warn("Botón no reconocido");
+                }
+            }
+        });
+
+        // Función para calcular la edad a partir de la fecha de nacimiento
+        function calcularEdad(fechaNacimiento) {
+            let hoy = new Date();
+            let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+            let mesActual = hoy.getMonth();
+            let diaActual = hoy.getDate();
+            let mesNacimiento = fechaNacimiento.getMonth();
+            let diaNacimiento = fechaNacimiento.getDate();
+
+            // Ajustar si aún no ha pasado el cumpleaños este año
+            if (mesActual < mesNacimiento || (mesActual === mesNacimiento && diaActual < diaNacimiento)) {
+                edad--;
+            }
+
+            return edad;
+        }
+
+        function actualizarViajeroInfoExtra() {
+            let contenedor = document.getElementById("viajeros-info-extra");
+            contenedor.innerHTML = ""; // Limpiar el contenido actual
+
+            let tituloHTML = `
+                <div class="tab-form-title">
+                    <span class="form-title-text">Tu información del pasaporte</span>
+                </div>
+            `;
+            contenedor.innerHTML = tituloHTML;
+
+            for (let i = 0; i < contadorViajero; i++) {
+                let viajeroHTML = `
+                    <div class="tab-viajero-box">
+                        <div class="tab-viajero-select">
+                            <div class="tab-viajero-text">
+                                <span class="viajero-text">Viajero #${i + 1}</span>
+                            </div>
+                            <div class="tab-viajero-icon">
+                                <div class="ge">
+                                    <i class="fa-solid fa-chevron-down" style="font-size: 14px;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-viajero-form hidden">
+                            <div class="tab-viajero-item">
+                                <label class="viajero-item-label"><span>Nacionalidad según el pasaporte</span></label>
+                                <div class="custom-select">
+                                    <div class="selected-option" name="nacionalidad_pasaporte[]" data-value="${pais1.id}">
+                                        <img src="${pais1.imagen}" alt="${pais1.nombre}"> ${pais1.nombre}
+                                    </div>
+                                    <div class="dropdown-form">
+                                        <input type="text" class="search-input" placeholder="Buscar país...">
+                                        <div class="options-list">
+                                            ${paises.map(pais => 
+                                                `<div class="option" data-value="${pais.id}">
+                                                    <img src="${pais.imagen}" alt="${pais.nombre}"> ${pais.nombre}
+                                                </div>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-viajero-item">
+                                <label class="viajero-item-label"><span>Número de pasaporte</span></label>
+                                <input class="viajero-item-input" name="numero_pasaporte[]" type="text">
+                            </div>
+
+                            <div class="tab-viajero-item">
+                                <label class="viajero-item-label"><span>Fecha de caducidad del pasaporte</span></label>
+                                <div class="tab-viajero-date">
+                                    <div class="viajero-date-container">
+                                        <select name="dia[]" class="select-dia">
+                                            <option disabled selected>Día</option>
+                                            ${[...Array(31).keys()].map(d => `<option value="${d + 1}">${d + 1}</option>`).join('')}
+                                        </select>
+                                        <select name="mes[]" class="select-mes">
+                                            <option disabled selected>Mes</option>
+                                            ${[
+                                                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                                                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                                            ].map((mes, index) => `<option value="${index + 1}">${mes}</option>`).join('')}
+                                        </select>
+                                        <select name="anio[]" class="select-anio">
+                                            <option disabled selected>Año</option>
+                                            ${[...Array(51).keys()].map(a => {
+                                                let year = new Date().getFullYear() + a;
+                                                return `<option value="${year}">${year}</option>`;
+                                            }).join('')}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-viajero-item">
+                                <label class="viajero-item-label"><span>País de nacimiento</span></label>
+                                <div class="custom-select">
+                                    <div class="selected-option" name="pais_nacimiento[]" data-value="${pais1.id}">
+                                        <img src="${pais1.imagen}" alt="${pais1.nombre}"> ${pais1.nombre}
+                                    </div>
+                                    <div class="dropdown-form">
+                                        <input type="text" class="search-input" placeholder="Buscar país...">
+                                        <div class="options-list">
+                                            ${paises.map(pais => 
+                                                `<div class="option" data-value="${pais.id}">
+                                                    <img src="${pais.imagen}" alt="${pais.nombre}"> ${pais.nombre}
+                                                </div>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-viajero-item">
+                                <label class="viajero-item-label"><span>Nivel de estudios</span></label>
+                                <div class="custom-select">
+                                    <div class="selected-option" name="nivel_estudios[]" data-value="Algunos cursos de nivel de posgrado">
+                                        Algunos cursos de nivel de posgrado
+                                    </div>
+                                    <div class="dropdown-form">
+                                        <input type="text" class="search-input" placeholder="Buscar nivel de estudios...">
+                                        <div class="options-list">
+                                            ${[
+                                                "Algunos cursos de nivel de doctorado",
+                                                "Algunos cursos de nivel de posgrado",
+                                                "Algunos cursos universitarios",
+                                                "Doctorado",
+                                                "Escuela secundaria, con título",
+                                                "Escuela secundaria, sin título",
+                                                "Escuela vocacional",
+                                                "Solo escuela primaria",
+                                                "Título de posgrado",
+                                                "Título universitario"
+                                            ].map(nivel => `<div class="option" data-value="${nivel}">${nivel}</div>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="viajero-item-warning">
+                                    <span>Se consideran hijos hasta los 21 años.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                contenedor.innerHTML += viajeroHTML;
+            }
+        }
+    
+        function actualizarListaViajeros() {
+            let contenedorViajeros = document.querySelector(".viajeros-box");
+            if (!contenedorViajeros) return;
+
+            let html = `
+                <h5 class="viajeros-box-title">Viajeros</h5>
+            `;
+
+            formData.viajeros.forEach((viajero, index) => {
+                html += `
+                    <div class="viajeros-box-item">
+                        <div style="display: inline;">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <p style="word-break: break-word; margin-bottom: 0;">${viajero.nombres} ${viajero.apellidos}</p>
+                    </div>
+                `;
+            });
+
+            contenedorViajeros.innerHTML = html;
+        }
+
+        function actualizarTotalPago() {
+            let contenedorTotal = document.getElementById("precioTotal");
+            if (!contenedorTotal) return;
+
+            let precioVisa = parseFloat(visa.precio);
+            let tasaGobierno = parseFloat(visa.tasa_gobierno);
+
+            let total = (precioVisa + tasaGobierno) * contadorViajero;
+
+            contenedorTotal.innerHTML = `
+                <span>Total a pagar hoy</span>
+                <span>USD $. ${total.toFixed(2)}</span>
+            `;
+        }
+    </script>
 @endsection

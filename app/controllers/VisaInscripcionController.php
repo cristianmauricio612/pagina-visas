@@ -42,8 +42,8 @@ class VisaInscripcionController extends Controller
         foreach ($data["viajeros"] as $viajero) {
             Viajero::create([
                 "visa_inscripcion_id" => $visaInscripcion->id,
-                "nombres_pasaporte" => $viajero['nombres_pasaporte'],
-                "apellidos_pasaporte" => $viajero['apellidos_pasaporte'],
+                "nombres_pasaporte" => $viajero['nombres'],
+                "apellidos_pasaporte" => $viajero['apellidos'],
                 "fecha_nacimiento" => Carbon::parse($viajero['fecha_nacimiento'])->format('d-m-Y'),
                 "nacionalidad_pasaporte" => $viajero['nacionalidad_pasaporte'],
                 "numero_pasaporte" => intval($viajero['numero_pasaporte']),

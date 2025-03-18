@@ -42,7 +42,7 @@
     border-color: rgb(11 57 71 / var(--tw-border-opacity, 1));
     border-style: solid;
 }
-.inscripcion-progress-points:nth-of-type(1) .inscripcion-point-container {
+.inscripcion-point-active {
     --tw-bg-opacity: 1;
     background-color: rgb(11 57 71 / var(--tw-bg-opacity, 1));
     --tw-text-opacity: 1;
@@ -69,6 +69,10 @@
     width: 100%;
     height: 3px;
     position: relative;
+}
+
+.inscripcion-bar-active {
+    background-color: #000;
 }
 
 .tab{
@@ -826,8 +830,8 @@ input::placeholder {
     font-weight: 600;
     line-height: 24px;
     text-transform: capitalize;
-    margin-bottom: 12px;
     margin: 0;
+    margin-bottom: 12px;
 }
 .viajeros-box-item{
     font-size: .875rem;
@@ -1072,5 +1076,18 @@ input::placeholder {
     }
     .visa-inscripcion-progress {
         display: flex;
+    }
+}
+
+@media (max-width: 768px) {
+    .flatpickr-calendar {
+        width: auto !important;
+    }
+    
+    .flatpickr-day {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
     }
 }
