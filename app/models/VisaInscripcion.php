@@ -1,18 +1,27 @@
 <?php
 
 namespace App\Models;
+use Carbon\Carbon;
 class VisaInscripcion extends Model
 {
     protected $table = 'visa_inscripcion';
-    protected $fillable = ['visas_id', 'numero_pedido', 'fecha_llegada', 'fecha_salida', 'correo', 'pago_hoy', 'pago_total', 'tasa_gobierno_total'];
+    protected $fillable = ['visas_id', 'numero_pedido', 'fecha_llegada', 'fecha_salida', 'correo', 'pago_hoy', 'pago_total', 'tasa_gobierno_total', 'status_pago'];
 
-    public static function boot()
+    public static function limpiarPedidosPendientes()
     {
-        parent::boot();
+        $tiempoExpiracion = Carbon::now()->subMinutes(30);
 
-        static::creating(function ($visa_inscripcion) {
-            // Si no se ha definido un número de pedido, generar uno aleatorio de 7 dígitos
-            $visa_inscripcion->numero_pedido = $visa_inscripcion->numero_pedido ?? str_pad(mt_rand(0, 9999999), 7, '0', STR_PAD_LEFT);
-        });
+        // Obtener todas las inscripciones que serán eliminadas
+        $inscripciones = self::where('status_pago', 'pendiente')
+            ->where('created_at', '<', $tiempoExpiracion)
+            ->get();
+
+        foreach ($inscripciones as $inscripcion) {
+            // Eliminar todos los viajeros asociados a la inscripción
+            Viajero::where('visa_inscripcion_id', $inscripcion->id)->delete();
+            
+            // Eliminar la inscripción
+            $inscripcion->delete();
+        }
     }
 }

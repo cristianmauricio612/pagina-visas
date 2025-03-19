@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\VisaInscripcion;
+
 app()->get('/', function () {
     /**
      * `render(view, [])` is the same as `echo view(view, [])`
@@ -71,3 +73,16 @@ app()->get('/visas/{pais1}/{pais2}/{posicion}', ['name' => 'visas', 'VisaControl
 app()->get('/visa-inscripcion/{id}/{posicion}', ['name' => 'visa-inscripcion', 'VisaController@getVisaById']);
 
 app()->get('/pago/{id}', ['name' => 'pago', 'VisaInscripcionController@createVisaInscripcion']);
+
+app()->post('/api/niubiz/payload', ['name' => 'niubiz-payload', 'VisaInscripcionController@checkout']);
+
+app()->post('/api/niubiz/response', ['name' => 'niubiz-response', 'VisaInscripcionController@processPayment']);
+
+app()->get('/pago-exitoso', ['name' => 'pago-exitoso', function () {render('pagos.exito');}]);
+
+app()->get('/pago-fallido', ['name' => 'pago-fallido', function () {render('pagos.error');}]);
+
+app()->get('/limpiar-pedidos', function () {
+    VisaInscripcion::limpiarPedidosPendientes(); 
+    return response()->json(["message" => "Pedidos pendientes eliminados"]);
+});

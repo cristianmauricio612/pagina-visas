@@ -7,10 +7,10 @@ columns:
     nullable: false
     unique: true
   fecha_llegada:
-    type: timestamp
+    type: date
     nullable: false
   fecha_salida:
-    type: timestamp
+    type: date
     nullable: true
   correo:
     type: string
@@ -30,3 +30,6 @@ columns:
     total: 20
     places: 2
     nullable: true
+  status_pago:
+    type: string
+    nullable: false

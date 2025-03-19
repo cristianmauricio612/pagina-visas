@@ -1011,10 +1011,12 @@
         let pais1 = @json($pais1);
         let pais2 = @json($pais2);
 
+        const csrfToken = "{{ csrf()->token() }}";
+
         let formData = {
             visas_id: visa.id,
             fecha_llegada: "",
-            fecha_salida: "",
+            fecha_salida: null,
             correo: "",
             viajeros: []
         };
@@ -1049,7 +1051,7 @@
                     if (!fechaLlegada) {
                         errores.push("📅 Debes ingresar una fecha de llegada.");
                     } else {
-                        formData.fecha_llegada = fechaLlegada; // Guardar la fecha en el objeto
+                        formData.fecha_llegada = formatFecha(fechaLlegada); // Guardar la fecha en el objeto
                     }
 
                     // Verificar correo electrónico con regex
@@ -1094,7 +1096,7 @@
                             viajeros.push({
                                 nombres: nombre,
                                 apellidos: apellido,
-                                fecha_nacimiento: `${dia.padStart(2, "0")}-${mes.padStart(2, "0")}-${anio}`
+                                fecha_nacimiento: `${anio}/${mes.padStart(2, "0")}/${dia.padStart(2, "0")}`
                             });
                         }
                     }
@@ -1132,7 +1134,7 @@
                                 ...formData.viajeros[i],
                                 nacionalidad_pasaporte: nacionalidad,
                                 numero_pasaporte: numeroPasaporte,
-                                fecha_caducidad_pasaporte: `${diaCaducidad.padStart(2, "0")}-${mesCaducidad.padStart(2, "0")}-${anioCaducidad}`,
+                                fecha_caducidad_pasaporte: `${anioCaducidad}/${mesCaducidad.padStart(2, "0")}/${diaCaducidad.padStart(2, "0")}`,
                                 pais_nacimiento: paisNacimiento,
                                 nivel_estudios: nivelEstudios
                             };
@@ -1167,6 +1169,44 @@
                         break;
                     case 3:
                         console.log("Datos guardados en formData:", JSON.stringify(formData, null, 2));
+
+                        // Enviar formData al backend para generar el payload
+                        fetch('/api/niubiz/payload', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "X-CSRF-TOKEN": csrfToken
+                            },
+                            body: JSON.stringify(formData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.merchantId && data.sessionToken) {
+                                console.log("Payload recibido del backend:", data);
+
+                                // Crear un formulario dinámico para enviar la data a Niubiz
+                                let form = document.createElement("form");
+                                form.method = "POST";
+                                form.action = "https://sandbox.vnforappstest.com/checkout"; // URL de prueba de Niubiz
+
+                                // Agregar los campos necesarios de la respuesta del backend
+                                form.innerHTML = `
+                                    <input type="hidden" name="merchantId" value="${data.merchantId}">
+                                    <input type="hidden" name="sessionToken" value="${data.sessionToken}">
+                                    <input type="hidden" name="amount" value="${data.amount}">
+                                    <input type="hidden" name="purchaseNumber" value="${data.purchaseNumber}">
+                                    <input type="hidden" name="currency" value="${data.currency}">
+                                    <input type="hidden" name="responseUrl" value="${data.responseUrl}">
+                                `;
+
+                                document.body.appendChild(form);
+                                form.submit(); // Redirigir al usuario a Niubiz
+                            } else {
+                                console.error("Error: Datos incompletos en la respuesta del backend.");
+                            }
+                        })
+                        .catch(error => console.error("Error al comunicarse con el backend:", error));
+
                         break;
                     default:
                         console.warn("Botón no reconocido");
@@ -1355,6 +1395,11 @@
                 <span>Total a pagar hoy</span>
                 <span>USD $. ${total.toFixed(2)}</span>
             `;
+        }
+
+        function formatFecha(fecha) {
+            let partes = fecha.split("/");
+            return `${partes[0]}/${partes[1]}/${partes[2]}`; // Convierte "19/04/2025" → "2025-04-19"
         }
     </script>
 @endsection
