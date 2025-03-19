@@ -1,6 +1,10 @@
 @extends('layouts.public')
 @section('title', 'Visa')
 
+@push('resources')
+    <link href="{{ assets('css/login.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
     @php
         if (session()->has('pedido_visa')) {
@@ -77,7 +81,6 @@
         </div>
     </div>
 
-    <link href="{{ assets('css/login.css') }}" rel="stylesheet">
     <script>
         const csrfToken = "{{ csrf()->token() }}";
         document.addEventListener("DOMContentLoaded", function () {

@@ -1,6 +1,10 @@
 @extends('layouts.public')
 @section('title', 'Visa')
 
+@push('resources')
+    <link href="{{ assets('css/myorders.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
     @php
         $pedido_id= session()->get('pedido_visa');
@@ -225,6 +229,4 @@
             });
         }
     </script>
-
-    <link href="{{ assets('css/myorders.css') }}" rel="stylesheet">
 @endsection

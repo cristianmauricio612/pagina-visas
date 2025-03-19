@@ -1,6 +1,10 @@
 @extends('layouts.public')
 @section('title', 'Visa')
 
+@push('resources')
+    <link href="{{ assets('css/register.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 
     <div class="main-container">
@@ -59,6 +63,4 @@
             });
         });
     </script>
-
-    <link href="{{ assets('css/register.css') }}" rel="stylesheet">
 @endsection

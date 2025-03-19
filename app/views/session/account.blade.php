@@ -1,6 +1,10 @@
 @extends('layouts.public')
 @section('title', 'Visa')
 
+@push('resources')
+    <link href="{{ assets('css/account.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
     @php
         $usuario = session()->get('usuario');
@@ -51,6 +55,4 @@
             </div>
         </div>
     </div>
-
-    <link href="{{ assets('css/account.css') }}" rel="stylesheet">
 @endsection

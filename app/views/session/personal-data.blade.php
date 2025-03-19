@@ -1,6 +1,10 @@
 @extends('layouts.public')
 @section('title', 'Visa')
 
+@push('resources')
+    <link href="{{ assets('css/personal-data.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
     @php
         $usuario = session()->get('usuario');
@@ -83,7 +87,4 @@
             });
         });
     </script>
-    
-
-    <link href="{{ assets('css/personal-data.css') }}" rel="stylesheet">
 @endsection

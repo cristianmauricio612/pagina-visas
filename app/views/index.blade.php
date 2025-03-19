@@ -2,6 +2,10 @@
 
 @section('title', 'Home')
 
+@push('resources')
+    <link rel="stylesheet" href="{{ assets("css/index.css") }}">
+@endpush
+
 @section('content')
     <div class="hero">
         @php
@@ -187,5 +191,4 @@
             });
         });
     </script>
-    <link rel="stylesheet" href="{{ assets("css/index.css") }}">
 @endsection
