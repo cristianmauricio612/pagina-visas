@@ -1171,7 +1171,7 @@
                         console.log("Datos guardados en formData:", JSON.stringify(formData, null, 2));
 
                         // Enviar formData al backend para generar el payload
-                        fetch('/api/niubiz/payload', {
+                        fetch('/api/izipay/payload', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -1181,26 +1181,33 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            if (data.merchantId && data.sessionToken) {
+                            if (data.signature) {
                                 console.log("Payload recibido del backend:", data);
 
-                                // Crear un formulario dinámico para enviar la data a Niubiz
                                 let form = document.createElement("form");
                                 form.method = "POST";
-                                form.action = "https://sandbox.vnforappstest.com/checkout"; // URL de prueba de Niubiz
+                                form.action = "https://secure.micuentaweb.pe/vads-payment/";
 
                                 // Agregar los campos necesarios de la respuesta del backend
                                 form.innerHTML = `
-                                    <input type="hidden" name="merchantId" value="${data.merchantId}">
-                                    <input type="hidden" name="sessionToken" value="${data.sessionToken}">
-                                    <input type="hidden" name="amount" value="${data.amount}">
-                                    <input type="hidden" name="purchaseNumber" value="${data.purchaseNumber}">
-                                    <input type="hidden" name="currency" value="${data.currency}">
-                                    <input type="hidden" name="responseUrl" value="${data.responseUrl}">
+                                    <input type="hidden" name="vads_action_mode" value="${data.vads_action_mode}" />
+                                    <input type="hidden" name="vads_amount" value="${data.vads_amount}" />
+                                    <input type="hidden" name="vads_ctx_mode" value="${data.vads_ctx_mode}" />
+                                    <input type="hidden" name="vads_currency" value="${data.vads_currency}" /> 
+                                    <input type="hidden" name="vads_cust_email" value="${data.vads_cust_email}" />
+                                    <input type="hidden" name="vads_page_action" value="${data.vads_page_action}" />
+                                    <input type="hidden" name="vads_payment_config" value="${data.vads_payment_config}" />
+                                    <input type="hidden" name="vads_site_id" value="${data.vads_site_id}" />
+                                    <input type="hidden" name="vads_trans_date" value="${data.vads_trans_date}" />
+                                    <input type="hidden" name="vads_trans_id" value="${data.vads_trans_id}" />
+                                    <input type="hidden" name="vads_version" value="${data.vads_version}" />
+                                    <input type="hidden" name="signature" value="${data.signature}"/>
+                                    <input type="hidden" name="vads_url_return" value="${data.vads_url_return}"/>
+                                    <input type="submit" name="pagar" value="Pagar"/>
                                 `;
 
                                 document.body.appendChild(form);
-                                form.submit(); // Redirigir al usuario a Niubiz
+                                form.submit();
                             } else {
                                 console.error("Error: Datos incompletos en la respuesta del backend.");
                             }

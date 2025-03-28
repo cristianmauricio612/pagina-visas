@@ -74,9 +74,9 @@ app()->get('/visa-inscripcion/{id}/{posicion}', ['name' => 'visa-inscripcion', '
 
 app()->get('/pago/{id}', ['name' => 'pago', 'VisaInscripcionController@createVisaInscripcion']);
 
-app()->post('/api/niubiz/payload', ['name' => 'niubiz-payload', 'VisaInscripcionController@checkout']);
+app()->post('/api/izipay/payload', ['name' => 'izipay-payload', 'VisaInscripcionController@checkout']);
 
-app()->post('/api/niubiz/response', ['name' => 'niubiz-response', 'VisaInscripcionController@processPayment']);
+app()->post('/api/izipay/response', ['name' => 'izipay-response', 'VisaInscripcionController@processPayment']);
 
 app()->get('/pago-exitoso', ['name' => 'pago-exitoso', function () {render('pagos.exito');}]);
 

@@ -66,32 +66,32 @@ class VisaInscripcionController extends Controller
     private  function generatePurchaseNumber()
     {
         do {
-            $purchaseNumber = time() . rand(1000, 9999);
+            $purchaseNumber = substr(md5(time()), -6);
             $exists = VisaInscripcion::where('numero_pedido', $purchaseNumber)->exists();
         } while ($exists);
 
         return $purchaseNumber;
     }
 
-    private function getSessionToken()
+    private function getSignature($params,$key)
     {
-        $apiKey = "TU_API_KEY";
-        $url = "https://apitestenv.vnforappstest.com/api.security/v1/security";
-        $client = new Client();
+        $signature_content = "";
 
-        try {
-            $response = $client->request('POST', $url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => $apiKey
-                ]
-            ]);
-
-            $data = json_decode($response->getBody(), true);
-            return $data['sessionKey'] ?? null;
-        } catch (\Exception $e) {
-            return null;
+        ksort($params);
+        foreach($params as $name=>$value){
+            //Recovery of vads_ fields
+            if(substr($name,0,5)=='vads_'){
+                //Concatenation with "+"
+                $signature_content .= $value."+";
+             }
         }
+
+        $signature_content .= $key;
+
+        //Encoding base64 encoded chain with SHA-256 algorithm
+        $signature = base64_encode(hash_hmac('sha256',$signature_content, $key, true));
+
+        return $signature;
     }
 
     public function checkout(){
@@ -142,49 +142,57 @@ class VisaInscripcionController extends Controller
             ]);
         }
 
-        // Datos para Niubiz
+        // Datos para Izipay
         $payload = [
-            'merchantId'    => '123456789',
-            'sessionToken'  => $this->getSessionToken(), // Obtener token desde función
-            'amount'        => number_format($visaInscripcion->pago_total, 2, '.', ''), // Aquí puedes calcular el total de la compra
-            'purchaseNumber'=> $purchaseNumber,
-            'currency'      => 'USD',
-            'responseUrl'   => 'https://tu-sitio.com/api/niubiz/response'
+            'vads_action_mode' => "INTERACTIVE",
+            'vads_amount'        => intval(number_format($visaInscripcion->pago_total, 2, '.', '') * 100),
+            'vads_ctx_mode' => "TEST",
+            'vads_currency'      => '840',
+            'vads_cust_email' => $visaInscripcion->correo,
+            'vads_page_action' => "PAYMENT",
+            'vads_payment_config' => "SINGLE",
+            'vads_site_id' => 94909545,
+            'vads_trans_date' => gmdate("YmdHis"),
+            'vads_trans_id' => $purchaseNumber,
+            'vads_version' => "V2",
+            'vads_url_return' => 'http://localhost:5500/api/izipay/response'
         ];
+
+        $clave_secreta = env('TOKEN_SECRET');
+
+        // Generar firma
+        $payload['signature'] = $this->getSignature($payload, $clave_secreta);
 
         return response()->json($payload);
     }
 
     public function processPayment()
     {
-        csrf()->validate();
-        $data = request()->get(null);
+        $data = $_POST;
 
-        // Validar que la respuesta de Niubiz contenga los datos necesarios
-        if (!isset($data['actionCode'], $data['orderNumber'])) {
-            return redirect('/pago-fallido')->with('error', 'Respuesta inválida de Niubiz');
+        if (empty($data)) {
+            return redirect('/pago-fallido')->with('error', 'El Post estaba vacío.');
         }
 
-        // Buscar la inscripción en la base de datos
-        $visaInscripcion = VisaInscripcion::where('numero_pedido', $data['orderNumber'])->first();
-
-        if (!$visaInscripcion) {
-            return redirect('/pago-fallido')->with('error', 'No se encontró la inscripción');
+        if (!isset($data['vads_hash'])) {
+            return redirect('/pago-fallido')->with('error', 'Faltó el vads_hash.');
         }
 
-        // Si la transacción es exitosa (actionCode = 000)
-        if ($data['actionCode'] == "000") {
-            $visaInscripcion->status_pago = "pagado";
-            $visaInscripcion->save();
+        $clave_secreta = _env('TOKEN_SECRET');
 
-            return redirect('/pago-exitoso')->with('success', 'Pago confirmado');
+        $firma_calculada = $this->getSignature($data, $clave_secreta);
+
+        if ($firma_calculada !== $data['vads_hash']) {
+            return redirect('/pago-fallido')->with('error', 'Signature inválido.');
         }
 
-        // 🔴 Si el pago falló o fue rechazado, eliminar la inscripción y los viajeros asociados
-        Viajero::where('visa_inscripcion_id', $visaInscripcion->id)->delete();
-        $visaInscripcion->delete();
+        $estado_pago = $data['vads_trans_status'] ?? 'UNKNOWN';
 
-        return redirect('/pago-fallido')->with('error', 'El pago no fue exitoso y la inscripción fue eliminada.');
+        if ($estado_pago === 'AUTHORISED') {
+            return redirect('/pago-exitoso')->with('success', 'El pago fue exitoso.');
+        } else {
+            return redirect('/pago-fallido')->with('error', 'Pago no autorizado.');
+        }
     }
 
     public function getVisaInscripcion($id){
