@@ -31,6 +31,7 @@
 .inicio-link{
     text-decoration: none;
     color: #9e9e9e;
+    cursor: pointer;
 }
 
 .saludo{

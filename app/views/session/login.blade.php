@@ -107,9 +107,9 @@
             const invalid_number = document.querySelector(".invalid-number");
 
             // Verificar si es una cadena de números
-            const isNumeric = /^[0-9]+$/.test(email);
+            const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-            if (isNumeric) {
+            if (!isEmail) {
                 console.log("✅ Entrada detectada como número válido:", email);
                 fetch("order-check", {
                     method: "POST",
@@ -182,34 +182,38 @@
 
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
+            const email = document.getElementById('email').value;
+            const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-            fetch("/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Convertir en JSON y capturar el código de estado
-                .then(result => {
-                    if (result.status === 200) {
-                        console.log("✅ Sesión iniciada correctamente");
-                        window.location.href = "/account";
-                    } else if (result.status === 400) {
-                        //alert("❌ Error: " + result.body.message);
-                        document.getElementById("invalidModal").style.display = "flex";
-                    } else if (result.status === 401) {
-                        //alert("❌ Error: " + result.body.message);
-                        document.getElementById("errorModal").style.display = "flex";
-                    } else {
-                        console.error("❌ Error desconocido:", result.body);
-                        alert("❌ Error inesperado, intenta nuevamente.");
-                    }
+            if (isEmail) {
+                fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
                 })
-                .catch(error => {
-                    console.error("❌ Error inesperado: ", error);
-                    alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
-                });
+                    .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Convertir en JSON y capturar el código de estado
+                    .then(result => {
+                        if (result.status === 200) {
+                            console.log("✅ Sesión iniciada correctamente");
+                            window.location.href = "/account";
+                        } else if (result.status === 400) {
+                            //alert("❌ Error: " + result.body.message);
+                            document.getElementById("invalidModal").style.display = "flex";
+                        } else if (result.status === 401) {
+                            //alert("❌ Error: " + result.body.message);
+                            document.getElementById("errorModal").style.display = "flex";
+                        } else {
+                            console.error("❌ Error desconocido:", result.body);
+                            alert("❌ Error inesperado, intenta nuevamente.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Error inesperado: ", error);
+                        alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
+                    });
+            }
         });
 
         function closeModal(modal) {

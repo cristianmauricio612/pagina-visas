@@ -7,9 +7,14 @@
 @endpush
 
 @section('content')
-    <div class="container">
-        <h1>⚠️ Error en el Pago</h1>
-        <p>Hubo un problema procesando tu pago. Inténtalo nuevamente.</p>
-        <a href="/" class="btn">Volver al inicio</a>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="icon-content"><i class="fa-regular fa-circle-xmark fa-shake"></i></div>
+            <div class="error-text">El pago ha resultado fallido</div>
+            <div class="error-warning">
+                Ha ocurrido un error durante el proceso de pago de tu pedido.<br>
+                Por favor, vuelve a intentarlo o contacta con el comercio.
+            </div>
+        </div>
     </div>
 @endsection

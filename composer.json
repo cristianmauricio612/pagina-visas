@@ -19,7 +19,8 @@
         "leafs/session": "^4.0",
         "leafs/auth": "^4.0",
         "guzzlehttp/guzzle": "^7.9",
-        "ramsey/uuid": "^4.7"
+        "ramsey/uuid": "^4.7",
+        "phpmailer/phpmailer": "^6.9"
     },
     "require-dev": {
         "leafs/alchemy": "^2.0",

@@ -10,9 +10,14 @@
         $pedido_id= session()->get('pedido_visa');
         $visa_id = session()->get('visa');
 
+        if($pedido_id == null && $visa_id == null){
+            redirect('/iniciar-sesion');
+        }
+
         $pedido_visa = \APP\Models\VisaInscripcion::find($pedido_id['id']);
         $visa = \APP\Models\Visa::find($visa_id['id']);
     @endphp
+
     <div class="main-container">
         <div class="info-visa-container">
             <div class="return-page">

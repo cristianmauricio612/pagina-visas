@@ -6,6 +6,7 @@ use App\Models\Viajero;
 use App\Models\VisaInscripcion;
 use App\Models\Visa;
 use Carbon\Carbon;
+use Leaf\Http\Session;
 use GuzzleHttp\Client;
 
 class VisaInscripcionController extends Controller
@@ -108,54 +109,35 @@ class VisaInscripcionController extends Controller
         }
 
         $purchaseNumber = $this->generatePurchaseNumber();
+        $data['purchase_number'] = $purchaseNumber;
+
+        // (Opcional) Guardar en sesión si es necesario
+        Session::set('data', $data);
 
         $visa = Visa::find($data['visas_id']);
         if (!$visa) {
             return response()->json(["status" => "error", "message" => "Visa no encontrada"], 404);
         }
 
-         // Crear la inscripción en la base de datos
-        $visaInscripcion = new VisaInscripcion();
-        $visaInscripcion->visas_id = $data['visas_id'];
-        $visaInscripcion->numero_pedido = $purchaseNumber;
-        $visaInscripcion->fecha_llegada = Carbon::createFromFormat('d/m/Y', $data['fecha_llegada']);
-        $visaInscripcion->fecha_salida = isset($data['fecha_salida']) ? Carbon::parse($data['fecha_salida']) : null;
-        $visaInscripcion->correo = $data['correo'];
-        $visaInscripcion->pago_hoy = $visa['precio'] * count($data['viajeros']);
-        $visaInscripcion->pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
-        $visaInscripcion->tasa_gobierno_total = $visa['tasa_gobierno'] * count($data['viajeros']);
-        $visaInscripcion->status_pago = "pendiente"; // Aún no confirmado
-        $visaInscripcion->save();
-
-        // Guardar los viajeros asociados
-        foreach ($data["viajeros"] as $viajero) {
-            Viajero::create([
-                "visa_inscripcion_id" => $visaInscripcion->id,
-                "nombres_pasaporte" => $viajero['nombres'],
-                "apellidos_pasaporte" => $viajero['apellidos'],
-                "fecha_nacimiento" => Carbon::parse($viajero['fecha_nacimiento']),
-                "nacionalidad_pasaporte_id" => $viajero['nacionalidad_pasaporte'],
-                "numero_pasaporte" => $viajero['numero_pasaporte'],
-                "fecha_caducidad_pasaporte" => isset($viajero['fecha_caducidad_pasaporte']) ? Carbon::parse($viajero['fecha_caducidad_pasaporte']) : null,
-                "pais_nacimiento_id" => $viajero['pais_nacimiento'],
-                "nivel_estudios" => $viajero['nivel_estudios'],
-            ]);
-        }
+        $pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
+        $correo = $data['correo'];
 
         // Datos para Izipay
         $payload = [
             'vads_action_mode' => "INTERACTIVE",
-            'vads_amount'        => intval(number_format($visaInscripcion->pago_total, 2, '.', '') * 100),
+            'vads_amount'        => intval(number_format($pago_total, 2, '.', '') * 100),
             'vads_ctx_mode' => "TEST",
             'vads_currency'      => '840',
-            'vads_cust_email' => $visaInscripcion->correo,
+            'vads_cust_email' => $correo,
             'vads_page_action' => "PAYMENT",
             'vads_payment_config' => "SINGLE",
+            "vads_redirect_success_timeout" => 5,
+            'vads_return_mode' => "POST",
             'vads_site_id' => 94909545,
             'vads_trans_date' => gmdate("YmdHis"),
             'vads_trans_id' => $purchaseNumber,
+            'vads_url_return' => 'http://localhost:5500/api/izipay/response',
             'vads_version' => "V2",
-            'vads_url_return' => 'http://localhost:5500/api/izipay/response'
         ];
 
         $clave_secreta = env('TOKEN_SECRET');
@@ -168,29 +150,105 @@ class VisaInscripcionController extends Controller
 
     public function processPayment()
     {
-        $data = $_POST;
+        $dataResult = $_POST;
 
-        if (empty($data)) {
+        $method = $_SERVER['REQUEST_METHOD'];
+
+        // Registrar en el log
+        error_log("Método recibido: " . $method);
+
+        // Capturar datos según el método
+        $dataResult = ($method === 'POST') ? $_POST : $_GET;
+        error_log("Datos recibidos: " . json_encode($dataResult));
+
+        if (empty($dataResult)) {
             return redirect('/pago-fallido')->with('error', 'El Post estaba vacío.');
         }
 
-        if (!isset($data['vads_hash'])) {
+        if (!isset($dataResult['vads_hash'])) {
             return redirect('/pago-fallido')->with('error', 'Faltó el vads_hash.');
         }
 
         $clave_secreta = _env('TOKEN_SECRET');
+        $firma_calculada = $this->getSignature($dataResult, $clave_secreta);
 
-        $firma_calculada = $this->getSignature($data, $clave_secreta);
-
-        if ($firma_calculada !== $data['vads_hash']) {
+        if ($firma_calculada !== $dataResult['vads_hash']) {
             return redirect('/pago-fallido')->with('error', 'Signature inválido.');
         }
 
-        $estado_pago = $data['vads_trans_status'] ?? 'UNKNOWN';
+        $estado_pago = $dataResult['vads_trans_status'] ?? 'UNKNOWN';
+
+        // Recuperar toda la data guardada en la sesión
+        $data = Session::get('data');
 
         if ($estado_pago === 'AUTHORISED') {
-            return redirect('/pago-exitoso')->with('success', 'El pago fue exitoso.');
+            $visa = Visa::find($data['visas_id']);
+
+            // Crear la inscripción en la base de datos
+            $visaInscripcion = new VisaInscripcion();
+            $visaInscripcion->visas_id = $data['visas_id'];
+            $visaInscripcion->numero_pedido = $data['purchase_number'];
+            $visaInscripcion->fecha_llegada = Carbon::createFromFormat('d/m/Y', $data['fecha_llegada']);
+            $visaInscripcion->fecha_salida = isset($data['fecha_salida']) ? Carbon::parse($data['fecha_salida']) : null;
+            $visaInscripcion->correo = $data['correo'];
+            $visaInscripcion->pago_hoy = $visa['precio'] * count($data['viajeros']);
+            $visaInscripcion->pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
+            $visaInscripcion->tasa_gobierno_total = $visa['tasa_gobierno'] * count($data['viajeros']);
+            $visaInscripcion->status_pago = "pagado";
+            $visaInscripcion->save();
+
+            // Guardar los viajeros asociados
+            foreach ($data["viajeros"] as $viajero) {
+                Viajero::create([
+                    "visa_inscripcion_id" => $visaInscripcion->id,
+                    "nombres_pasaporte" => $viajero['nombres'],
+                    "apellidos_pasaporte" => $viajero['apellidos'],
+                    "fecha_nacimiento" => Carbon::parse($viajero['fecha_nacimiento']),
+                    "nacionalidad_pasaporte_id" => $viajero['nacionalidad_pasaporte'],
+                    "numero_pasaporte" => $viajero['numero_pasaporte'],
+                    "fecha_caducidad_pasaporte" => isset($viajero['fecha_caducidad_pasaporte']) ? Carbon::parse($viajero['fecha_caducidad_pasaporte']) : null,
+                    "pais_nacimiento_id" => $viajero['pais_nacimiento'],
+                    "nivel_estudios" => $viajero['nivel_estudios'],
+                ]);
+            }
+
+            // ENVIAR CORREOS //
+
+            $usuarioEmail = $data['correo']; // Correo del usuario
+            $adminEmail = getenv('MAIL_SENDER_EMAIL'); // Tu correo
+
+            $asunto = "Confirmacion de pago exitoso";
+            $mensaje = "
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; text-align: center;'>
+                    <h2 style='color:rgb(76, 86, 175);'>¡Pago recibido con éxito! 🎉</h2>
+                    <p style='font-size: 16px; color: #333;'>Hola,</p>
+                    <p style='font-size: 16px; color: #333;'>Tu pago ha sido procesado correctamente.</p>
+                    
+                    <div style='background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 20px 0;'>
+                        <p style='font-size: 18px; color: #555;'><strong>ID de Transacción:</strong></p>
+                        <p style='font-size: 20px; color:rgb(62, 76, 156); font-weight: bold;'>{$visaInscripcion->numero_pedido}</p>
+                    </div>
+                    
+                    <p style='font-size: 16px; color: #333;'>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+                    <p style='font-size: 16px; color: #333;'>Gracias por confiar en nosotros.</p>
+                    
+                    <a href='https://tu-sitio.com' style='display: inline-block; padding: 12px 20px; margin-top: 15px; font-size: 16px; color: #fff; background-color:rgb(54, 55, 143); text-decoration: none; border-radius: 5px;'>Ir a la página</a>
+
+                    <p style='margin-top: 20px; font-size: 14px; color: #888;'>© " . date('Y') . " AV Visa Asesores. Todos los derechos reservados.</p>
+                </div>
+            ";
+
+            // Enviar correo al usuario
+            MailController::sendEmail($usuarioEmail, $asunto, $mensaje);
+
+            // Enviar correo a tu cuenta
+            MailController::sendEmail($adminEmail, "Nuevo pago recibido", $mensaje);
+
+            Session::delete('data');
+
+            return view('/pago-exitoso', compact('visaInscripcion'));
         } else {
+            Session::delete('data');
             return redirect('/pago-fallido')->with('error', 'Pago no autorizado.');
         }
     }

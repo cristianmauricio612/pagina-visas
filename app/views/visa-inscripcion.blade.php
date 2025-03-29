@@ -1197,12 +1197,14 @@
                                     <input type="hidden" name="vads_cust_email" value="${data.vads_cust_email}" />
                                     <input type="hidden" name="vads_page_action" value="${data.vads_page_action}" />
                                     <input type="hidden" name="vads_payment_config" value="${data.vads_payment_config}" />
+                                    <input type="hidden" name="vads_redirect_success_timeout " value="${data.vads_redirect_success_timeout}"/>
+                                    <input type="hidden" name="vads_return_mode " value="${data.vads_return_mode}"/>
                                     <input type="hidden" name="vads_site_id" value="${data.vads_site_id}" />
                                     <input type="hidden" name="vads_trans_date" value="${data.vads_trans_date}" />
                                     <input type="hidden" name="vads_trans_id" value="${data.vads_trans_id}" />
+                                    <input type="hidden" name="vads_url_return" value="${data.vads_url_return}"/>
                                     <input type="hidden" name="vads_version" value="${data.vads_version}" />
                                     <input type="hidden" name="signature" value="${data.signature}"/>
-                                    <input type="hidden" name="vads_url_return" value="${data.vads_url_return}"/>
                                     <input type="submit" name="pagar" value="Pagar"/>
                                 `;
 
