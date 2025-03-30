@@ -69,7 +69,7 @@ h1, h4{
     font-size: 1.125rem;
     font-weight: 700;
     line-height: 24px;
-    background: linear-gradient(to right, #00ff87, #00c3ff);
+    background: linear-gradient(to right, #c7161e, #21356b);
     outline-width: 2px;
     outline-color: transparent;
     display: flex;
@@ -77,10 +77,13 @@ h1, h4{
     justify-content: center;
     border-radius: 16px;
     gap: 10px;
-    border: none;
+    color: white;
+    border: 2px solid rgb(255 255 255 / 59%);
 }
 .hero-button:hover {
+    border-color: #c7161e;
     background: transparent;
+    color: #21356b;
 }
 .select-container {
     width: 100%;

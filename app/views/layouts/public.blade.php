@@ -22,7 +22,7 @@
         <div class="header-container">
             <a href="/" class="logo-container nav-link">
                 <img src="{{ assets("img/av.png") }}" alt="" style="height: 32px">
-                <span>Visa Asesores</span>
+                <span class="text-logo-container">Visa Asesores</span>
             </a>
 
             <div class="menu-container">
@@ -115,7 +115,7 @@
                 <div class="country-container ms-4">
                     <span>ES</span>
                     <span class="mx-2 vr" style="height: 16px; margin-top: 2px;"></span>
-                    <span>S/. PEN</span>
+                    <span>$ USD</span>
                 </div>
                 @if (!$usuario)
                     <div class="ms-4">
@@ -179,16 +179,12 @@
                             <label for="languageSelect" class="form-label">Idioma</label>
                             <select class="form-select" id="languageSelect">
                                 <option selected>Español</option>
-                                <option>Inglés</option>
-                                <option>Francés</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="currencySelect" class="form-label">Divisa</label>
                             <select class="form-select" id="currencySelect">
-                                <option selected>PEN S/.</option>
-                                <option>USD $</option>
-                                <option>EUR €</option>
+                                <option selected>USD $</option>
                             </select>
                         </div>
                     </form>
@@ -196,8 +192,7 @@
 
                 <!-- Botón separado del contenido -->
                 <div class="modal-footer custom-footer">
-                    <button type="button" class="btn custom-btn" data-bs-dismiss="modal">Actualizar
-                        preferencias</button>
+                    <button type="button" class="btn custom-btn" data-bs-dismiss="modal">Actualizar preferencias</button>
                 </div>
             </div>
         </div>
@@ -303,7 +298,7 @@
                     <i class="fa-solid fa-globe"></i> Español - ES
                 </li>
                 <li id="openCurrencyModal">
-                    <i class="fa-solid fa-dollar-sign"></i> Peruvian Nuevo Sol
+                    <i class="fa-solid fa-dollar-sign"></i> United States Dollar
                 </li>
             </ul>
             @if (!$usuario)

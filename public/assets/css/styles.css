@@ -177,7 +177,7 @@ body{
     position: sticky;
     top: 0;
     z-index: 9999;
-    border: none;
+    border: 0px;
     border-bottom-width: 1px;
     border-style: solid;
     --tw-border-opacity: 1;
@@ -199,6 +199,11 @@ body{
     align-items: center;
     padding-top: 8px;
     padding-bottom: 8px;
+}
+
+.text-logo-container{
+    font-weight: 700;
+    font-size: 18px;
 }
 .menu-container{
     display: flex;
@@ -331,20 +336,21 @@ body{
 
 .custom-btn {
     width: 100%;
-    background: linear-gradient(to right, #17c0eb, #1dd1a1);
-    color: black;
+    background: linear-gradient(to right, #c7161e, #21356b);
+    color: white;
+    border: 2px solid white;
     padding: 16px 40px;
     font-size: 1.125rem;
     font-weight: 700;
     line-height: 24px;
     border-radius: 16px;
-    border: none;
     cursor: pointer;
 }
 
 .custom-btn:hover {
-    background: transparent;
-    border: 2px solid black;
+    border-color: #c7161e;
+    background: white;
+    color: #21356b;
 }
 .button-login{
     padding: 6px 20px;
@@ -431,18 +437,20 @@ button:hover{
 .btn-login {
     width: 100%;
     margin-top: 20px;
-    border: none;
     border-radius: 16px;
     padding: 12px 24px;
     font-size: .875rem;
     font-weight: 700;
     line-height: 16px;
-    background: linear-gradient(90deg, #16c2d5, #00e676);
-    color: black;
+    background: linear-gradient(to right, #c7161e, #21356b);
+    border: 2px solid white;
+    color: white;
     cursor: pointer;
 }
 .btn-login:hover{
-    background: transparent;
+    border-color: #c7161e;
+    background: white;
+    color: #21356b;
 }
 .title-modal-vertical{
     font-size: 1.25rem;
@@ -658,5 +666,9 @@ button:hover{
     }
     .menu-container {
         min-width: 197px;
+    }
+    .text-logo-container{
+        font-weight: 700;
+        font-size: 16px;
     }
 }

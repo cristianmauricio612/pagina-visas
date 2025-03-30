@@ -254,16 +254,12 @@
     border-radius: 16px;
     --tw-text-opacity: 1;
     color: white;
+    cursor: pointer;
 }
 .visa-information-button button:hover{
-    color: rgb(0 0 0 / var(--tw-text-opacity, 1));
-    border: 2px solid black;
-    background-image: linear-gradient(to right, var(--tw-gradient-stops));
-    --tw-gradient-from: #25CBD6 var(--tw-gradient-from-position);
-    --tw-gradient-to: rgb(37 203 214 / 0) var(--tw-gradient-to-position);
-    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-    outline-width: 2px;
-    outline-color: transparent;
+    border-color: #c7161e;
+    background: white;
+    color: #21356b;
 }
 
 @media (min-width: 768px) {
