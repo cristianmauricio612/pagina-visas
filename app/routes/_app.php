@@ -88,3 +88,5 @@ app()->get('/limpiar-pedidos', function () {
     VisaInscripcion::limpiarPedidosPendientes(); 
     return response()->json(["message" => "Pedidos pendientes eliminados"]);
 });
+
+app()->post('/contact-mail', 'MailController@contactEmail');

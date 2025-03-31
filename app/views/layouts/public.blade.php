@@ -389,7 +389,6 @@
                     <ul class="list-unstyled collapse d-md-block" id="empresaList">
                         <li><a href="{{route('about-us')}}">Sobre Visa Asesores</a></li>
                         <li><a href="{{route('contact')}}">Contáctate con nosotros</a></li>
-                        <li><a href="#">Sitemap</a></li>
                     </ul>
                 </div>
             </div>
@@ -422,7 +421,7 @@
                     <p>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Spain.svg" width="20">
                         Español
-                        | S/. PEN ▼
+                        | $ USD ▼
                     </p>
                     <!-- Botones de descarga -->
                     <div class="d-flex justify-content-center">
@@ -484,6 +483,23 @@
                     // Alternar visibilidad de las flechas
                     iconDown.hidden = isExpanded;
                     iconUp.hidden = !isExpanded;
+                });
+            });
+
+            document.addEventListener("click", function (event) {
+                document.querySelectorAll(".dropdown-toggle-custom").forEach((dropdownButton) => {
+                    const dropdownMenu = dropdownButton.nextElementSibling;
+                    const iconDown = dropdownButton.querySelector(".fa-angle-down");
+                    const iconUp = dropdownButton.querySelector(".fa-angle-up");
+
+                    if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                        dropdownButton.setAttribute("aria-expanded", "false");
+                        dropdownMenu.classList.remove("show");
+
+                        // Restaurar iconos
+                        iconDown.hidden = false;
+                        iconUp.hidden = true;
+                    }
                 });
             });
 
@@ -576,8 +592,6 @@
                     }
                 });
             });
-
-
         });
     </script>
     <script>

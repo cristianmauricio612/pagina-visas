@@ -101,10 +101,10 @@ class VisaInscripcionController extends Controller
         $data = request()->body();
 
         // Validar que se recibieron los datos necesarios
-        if (empty($data['viajeros']) || !is_array($data['viajeros']) || empty($data['visas_id']) || empty($data['fecha_llegada']) || empty($data['correo'])) {
+        if (empty($data['viajeros']) || !is_array($data['viajeros']) || empty($data['visas_id']) || empty($data['fecha_llegada']) || empty($data['correo']) || empty($data['telefono'])) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Los campos fecha de llegada y correo son obligatorios'
+                'message' => 'Los campos fecha de llegada, correo y telefono son obligatorios'
             ], 400);
         }
 
@@ -219,20 +219,29 @@ class VisaInscripcionController extends Controller
 
             $asunto = "Confirmacion de pago exitoso";
             $mensaje = "
-                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; text-align: center;'>
-                    <h2 style='color:rgb(76, 86, 175);'>¡Pago recibido con éxito! 🎉</h2>
+                <div style='font-family: Arial, sans-serif; max-width: 600px; width: 100%; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; text-align: center; box-sizing: border-box;'>
+                    <h2 style='color: rgb(76, 86, 175); font-size: 24px;'>¡Pago recibido con éxito! 🎉</h2>
                     <p style='font-size: 16px; color: #333;'>Hola,</p>
-                    <p style='font-size: 16px; color: #333;'>Tu pago ha sido procesado correctamente.</p>
-                    
-                    <div style='background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 20px 0;'>
-                        <p style='font-size: 18px; color: #555;'><strong>ID de Transacción:</strong></p>
-                        <p style='font-size: 20px; color:rgb(62, 76, 156); font-weight: bold;'>{$visaInscripcion->numero_pedido}</p>
+                    <p style='font-size: 16px; color: #333;'>Tu pago ha sido procesado correctamente. A continuación, los detalles de tu transacción:</p>
+
+                    <div style='background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 20px 0; text-align: left; word-wrap: break-word;'>
+                        <p style='font-size: 16px; color: #555;'><strong>ID de Transacción:</strong> 
+                            <span style='font-size: 18px; color: rgb(62, 76, 156); font-weight: bold;'>{$visaInscripcion->numero_pedido}</span>
+                        </p>
+                        <p style='font-size: 16px; color: #555;'><strong>Correo del Cliente:</strong> 
+                            <span style='word-wrap: break-word; display: block;'>{$visaInscripcion->correo}</span>
+                        </p>
+                        <p style='font-size: 16px; color: #555;'><strong>Número de Contacto:</strong> {$data['telefono']}</p>
+                        <p style='font-size: 16px; color: #555;'><strong>Precio Total:</strong> $ {$visaInscripcion->pago_total}</p>
+                        <p style='font-size: 16px; color: #555;'><strong>Estatus del Pago:</strong> 
+                            <span style='color: green; font-weight: bold;'>{$visaInscripcion->status_pago}</span>
+                        </p>
                     </div>
-                    
+
                     <p style='font-size: 16px; color: #333;'>Si tienes alguna pregunta, no dudes en contactarnos.</p>
                     <p style='font-size: 16px; color: #333;'>Gracias por confiar en nosotros.</p>
-                    
-                    <a href='https://tu-sitio.com' style='display: inline-block; padding: 12px 20px; margin-top: 15px; font-size: 16px; color: #fff; background-color:rgb(54, 55, 143); text-decoration: none; border-radius: 5px;'>Ir a la página</a>
+
+                    <a href='https://tu-sitio.com' style='display: inline-block; padding: 14px 24px; margin-top: 15px; font-size: 16px; color: #fff; background-color: rgb(54, 55, 143); text-decoration: none; border-radius: 5px;'>Ir a la página</a>
 
                     <p style='margin-top: 20px; font-size: 14px; color: #888;'>© " . date('Y') . " AV Visa Asesores. Todos los derechos reservados.</p>
                 </div>

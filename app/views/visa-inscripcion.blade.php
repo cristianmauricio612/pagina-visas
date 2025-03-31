@@ -107,6 +107,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-box-input">
+                                <div class="form-box-date">
+                                    <div class="">
+                                        <label class="form-label">
+                                            <span>Número de contacto</span>
+                                        </label>
+
+                                        <div style="position: relative;">
+                                            <input class="form-input" name="telefono" required=""
+                                                placeholder="+51 904080946" spellcheck="false" autocomplete="on"
+                                                type="tel">
+                                        </div>
+
+                                        <div class="form-alert">
+                                            <span>Usamos esta información para mantenerte informado sobre el estado de tu
+                                                solicitud.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-box-input" style="display: none;">
                                 <div data-ivisa-slug="consent_to_marketing_emails"
                                     data-ivisa-question-selector="general.consent_to_marketing_emails"
@@ -1018,6 +1038,7 @@
             fecha_llegada: "",
             fecha_salida: null,
             correo: "",
+            telefono: "",
             viajeros: []
         };
 
@@ -1046,6 +1067,7 @@
                     // Capturar datos
                     let fechaLlegada = document.getElementById("date-picker").value.trim();
                     let correo = document.querySelector("input[name='correo']").value.trim();
+                    let telefono = document.querySelector("input[name='telefono']").value.trim();
 
                     // Verificar fecha de llegada
                     if (!fechaLlegada) {
@@ -1060,6 +1082,14 @@
                         errores.push("📧 Ingresa un correo válido.");
                     } else {
                         formData.correo = correo; // Guardar el correo en el objeto
+                    }
+
+                    // Verificar número de telefono
+                    let telefonoRegex = /^\+?[0-9]{7,15}$/;
+                    if (!telefono || !telefonoRegex.test(telefono)) {
+                        errores.push("📞 Ingresa un número de teléfono válido (7 a 15 dígitos, opcionalmente con '+').");
+                    } else {
+                        formData.telefono = telefono; // Guardar el teléfono en el objeto
                     }
 
                     // Si hay errores, mostrar alertas y detener el avance
