@@ -4,6 +4,10 @@
     <link href="{{assets('css/apply.css') }}" rel="stylesheet">
 @endpush
 @section('content')
+    @php
+        $pais2 = \App\Models\Pais::where('nombre', 'Canadá')->first()->id;
+        $pais1 = \App\Models\Pais::where('nombre', 'Perú')->first()->id;
+    @endphp
 
     <div id="navSection" class="nav-section text-center row row-cols-1 row-cols-lg-2">
         <div class="col d-flex justify-content-center align-items-center order-2 order-lg-1">
@@ -18,7 +22,7 @@
         <div class="col d-flex justify-content-center align-items-center order-1 order-lg-2">
             <div class="d-flex justify-content-center align-items-center py-3">
                 <span class="me-3">Canada Visa (ETA)</span>
-                <button class="button-apply-now" href="/a/estados-unidos">Aplica ahora</button>
+                <button class="button-apply-now" onClick="verVisa()">Aplica ahora</button>
             </div>
         </div>
 
@@ -193,7 +197,7 @@
                     </div></div>
             </div>
             <div class="d-flex justify-content-center">
-                <button class="button-apply-now mt-5">Aplica ahora</button>
+                <button class="button-apply-now mt-5" onClick="verVisa()">Aplica ahora</button>
             </div>
 
             <div class="mt-5">
@@ -285,6 +289,22 @@
                 ?>
             </section>
     </div>
+
+    <script>
+        let pais1 = @json($pais1);
+        let pais2 = @json($pais2);
+
+        function verVisa() {
+            // Verificar que ambos países hayan sido seleccionados
+            if (!pais1 || !pais2) {
+                alert("No existen los paises usados para esta vista.");
+                return;
+            }
+            // Construir la URL de la ruta y redirigir
+            let url = `/visas/${pais1}/${pais2}/0`;
+            window.location.href = url;
+        }
+    </script>
 @endsection
 
 @push('js')

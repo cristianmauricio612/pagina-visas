@@ -355,6 +355,7 @@
     box-sizing: border-box;
     margin-top: 25px;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .apply-now-btn:hover {

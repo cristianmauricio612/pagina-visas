@@ -2,7 +2,18 @@
 
 @section('title', 'Visa')
 
+@push('resources')
+    <link href="{{ assets('css/price-canadience-visa.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
+    @php
+        $paises = \App\Models\Pais::all();
+    @endphp
+    @php
+        $pais2 = \App\Models\Pais::where('nombre', 'Canadá')->first()->id;
+        $pais1 = \App\Models\Pais::where('nombre', 'Perú')->first()->id;
+    @endphp
 
     <div class="info-visa-container">
         <div class="return-page">
@@ -41,45 +52,39 @@
                             <p class="form-title">Solicitar ahora</p>
                             <h4 class="label-form">¿De dónde eres?</h4>
                             <div class="custom-select" id="from-select">
-                                <div class="selected-option">
-                                    <img src="flags/peru.png" alt="Perú"> Perú
+                                <div class="selected-option" data-value="{{ $paises[0]->id }}" id="origen">
+                                    <img src="{{ $paises[0]->imagen }}" alt="{{ $paises[0]->nombre }}"> {{ $paises[0]->nombre }}
                                 </div>
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">
-                                        <div class="option" data-value="peru"><img src="flags/peru.png" alt="Perú"> Perú
-                                        </div>
-                                        <div class="option" data-value="alemania"><img src="flags/germany.png"
-                                                alt="Alemania"> Alemania</div>
-                                        <div class="option" data-value="australia"><img src="flags/australia.png"
-                                                alt="Australia"> Australia</div>
-                                        <div class="option" data-value="canada"><img src="flags/canada.png" alt="Canadá">
-                                            Canadá</div>
+                                        @foreach ($paises as $pais)
+                                            <div class="option" data-value="{{ $pais->id }}">
+                                                <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
 
                             <h4 class="label-form">Where are you going?</h4>
                             <div class="custom-select" id="to-select">
-                                <div class="selected-option">
-                                    <img src="flags/canada.png" alt="Canadá"> Canadá
+                                <div class="selected-option" data-value="{{ $paises[1]->id }}" id="destino">
+                                    <img src="{{ $paises[1]->imagen }}" alt="{{ $paises[1]->nombre }}"> {{ $paises[1]->nombre }}
                                 </div>
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">
-                                        <div class="option" data-value="peru"><img src="flags/peru.png" alt="Perú"> Perú
-                                        </div>
-                                        <div class="option" data-value="alemania"><img src="flags/germany.png"
-                                                alt="Alemania"> Alemania</div>
-                                        <div class="option" data-value="australia"><img src="flags/australia.png"
-                                                alt="Australia"> Australia</div>
-                                        <div class="option" data-value="canada"><img src="flags/canada.png" alt="Canadá">
-                                            Canadá</div>
+                                        @foreach ($paises as $pais)
+                                            <div class="option" data-value="{{ $pais->id }}">
+                                                <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
 
-                            <button class="apply-btn">¡Aplica ahora! <span>→</span></button>
+                            <button class="apply-btn" type="button" onClick="verVisa()">¡Aplica ahora! <span>→</span></button>
                         </form>
                     </div>
                 </div>
@@ -226,7 +231,7 @@
                 </ul>
 
                 <div style="margin: 45px 0; text-align: center; width: 100%;">
-                    <a class="apply-now-btn">Apply now</a>
+                    <a class="apply-now-btn" onclick="visaCanada()">Aplicar ahora</a>
                 </div>
 
                 <h3 class="subtitle-sub">¿Se necesita una carta para solicitar la visa de turista para Canadá?</h3>
@@ -283,7 +288,7 @@
                 </p>
 
                 <div style="margin: 45px 0; text-align: center; width: 100%;">
-                    <a class="apply-now-btn">Apply now</a>
+                    <a class="apply-now-btn" onclick="visaCanada()">Aplicar ahora</a>
                 </div>
 
                 <h3 class="subtitle-sub">Obtener más información acerca de la Visa para Canadá</h3>
@@ -352,7 +357,6 @@
         </div>
     </div>
 
-    <link href="{{ assets('css/price-canadience-visa.css') }}" rel="stylesheet">
     <script>
         const csrfToken = "{{ csrf()->token() }}";
         document.addEventListener("DOMContentLoaded", function () {
@@ -388,6 +392,7 @@
 
                         // **Actualizar UI del select**
                         selectedOption.innerHTML = optionHTML;
+                        selectedOption.dataset.value = selectedId;
                         dropdown.style.display = "none";
                         searchInput.value = "";
                         optionsList.forEach(opt => (opt.style.display = "flex"));
@@ -402,5 +407,36 @@
                 });
             });
         });
+        function verVisa() {
+            // Obtener los valores seleccionados de los selects
+            let pais1 = document.getElementById("origen").getAttribute("data-value");
+            let pais2 = document.getElementById("destino").getAttribute("data-value");
+            let posicion = 0;
+
+            // Verificar que ambos países hayan sido seleccionados
+            if (!pais1 || !pais2) {
+                alert("Por favor, selecciona ambos países.");
+                return;
+            }
+
+            // Construir la URL de la ruta y redirigir
+            let url = `/visas/1/3/0`;
+            window.location.href = '/visas/'+pais1+'/'+pais2+'/'+posicion;
+        }
+    </script>
+    <script>
+        let pais1 = @json($pais1);
+        let pais2 = @json($pais2);
+
+        function visaCanada() {
+            // Verificar que ambos países hayan sido seleccionados
+            if (!pais1 || !pais2) {
+                alert("No existen los paises usados para esta vista.");
+                return;
+            }
+            // Construir la URL de la ruta y redirigir
+            let url = `/visas/${pais1}/${pais2}/0`;
+            window.location.href = url;
+        }
     </script>
 @endsection
