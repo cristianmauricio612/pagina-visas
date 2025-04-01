@@ -125,7 +125,7 @@
     </div>
 
     {{-- Contenido Principal --}}
-    <div class="flex-1 p-10 transition-all duration-300">
+    <div class="flex-1 p-10 transition-all duration-300 max-w-[100vw]">
         @yield('content')
     </div>
 
