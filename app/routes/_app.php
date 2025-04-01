@@ -68,6 +68,8 @@ app()->post('/logout', 'UsuarioController@logout');
 
 //FIN SESSION
 
+//VISA INSCRIPCION
+
 app()->get('/visas/{pais1}/{pais2}/{posicion}', ['name' => 'visas', 'VisaController@getVisasByPaises']);
 
 app()->get('/visa-inscripcion/{id}/{posicion}', ['name' => 'visa-inscripcion', 'VisaController@getVisaById']);
@@ -90,3 +92,23 @@ app()->get('/limpiar-pedidos', function () {
 });
 
 app()->post('/contact-mail', 'MailController@contactEmail');
+
+//ADMIN
+
+app()->get('/admin/home', ['name' => 'admin.homeView', function () {render('admin.home');}]);
+
+app()->get('/admin/paises', ['name' => 'admin.paises.listView', function () {render('admin.paises.list');}]);
+
+app()->get('/admin/paises/agregar', ['name' => 'admin.paises.addView', function () {render('admin.paises.add');}]);
+
+app()->get('/admin/pedidos', ['name' => 'admin.pedidos.listView', function () {render('admin.pedidos.list');}]);
+
+app()->get('/admin/pedidos/agregar', ['name' => 'admin.pedidos.addView', function () {render('admin.pedidos.add');}]);
+
+app()->get('/admin/usuarios', ['name' => 'admin.usuarios.listView', function () {render('admin.usuarios.list');}]);
+
+app()->get('/admin/usuarios/agregar', ['name' => 'admin.usuarios.addView', function () {render('admin.usuarios.add');}]);
+
+app()->get('/admin/visas', ['name' => 'admin.visas.listView', function () {render('admin.visas.list');}]);
+
+app()->get('/admin/visas/agregar', ['name' => 'admin.visas.addView', function () {render('admin.visas.add');}]);
