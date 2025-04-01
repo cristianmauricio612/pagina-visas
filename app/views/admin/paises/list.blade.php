@@ -25,42 +25,40 @@
         </div>
 
         {{-- Contenedor con scroll horizontal y vertical --}}
-        <div class="w-full max-w-[100%] overflow-x-auto border rounded-lg">
-            <div class="max-h-[800px] overflow-y-auto">
-                <table class="w-full md:min-w-full bg-white border border-gray-300">
-                    <thead class="bg-gray-800 text-white">
-                        <tr>
-                            <th class="py-2 px-4 text-left w-12">ID</th>
-                            <th class="py-2 px-4 text-left w-48">Nombre</th>
-                            <th class="py-2 px-4 text-left w-32">Imagen</th>
-                            <th class="py-2 px-4 text-left w-32">Acciones</th>
+        <div class="w-full max-w-[100%] max-h-[800px] overflow-y-auto overflow-x-auto border rounded-lg">
+            <table class="w-full md:min-w-full bg-white border border-gray-300">
+                <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="py-2 px-4 text-left w-12">ID</th>
+                        <th class="py-2 px-4 text-left w-48">Nombre</th>
+                        <th class="py-2 px-4 text-left w-32">Imagen</th>
+                        <th class="py-2 px-4 text-left w-32">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($paises as $pais)
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="py-2 px-4">{{ $pais->id }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $pais->nombre }}</td>
+                            <td class="py-2 px-4">
+                                <img src="{{ assets($pais->imagen) }}" alt="{{ $pais->nombre }}" class="w-14 h-10 object-cover rounded border">
+                            </td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                <a href="" class="text-blue-500 hover:text-blue-700">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="submit" class="text-red-500 hover:text-red-700">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($paises as $pais)
-                            <tr class="border-b hover:bg-gray-100">
-                                <td class="py-2 px-4">{{ $pais->id }}</td>
-                                <td class="py-2 px-4 whitespace-nowrap">{{ $pais->nombre }}</td>
-                                <td class="py-2 px-4">
-                                    <img src="{{ assets($pais->imagen) }}" alt="{{ $pais->nombre }}" class="w-14 h-10 object-cover rounded border">
-                                </td>
-                                <td class="py-2 px-4 flex space-x-2">
-                                    <a href="" class="text-blue-500 hover:text-blue-700">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <button type="submit" class="text-red-500 hover:text-red-700">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="py-2 px-4 text-center text-gray-500">No hay países registrados.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="py-2 px-4 text-center text-gray-500">No hay países registrados.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 

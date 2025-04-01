@@ -125,7 +125,7 @@
     </div>
 
     {{-- Contenido Principal --}}
-    <div class="flex-1 p-10 transition-all duration-300 max-w-[100vw]">
+    <div class="flex-1 p-10 transition-all duration-300 max-w-[100vw] max-h-[100vh] overflow-y-auto">
         @yield('content')
     </div>
 

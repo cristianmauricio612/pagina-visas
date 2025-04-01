@@ -7,7 +7,7 @@
         <i class="fas fa-bars"></i>
     </button>
 
-    <div class="p-6 max-w-lg mx-auto">
+    <div class="py-6 max-w-lg mx-auto">
         {{-- Título --}}
         <h1 class="text-2xl md:text-4xl font-bold text-gray-800 mb-4 text-center md:text-left">
             Agregar País
