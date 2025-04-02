@@ -14,7 +14,7 @@
         </h1>
 
         {{-- Formulario --}}
-        <form action="" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+        <form id="createPaisForm" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
             @csrf
 
             {{-- Nombre del país --}}
@@ -26,7 +26,8 @@
             {{-- Imagen --}}
             <div class="mb-4">
                 <label for="imagen" class="block text-gray-700 font-medium">Imagen</label>
-                <input type="file" id="imagen" name="imagen" accept="image/*" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="file" id="floatingFile" accept="image/*" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="hidden" id="imageBase64" name="imagen">
             </div>
 
             {{-- Botones --}}
@@ -46,6 +47,51 @@
         document.getElementById('openSidebar').addEventListener('click', function () {
             document.getElementById('sidebar').classList.remove('-translate-x-full');
             this.classList.add('hidden');
+        });
+
+        document.getElementById("floatingFile").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Guardar la imagen en base64 en un campo oculto
+                    document.getElementById("imageBase64").value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("createPaisForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            console.log("Datos enviados:", data);
+
+            fetch("/admin/paises/crear", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json().then(json => ({ status: response.status, body: json }))) 
+            .then(result => {
+                if (result.status === 201) {
+                    console.log("✅ Pais creado:", result.body);
+                    alert("✅ Pais creado exitosamente");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 500);
+                } else {
+                    console.error("❌ Error al crear pais:", result.body);
+                    alert(`❌ Error: ${result.body.message}`);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error inesperado:", error);
+                alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
+            });
         });
     </script>
 @endsection

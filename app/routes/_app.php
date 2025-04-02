@@ -93,7 +93,7 @@ app()->get('/limpiar-pedidos', function () {
 
 app()->post('/contact-mail', 'MailController@contactEmail');
 
-//ADMIN
+//VISTAS ADMIN
 
 app()->get('/admin/home', ['name' => 'admin.homeView', function () {render('admin.home');}]);
 
@@ -109,6 +109,38 @@ app()->get('/admin/usuarios', ['name' => 'admin.usuarios.listView', function () 
 
 app()->get('/admin/usuarios/agregar', ['name' => 'admin.usuarios.addView', function () {render('admin.usuarios.add');}]);
 
+app()->get('/admin/usuarios/editar/{id}', ['name' => 'admin.usuarios.editView', 'AdminController@editUser']);
+
 app()->get('/admin/visas', ['name' => 'admin.visas.listView', function () {render('admin.visas.list');}]);
 
 app()->get('/admin/visas/agregar', ['name' => 'admin.visas.addView', function () {render('admin.visas.add');}]);
+
+app()->get('/admin/visas/editar/{id}', ['name' => 'admin.visas.editView', 'AdminController@editVisa']);
+
+/* RUTAS DEL ADMINISTRADOR */
+
+//USUARIOS
+
+app()->put('/admin/usuarios/actualizar/{id}', ['name' => 'admin.usuarios.update', 'AdminController@updateUser']);
+
+app()->delete('/admin/usuarios/eliminar/{id}', ['name' => 'admin.usuarios.delete', 'AdminController@deleteUser']);
+
+app()->get('/admin/usuarios/buscar', ['name' => 'admin.usuarios.search', 'AdminController@searchUsers']);
+
+//PAISES
+
+app()->post('/admin/paises/crear', ['name' => 'admin.paises.create', 'AdminController@createCountry']);
+
+app()->delete('/admin/paises/eliminar/{id}', ['name' => 'admin.paises.delete', 'AdminController@deleteCountry']);
+
+app()->get('/admin/paises/buscar', ['name' => 'admin.paises.search', 'AdminController@searchCountries']);
+
+//VISAS
+
+app()->post('/admin/visas/crear', ['name' => 'admin.visas.create', 'AdminController@createVisa']);
+
+app()->put('/admin/visas/actualizar/{id}', ['name' => 'admin.visas.update', 'AdminController@updateVisa']);
+
+app()->delete('/admin/visas/eliminar/{id}', ['name' => 'admin.visas.delete', 'AdminController@deleteVisa']);
+
+app()->get('/admin/visas/buscar', ['name' => 'admin.visas.search', 'AdminController@searchVisas']);

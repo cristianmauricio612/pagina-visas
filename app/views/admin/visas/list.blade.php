@@ -19,7 +19,7 @@
 
         {{-- Buscador y Botón Agregar --}}
         <div class="flex flex-col md:flex-row justify-between mb-6 gap-4">
-            <input type="text" id="search" placeholder="Buscar visa..." class="p-2 border rounded w-full md:w-1/3">
+            <input type="text" id="search-input" placeholder="Buscar visa..." class="p-2 border rounded w-full md:w-1/3">
             <a href="{{ route('admin.visas.addView') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
                 Agregar Visa
             </a>
@@ -43,7 +43,7 @@
                         <th class="py-2 px-4 text-left w-32 whitespace-nowrap">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="visas-table-body">
                     @forelse ($visas as $visa)
                         @php
                             $pais1 = \App\Models\Pais::find($visa->pais1_id)->nombre;
@@ -61,16 +61,13 @@
                             <td class="py-2 px-4 whitespace-nowrap">MXN {{ number_format($visa->precio, 2) }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">MXN {{ number_format($visa->tasa_gobierno, 2) }}</td>
                             <td class="py-2 px-4 flex space-x-2 whitespace-nowrap">
-                                <a href="" class="text-blue-500 hover:text-blue-700">
+                                <a href="{{route('admin.visas.editView', $visa->id)}}" class="text-blue-500 hover:text-blue-700">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta visa?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-700">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                                <button type="submit" class="text-red-500 hover:text-red-700" data-id="{{ $visa->id }}"
+                                    onclick="deleteVisa(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -88,5 +85,105 @@
             document.getElementById('sidebar').classList.remove('-translate-x-full');
             this.classList.add('hidden'); // Oculta el botón de abrir
         });
-    </script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            $("#search-input").on("keyup", function () {
+                searchVisa();
+            });
+        });
+
+        const csrfToken = "{{ csrf()->token() }}";
+
+        function deleteVisa(button) {
+            let id = $(button).data("id");
+
+            if (!id) {
+                alert("Error: ID de la visa no encontrada.");
+                return;
+            }
+
+            if (!confirm("¿Estás seguro de eliminar esta visa?")) {
+                return;
+            }
+
+            $.ajax({
+                url: "/admin/visas/eliminar/" + id,
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken // Incluir el token en los headers
+                },
+                success: function (response) {
+                    alert("✅ Visa eliminada correctamente");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 500);
+                },
+                error: function (xhr) {
+                    alert("❌ Error al eliminar visa: " + xhr.responseText);
+                }
+            });
+        }
+   
+        function searchVisa() {
+            let description = $("#search-input").val().trim();
+
+            $("#visas-table-body").html('<tr><td colspan="6">Cargando...</td></tr>');
+
+            $.ajax({
+                url: "/admin/visas/buscar",
+                type: "GET",
+                data: { descripcion: description },
+                dataType: "json",
+                success: function (data) {
+                    $("#visas-table-body").empty();
+
+                    if (!Array.isArray(data) || data.length === 0) {
+                        $("#visas-table-body").html('<tr><td colspan="6">No se encontraron usuarios.</td></tr>');
+                        return;
+                    }
+
+                    let html = "";
+                    data.forEach(visa => {
+                        html += `
+                                <tr class="border-b hover:bg-gray-100">
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.id}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.pais1.nombre}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.pais2.nombre}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.nombre}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.tiempo_validez}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.numero_entradas}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.estancia_maxima}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${visa.necesita_visa ? 'Si' : 'No'}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">MXN ${visa.precio ? parseFloat(visa.precio).toFixed(2) : '0.00'}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">MXN ${visa.tasa_gobierno ? parseFloat(visa.tasa_gobierno).toFixed(2) : '0.00'}</td>
+
+                                    <td class="py-2 px-4 flex space-x-2 whitespace-nowrap">
+                                        <a href="/admin/visas/editar/${visa.id}" class="text-blue-500 hover:text-blue-700">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="submit" class="text-red-500 hover:text-red-700" data-id="${visa.id}"
+                                            onclick="deleteVisa(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                    });
+
+                    $("#visas-table-body").html(html);
+                },
+                error: function (xhr) {
+                    let errorMessage = "Error al cargar los usuarios.";
+                    if (xhr.status === 404) {
+                        errorMessage = "No se encontraron usuarios.";
+                    } else if (xhr.status === 500) {
+                        errorMessage = "Error interno del servidor.";
+                    }
+
+                    $("#visas-table-body").html(`<tr><td colspan="6">${errorMessage}</td></tr>`);
+                    console.error("Error en la búsqueda:", xhr.responseText);
+                }
+            });
+        }
+   </script>
 @endsection

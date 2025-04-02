@@ -14,7 +14,7 @@
         </h1>
 
         {{-- Formulario --}}
-        <form action="" method="POST" class="bg-white p-6 rounded-lg shadow-md">
+        <form id="registerForm" class="bg-white p-6 rounded-lg shadow-md">
             @csrf
 
             {{-- Nombre --}}
@@ -25,20 +25,25 @@
 
             {{-- Apellido --}}
             <div class="mb-4">
-                <label for="apellido" class="block text-gray-700 font-medium">Apellido</label>
-                <input type="text" id="apellido" name="apellido" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <label for="apellidos" class="block text-gray-700 font-medium">Apellido</label>
+                <input type="text" id="apellidos" name="apellidos" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             {{-- Correo --}}
             <div class="mb-4">
-                <label for="correo" class="block text-gray-700 font-medium">Correo</label>
-                <input type="email" id="correo" name="correo" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <label for="email" class="block text-gray-700 font-medium">Correo</label>
+                <input type="email" id="email" name="email" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             {{-- Contraseña --}}
             <div class="mb-4">
-                <label for="password" class="block text-gray-700 font-medium">Contraseña</label>
-                <input type="password" id="password" name="password" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <label for="contraseña" class="block text-gray-700 font-medium">Contraseña</label>
+                <input type="password" id="contraseña" name="contraseña" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="contraseña-confirm" class="block text-gray-700 font-medium">Confirmar Contraseña</label>
+                <input type="password" id="contraseña-confirm" name="contraseña-confirm" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             {{-- Botones --}}
@@ -58,6 +63,36 @@
         document.getElementById('openSidebar').addEventListener('click', function () {
             document.getElementById('sidebar').classList.remove('-translate-x-full');
             this.classList.add('hidden'); // Oculta el botón de abrir
+        });
+
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+    
+            fetch("/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json().then(json => ({ status: response.status, body: json }))) 
+            .then(result => {
+                if (result.status === 201) {
+                    console.log("✅ Usuario registrado:", result.body);
+                    alert("✅ Usuario registrado exitosamente");
+                    window.location.href = "/admin/usuarios"; 
+                } else {
+                    console.error("❌ Error al registrarse:", result.body);
+                    alert(`❌ Error: ${result.body.message}`);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error inesperado:", error);
+                alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
+            });
         });
     </script>
 @endsection

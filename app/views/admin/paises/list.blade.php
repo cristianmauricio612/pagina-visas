@@ -18,7 +18,7 @@
 
         {{-- Buscador y Botón Agregar --}}
         <div class="flex flex-col md:flex-row justify-between mb-6 gap-4">
-            <input type="text" id="search" placeholder="Buscar país..." class="p-2 border rounded w-full md:w-1/3">
+            <input type="text" id="search-input" placeholder="Buscar país..." class="p-2 border rounded w-full md:w-1/3">
             <a href="{{ route('admin.paises.addView') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
                 Agregar País
             </a>
@@ -35,19 +35,20 @@
                         <th class="py-2 px-4 text-left w-32">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="paises-table-body">
                     @forelse ($paises as $pais)
                         <tr class="border-b hover:bg-gray-100">
                             <td class="py-2 px-4">{{ $pais->id }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $pais->nombre }}</td>
                             <td class="py-2 px-4">
-                                <img src="{{ assets($pais->imagen) }}" alt="{{ $pais->nombre }}" class="w-14 h-10 object-cover rounded border">
+                                <img src="{{ $pais->imagen}}" alt="{{ $pais->nombre }}" class="w-14 h-10 object-cover rounded border">
                             </td>
                             <td class="py-2 px-4 flex space-x-2">
                                 <a href="" class="text-blue-500 hover:text-blue-700">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <button type="submit" class="text-red-500 hover:text-red-700">
+                                <button type="submit" class="text-red-500 hover:text-red-700" data-id="{{ $pais->id }}"
+                                    onclick="deletePais(this)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -67,5 +68,99 @@
             document.getElementById('sidebar').classList.remove('-translate-x-full');
             this.classList.add('hidden'); // Oculta el botón de abrir
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            $("#search-input").on("keyup", function () {
+                searchPais();
+            });
+        });
+
+        const csrfToken = "{{ csrf()->token() }}";
+
+        function deletePais(button) {
+            let id = $(button).data("id");
+
+            if (!id) {
+                alert("Error: ID del pais no encontrado.");
+                return;
+            }
+
+            if (!confirm("¿Estás seguro de eliminar este pais?")) {
+                return;
+            }
+
+            $.ajax({
+                url: "/admin/paises/eliminar/" + id,
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken // Incluir el token en los headers
+                },
+                success: function (response) {
+                    alert("✅ Pais eliminado correctamente");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 500);
+                },
+                error: function (xhr) {
+                    alert("❌ Error al eliminar pais: " + xhr.responseText);
+                }
+            });
+        }
+
+        function searchPais() {
+            let description = $("#search-input").val().trim();
+
+            $("#paises-table-body").html('<tr><td colspan="6">Cargando...</td></tr>');
+
+            $.ajax({
+                url: "/admin/paises/buscar",
+                type: "GET",
+                data: { descripcion: description },
+                dataType: "json",
+                success: function (data) {
+                    $("#paises-table-body").empty();
+
+                    if (!Array.isArray(data) || data.length === 0) {
+                        $("#paises-table-body").html('<tr><td colspan="6">No se encontraron paises.</td></tr>');
+                        return;
+                    }
+
+                    let html = "";
+                    data.forEach(pais => {
+                        html += `
+                                <tr class="border-b hover:bg-gray-100">
+                                    <td class="py-2 px-4">${pais.id}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">${pais.nombre}</td>
+                                    <td class="py-2 px-4">
+                                        <img src="${pais.imagen}" alt="${pais.nombre}" class="w-14 h-10 object-cover rounded border">
+                                    </td>
+                                    <td class="py-2 px-4 flex space-x-2">
+                                        <a href="" class="text-blue-500 hover:text-blue-700">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="submit" class="text-red-500 hover:text-red-700" data-id="${pais.id}"
+                                            onclick="deletePais(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                    });
+
+                    $("#paises-table-body").html(html);
+                },
+                error: function (xhr) {
+                    let errorMessage = "Error al cargar los paises.";
+                    if (xhr.status === 404) {
+                        errorMessage = "No se encontraron usuarios.";
+                    } else if (xhr.status === 500) {
+                        errorMessage = "Error interno del servidor.";
+                    }
+
+                    $("#paises-table-body").html(`<tr><td colspan="6">${errorMessage}</td></tr>`);
+                    console.error("Error en la búsqueda:", xhr.responseText);
+                }
+            });
+        }
     </script>
 @endsection
