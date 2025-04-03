@@ -132,7 +132,7 @@ class VisaInscripcionController extends Controller
             'vads_page_action' => "PAYMENT",
             'vads_payment_config' => "SINGLE",
             "vads_redirect_success_timeout" => 5,
-            'vads_return_mode' => "POST",
+            'vads_return_mode' => "GET",
             'vads_site_id' => 94909545,
             'vads_trans_date' => gmdate("YmdHis"),
             'vads_trans_id' => $purchaseNumber,
@@ -150,29 +150,22 @@ class VisaInscripcionController extends Controller
 
     public function processPayment()
     {
-        $dataResult = $_POST;
+        $dataResult = $_GET;
 
-        $method = $_SERVER['REQUEST_METHOD'];
-
-        // Registrar en el log
-        error_log("Método recibido: " . $method);
-
-        // Capturar datos según el método
-        $dataResult = ($method === 'POST') ? $_POST : $_GET;
         error_log("Datos recibidos: " . json_encode($dataResult));
 
         if (empty($dataResult)) {
             return redirect('/pago-fallido')->with('error', 'El Post estaba vacío.');
         }
 
-        if (!isset($dataResult['vads_hash'])) {
-            return redirect('/pago-fallido')->with('error', 'Faltó el vads_hash.');
+        if (!isset($dataResult['signature'])) {
+            return redirect('/pago-fallido')->with('error', 'Faltó el signatue.');
         }
 
         $clave_secreta = _env('TOKEN_SECRET');
         $firma_calculada = $this->getSignature($dataResult, $clave_secreta);
 
-        if ($firma_calculada !== $dataResult['vads_hash']) {
+        if ($firma_calculada !== $dataResult['signature']) {
             return redirect('/pago-fallido')->with('error', 'Signature inválido.');
         }
 
@@ -255,7 +248,7 @@ class VisaInscripcionController extends Controller
 
             Session::delete('data');
 
-            return view('/pago-exitoso', compact('visaInscripcion'));
+            return render('pagos.exito', compact('visaInscripcion'));
         } else {
             Session::delete('data');
             return redirect('/pago-fallido')->with('error', 'Pago no autorizado.');

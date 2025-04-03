@@ -13,7 +13,7 @@
             <div class="exito-text">El pago ha resultado exitoso</div>
             <div class="exito-warning">
                 Muchas gracias por su compra.<br>
-                Tu ID de pedido es <a id="pedido-id" class="exito-login" onclick="checkLogin()">94a0c2</a>.<br>
+                Tu ID de pedido es <a id="pedido-id" class="exito-login" onclick="checkLogin()">{{ $visaInscripcion->numero_pedido }}</a>.<br>
                 Copia este codigo para poder acceder a los datos de tu pedido desde el <a class="exito-login" href="/iniciar-sesion">Login</a>.
             </div>
         </div>
@@ -24,7 +24,7 @@
         function checkLogin() {
             const email = document.getElementById('pedido-id').textContent;
 
-            fetch("order-check", {
+            fetch("/order-check", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

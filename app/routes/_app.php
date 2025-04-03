@@ -78,9 +78,7 @@ app()->get('/pago/{id}', ['name' => 'pago', 'VisaInscripcionController@createVis
 
 app()->post('/api/izipay/payload', ['name' => 'izipay-payload', 'VisaInscripcionController@checkout']);
 
-/*app()->post('/api/izipay/response', ['name' => 'izipay-response', 'VisaInscripcionController@processPayment']);*/
 app()->get('/api/izipay/response', 'VisaInscripcionController@processPayment');
-app()->post('/api/izipay/response', 'VisaInscripcionController@processPayment');
 
 app()->get('/pago-exitoso', ['name' => 'pago-exitoso', function () {render('pagos.exito');}]);
 
