@@ -204,19 +204,85 @@ class AdminController extends Controller
         return @imagecreatefromstring($imageData) !== false;
     }
 
+    public function updateCountry($id)
+    {
+        csrf()->validate();
+        // Buscar el usuario por ID
+        $pais = Pais::find($id);
+
+        $data = request()->get(['nombre', 'imagen']);
+
+        // Validar datos obligatorios
+        if (!$data['nombre']) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El nombre del pais es obligatorio'
+            ], 400);
+        }
+
+        // Verificar si la visa existe
+        if (Pais::where('nombre', $data['nombre'])->exists()) {
+            if (Pais::where('nombre', $data['nombre'])->first()->nombre != $pais->nombre) {
+                return response()->json(['status' => 'error', 'message' => 'El pais ya existe'], 404);
+            }
+        }
+
+        if (!empty($data['imagen'])) {
+            // Validar que la imagen sea Base64 válida
+            if (!$this->isValidBase64Image($data['imagen'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La imagen no es un formato base64 válido'
+                ], 400);
+            }
+        }
+
+        $pais->nombre = $data['nombre'];
+        $pais->imagen = $data['imagen'];
+
+        // Guardar cambios en el usuario
+        $pais->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Pais actualizado exitosamente',
+            'pais' => $pais
+        ], 200);
+    }
+
+    public function editCountry($id)
+    {
+        // Buscar el producto en la base de datos por ID
+        $pais = Pais::find($id);
+
+        // Si no se encuentra el producto, mostrar error 404
+        if (!$pais) {
+            return view('errors.404');
+        }
+
+        // Retornar la vista 'admin/usuario/edit' pasando el usuario
+        render('admin.paises.edit', compact('pais'));
+    }
+
     public function deleteCountry($id)
     {
         csrf()->validate();
         $pais = Pais::find($id);
 
         if (!$pais) {
-            return response()->json(['status' => 'error', 'message' => 'Pais no encontrado'], 404);
+            return response()->json(['status' => 'error', 'message' => 'Pais no encontrado'], 400);
+        }
+
+        $visas = Visa::where('pais1_id', $pais->id)->orWhere('pais2_id', $pais->id)->get();
+
+        if (!empty($visas)) {
+            return response()->json(['status' => 'error', 'message' => 'El país esta siendo usado, elimine o edite las visas para poder eliminar este pais'], 401);
         }
 
         // Luego eliminar el usuario
         $pais->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Pais eliminado correctamente']);
+        return response()->json(['status' => 'success', 'message' => 'Pais eliminado correctamente'], 200);
     }
 
     public function searchCountries()

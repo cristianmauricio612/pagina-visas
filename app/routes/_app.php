@@ -99,6 +99,8 @@ app()->get('/admin/paises', ['name' => 'admin.paises.listView', function () {ren
 
 app()->get('/admin/paises/agregar', ['name' => 'admin.paises.addView', function () {render('admin.paises.add');}]);
 
+app()->get('/admin/paises/editar/{id}', ['name' => 'admin.paises.editView', 'AdminController@editCountry']);
+
 app()->get('/admin/pedidos', ['name' => 'admin.pedidos.listView', function () {render('admin.pedidos.list');}]);
 
 app()->get('/admin/pedidos/agregar', ['name' => 'admin.pedidos.addView', function () {render('admin.pedidos.add');}]);
@@ -128,6 +130,8 @@ app()->get('/admin/usuarios/buscar', ['name' => 'admin.usuarios.search', 'AdminC
 //PAISES
 
 app()->post('/admin/paises/crear', ['name' => 'admin.paises.create', 'AdminController@createCountry']);
+
+app()->put('/admin/paises/actualizar/{id}', ['name' => 'admin.paises.update', 'AdminController@updateCountry']);
 
 app()->delete('/admin/paises/eliminar/{id}', ['name' => 'admin.paises.delete', 'AdminController@deleteCountry']);
 

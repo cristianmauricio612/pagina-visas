@@ -6,7 +6,8 @@
         $paises = \App\Models\Pais::all();
     @endphp
     {{-- Botón para abrir el Sidebar (Solo en esta vista) --}}
-    <button id="openSidebar" class="fixed top-4 left-4 bg-gray-900 text-white w-10 h-10 flex items-center justify-center rounded-md text-lg lg:hidden shadow-md">
+    <button id="openSidebar"
+        class="fixed top-4 left-4 bg-gray-900 text-white w-10 h-10 flex items-center justify-center rounded-md text-lg lg:hidden shadow-md">
         <i class="fas fa-bars"></i>
     </button>
 
@@ -19,7 +20,8 @@
         {{-- Buscador y Botón Agregar --}}
         <div class="flex flex-col md:flex-row justify-between mb-6 gap-4">
             <input type="text" id="search-input" placeholder="Buscar país..." class="p-2 border rounded w-full md:w-1/3">
-            <a href="{{ route('admin.paises.addView') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+            <a href="{{ route('admin.paises.addView') }}"
+                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
                 Agregar País
             </a>
         </div>
@@ -41,10 +43,11 @@
                             <td class="py-2 px-4">{{ $pais->id }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $pais->nombre }}</td>
                             <td class="py-2 px-4">
-                                <img src="{{ $pais->imagen}}" alt="{{ $pais->nombre }}" class="w-14 h-10 object-cover rounded border">
+                                <img src="{{ $pais->imagen}}" alt="{{ $pais->nombre }}"
+                                    class="w-14 h-10 object-cover rounded border">
                             </td>
                             <td class="py-2 px-4 flex space-x-2">
-                                <a href="" class="text-blue-500 hover:text-blue-700">
+                                <a href="{{route('admin.paises.editView', $pais->id)}}" class="text-blue-500 hover:text-blue-700">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button type="submit" class="text-red-500 hover:text-red-700" data-id="{{ $pais->id }}"
@@ -81,30 +84,41 @@
             let id = $(button).data("id");
 
             if (!id) {
-                alert("Error: ID del pais no encontrado.");
+                alert("❌ Error: ID del país no encontrado.");
                 return;
             }
 
-            if (!confirm("¿Estás seguro de eliminar este pais?")) {
+            if (!confirm("⚠️ ¿Estás seguro de eliminar este país?")) {
                 return;
             }
 
-            $.ajax({
-                url: "/admin/paises/eliminar/" + id,
-                method: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken // Incluir el token en los headers
-                },
-                success: function (response) {
-                    alert("✅ Pais eliminado correctamente");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 500);
-                },
-                error: function (xhr) {
-                    alert("❌ Error al eliminar pais: " + xhr.responseText);
-                }
-            });
+            fetch("/admin/paises/eliminar/" + id, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken // Incluir el token CSRF en los headers
+                    }
+                })
+                    .then(response => response.json().then(data => ({ status: response.status, body: data }))) // Convertir en JSON y capturar el código de estado
+                    .then(result => {
+                        if (result.status === 200) {
+                            console.log("✅ País eliminado correctamente");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 500);
+                        } else if (result.status === 400) {
+                            alert("❌ Error: " + result.body.message);
+                        } else if (result.status === 401) {
+                            alert("❌ Error: " + result.body.message);
+                        } else {
+                            console.error("❌ Error desconocido:", result.body);
+                            alert("❌ Error inesperado, intenta nuevamente.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Error inesperado: ", error);
+                        alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
+                    });
         }
 
         function searchPais() {
@@ -128,23 +142,23 @@
                     let html = "";
                     data.forEach(pais => {
                         html += `
-                                <tr class="border-b hover:bg-gray-100">
-                                    <td class="py-2 px-4">${pais.id}</td>
-                                    <td class="py-2 px-4 whitespace-nowrap">${pais.nombre}</td>
-                                    <td class="py-2 px-4">
-                                        <img src="${pais.imagen}" alt="${pais.nombre}" class="w-14 h-10 object-cover rounded border">
-                                    </td>
-                                    <td class="py-2 px-4 flex space-x-2">
-                                        <a href="" class="text-blue-500 hover:text-blue-700">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button type="submit" class="text-red-500 hover:text-red-700" data-id="${pais.id}"
-                                            onclick="deletePais(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `;
+                                        <tr class="border-b hover:bg-gray-100">
+                                            <td class="py-2 px-4">${pais.id}</td>
+                                            <td class="py-2 px-4 whitespace-nowrap">${pais.nombre}</td>
+                                            <td class="py-2 px-4">
+                                                <img src="${pais.imagen}" alt="${pais.nombre}" class="w-14 h-10 object-cover rounded border">
+                                            </td>
+                                            <td class="py-2 px-4 flex space-x-2">
+                                                <a href="/admin/paises/editar/${pais.id}" class="text-blue-500 hover:text-blue-700">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button type="submit" class="text-red-500 hover:text-red-700" data-id="${pais.id}"
+                                                    onclick="deletePais(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
                     });
 
                     $("#paises-table-body").html(html);
