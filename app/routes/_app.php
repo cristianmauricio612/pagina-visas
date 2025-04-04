@@ -93,6 +93,8 @@ app()->post('/contact-mail', 'MailController@contactEmail');
 
 //VISTAS ADMIN
 
+app()->get('/admin/iniciar-sesion', ['name' => 'admin.loginView', function () {render('admin.login');}]);
+
 app()->get('/admin/home', ['name' => 'admin.homeView', function () {render('admin.home');}]);
 
 app()->get('/admin/paises', ['name' => 'admin.paises.listView', function () {render('admin.paises.list');}]);
@@ -102,8 +104,6 @@ app()->get('/admin/paises/agregar', ['name' => 'admin.paises.addView', function 
 app()->get('/admin/paises/editar/{id}', ['name' => 'admin.paises.editView', 'AdminController@editCountry']);
 
 app()->get('/admin/pedidos', ['name' => 'admin.pedidos.listView', function () {render('admin.pedidos.list');}]);
-
-app()->get('/admin/pedidos/agregar', ['name' => 'admin.pedidos.addView', function () {render('admin.pedidos.add');}]);
 
 app()->get('/admin/usuarios', ['name' => 'admin.usuarios.listView', function () {render('admin.usuarios.list');}]);
 
@@ -146,3 +146,16 @@ app()->put('/admin/visas/actualizar/{id}', ['name' => 'admin.visas.update', 'Adm
 app()->delete('/admin/visas/eliminar/{id}', ['name' => 'admin.visas.delete', 'AdminController@deleteVisa']);
 
 app()->get('/admin/visas/buscar', ['name' => 'admin.visas.search', 'AdminController@searchVisas']);
+
+//PEDIDOS
+
+app()->put('/admin/pedidos/actualizar/{id}', ['name' => 'admin.order.update', 'AdminController@updateOrder']);
+
+app()->delete('/admin/pedidos/eliminar/{id}', ['name' => 'admin.order.delete', 'AdminController@deleteOrder']);
+
+//LOGIN - LOGOUT
+
+app()->post('/admin/login', ['name' => 'admin.login', 'AdminController@login']);
+
+app()->post('/admin/logout', 'AdminController@logout');
+

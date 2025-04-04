@@ -24,8 +24,8 @@
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Iniciar Sesión</h2>
 
         <!-- Formulario de Login -->
-        <form method="POST" action="tu_ruta_de_login">
-            
+        <form id="login-form">
+            @csrf
             <!-- Correo Electrónico -->
             <div class="mb-4">
                 <label for="email" class="block text-gray-700 font-semibold mb-2">Correo Electrónico</label>
@@ -37,9 +37,9 @@
 
             <!-- Contraseña -->
             <div class="mb-6">
-                <label for="password" class="block text-gray-700 font-semibold mb-2">Contraseña</label>
+                <label for="contraseña" class="block text-gray-700 font-semibold mb-2">Contraseña</label>
                 <div class="relative">
-                    <input type="password" id="password" name="password" required 
+                    <input type="password" id="contraseña" name="contraseña" required 
                         class="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             </div>
@@ -54,6 +54,36 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch("/admin/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("✅ Sesión iniciada correctamente");
+                    window.location.href = "/admin/home"; // Redirigir a la página principal
+                } else {
+                    alert("❌ Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error inesperado: ", error);
+                alert("❌ Ocurrió un error inesperado. Revisa la consola para más detalles.");
+            });
+        });
     </script>
 
 </body>

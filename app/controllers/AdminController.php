@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\Pais;
 use App\Models\User;
 use App\Models\Visa;
-use App\Models\Product_Images;
+use App\Models\VisaInscripcion;
 
 
 class AdminController extends Controller
@@ -62,6 +62,13 @@ class AdminController extends Controller
         if (User::where('email', $data['email'])->exists()) {
             if (User::where('email', $data['email'])->first()->email != $user->email) {
                 return response()->json(['status' => 'error', 'message' => 'El email ya está en uso'], 400);
+            }
+        }
+
+        // Verificar si el usuario admin ya está registrado
+        if (strtolower($data['nombre']) === 'admin') {
+            if (User::whereRaw('LOWER(nombre) = ?', [strtolower($data['nombre'])])->exists()) {
+                return response()->json(['status' => 'error', 'message' => 'El nombre "admin" no está permitido'], 402);
             }
         }
 
@@ -453,6 +460,89 @@ class AdminController extends Controller
         $visas = $query->get();
 
         return response()->json($visas);
+    }
+
+    //PEDIDOS
+
+    public function updateOrder($id)
+    {
+        csrf()->validate();
+        // Buscar la categoria en la base de datos por ID
+        $order = VisaInscripcion::find($id);
+
+        // Si no se encuentra el pedido, mostrar error 404
+        if (!$order) {
+            return view('errors.404');
+        }
+
+        $data = request()->get(['status']);
+
+        $order->status_pago = $data['status'];
+        $order->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Pedido actualizado exitosamente',
+            'order' => $order
+        ], 200);
+    }
+
+    public function deleteOrder($id)
+    {
+        csrf()->validate();
+
+        $order = VisaInscripcion::find($id);
+
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'Pedido no encontrado'], 404);
+        }
+
+        $order->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'Pedido eliminado']);
+    }
+
+    //LOGIN
+
+    public function login()
+    {
+        csrf()->validate(); // Validar el token CSRF automáticamente
+
+        $data = request()->get(['email', 'contraseña']);
+
+        // Verificar si se enviaron los datos requeridos
+        if (empty($data['email']) || empty($data['contraseña'])) {
+            return response()->json(['status' => 'error', 'message' => 'Email y contraseña son obligatorios'], 400);
+        }
+
+        $user = User::where('email', $data['email'])->first();
+
+        // Verificar si el usuario existe y si la contraseña es correcta
+        //if (!$user || !($data['password'] === $user->password)) {
+        if (!$user || !password_verify($data['contraseña'], $user->contraseña)) {
+            return response()->json(['status' => 'error', 'message' => 'Usuario o contraseña incorrectos'], 401);
+        }
+
+        if ($user->nombre === 'admin') {
+            // Guardar el admin en sesión
+            session()->set('admin', [
+                'id' => $user->id,
+                'name' => $user->nombre,
+                'email' => $user->email
+            ]);
+
+            return response()->json(['status' => 'success', 'message' => 'Sesion Iniciada']);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Acceso denegado'], 404);
+    }
+
+    public function logout()
+    {
+        csrf()->validate();
+
+        session()->delete('admin'); // Eliminar solo la sesión del admin
+        return response()->json(['status' => 'success', 'message' => 'Sesión cerrada']);
     }
 
 }
