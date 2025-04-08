@@ -21,9 +21,14 @@
                         <div class="select-container">
                             <label for="origen">¿De dónde soy?</label>
                             <div class="custom-select" id="from-select">
-                                <div class="selected-option" data-value="{{ $paises[1]->id }}" id="origen">
-                                    <img src="{{ $paises[1]->imagen }}" alt="{{ $paises[1]->nombre }}"> {{ $paises[1]->nombre }}
-                                </div>
+                                @foreach ($paises as $pais)
+                                    @if ($pais->nombre == "Perú")
+                                        <div class="selected-option" data-value="{{ $pais->id }}" id="origen">
+                                            <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                        </div>
+                                    @endif
+                                @endforeach
+                                
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">

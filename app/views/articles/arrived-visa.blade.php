@@ -2,6 +2,10 @@
 
 @section('title', 'Visa')
 
+@push('resources')
+    <link href="{{ assets('css/electronic-visa.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 
     <div class="info-visa-container">
@@ -485,7 +489,4 @@
             </div>
         </div>
     </div>
-
-    <link href="{{ assets('css/electronic-visa.css') }}" rel="stylesheet">
-
 @endsection

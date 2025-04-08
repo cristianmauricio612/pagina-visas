@@ -52,9 +52,13 @@
                             <p class="form-title">Solicitar ahora</p>
                             <h4 class="label-form">¿De dónde eres?</h4>
                             <div class="custom-select" id="from-select">
-                                <div class="selected-option" data-value="{{ $paises[0]->id }}" id="origen">
-                                    <img src="{{ $paises[0]->imagen }}" alt="{{ $paises[0]->nombre }}"> {{ $paises[0]->nombre }}
-                                </div>
+                                @foreach ($paises as $pais)
+                                    @if ($pais->nombre == "Perú")
+                                        <div class="selected-option" data-value="{{ $pais->id }}" id="origen">
+                                            <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                        </div>
+                                    @endif
+                                @endforeach
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">
@@ -69,9 +73,13 @@
 
                             <h4 class="label-form">Where are you going?</h4>
                             <div class="custom-select" id="to-select">
-                                <div class="selected-option" data-value="{{ $paises[1]->id }}" id="destino">
-                                    <img src="{{ $paises[1]->imagen }}" alt="{{ $paises[1]->nombre }}"> {{ $paises[1]->nombre }}
-                                </div>
+                                @foreach ($paises as $pais)
+                                    @if ($pais->nombre == "Canadá")
+                                        <div class="selected-option" data-value="{{ $pais->id }}" id="destino">
+                                            <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                        </div>
+                                    @endif
+                                @endforeach
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">
