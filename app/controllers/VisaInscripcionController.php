@@ -198,8 +198,10 @@ class VisaInscripcionController extends Controller
                     "apellidos_pasaporte" => $viajero['apellidos'],
                     "fecha_nacimiento" => Carbon::parse($viajero['fecha_nacimiento']),
                     "nacionalidad_pasaporte_id" => $viajero['nacionalidad_pasaporte'],
-                    "numero_pasaporte" => $viajero['numero_pasaporte'],
-                    "fecha_caducidad_pasaporte" => isset($viajero['fecha_caducidad_pasaporte']) ? Carbon::parse($viajero['fecha_caducidad_pasaporte']) : null,
+                    "numero_pasaporte" => !empty($viajero['numero_pasaporte']) ? $viajero['numero_pasaporte'] : null,
+                    "fecha_caducidad_pasaporte" => !empty($viajero['fecha_caducidad_pasaporte']) 
+                    ? Carbon::parse($viajero['fecha_caducidad_pasaporte']) 
+                    : null,
                     "pais_nacimiento_id" => $viajero['pais_nacimiento'],
                     "nivel_estudios" => $viajero['nivel_estudios'],
                 ]);

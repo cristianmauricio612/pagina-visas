@@ -22,7 +22,7 @@
         <div class="info-visa-container">
             <div class="return-page">
                 <div class="small-title-page">
-                    <a class="inicio-link" onclick="close_order()">
+                    <a class="inicio-link" style="cursor: pointer" onclick="close_order()">
                         <span>Login</span>
                     </a>
                     <span> > </span>
@@ -36,6 +36,7 @@
         </div>
 
         <div class="orders-container">
+            <a onclick="close_order()" class="back-link" style="cursor: pointer">← Login</a>
             <div class="orders-part">
                 <table class="orders-table">
                     <thead>
@@ -222,7 +223,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === "success") {
-                    alert("✅ Sesiones cerradas correctamente");
+                    alert("✅ Pedido cerrado correctamente");
                     window.location.href = "/iniciar-sesion"; // Redirigir al login
                 } else {
                     alert("❌ Error: " + data.message);

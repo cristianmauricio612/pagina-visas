@@ -86,6 +86,12 @@
                     <input type="number" step="0.01" name="tasa_gobierno" id="tasa_gobierno" class="p-2 border rounded w-full" placeholder="00.00" required>
                 </div>
 
+                {{-- Meses de Espera --}}
+                <div class="mb-4">
+                    <label for="meses_espera" class="block text-gray-700 font-semibold mb-2">Tiempo de Espera (Meses)</label>
+                    <input type="text" name="meses_espera" id="meses_espera" class="p-2 border rounded w-full" placeholder="00" required>
+                </div>
+
                 {{-- Botón de envío --}}
                 <div class="flex justify-between">
                     <a href="{{ route('admin.visas.listView') }}" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">

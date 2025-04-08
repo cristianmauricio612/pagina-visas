@@ -20,24 +20,44 @@
                     <div class="hero-form-selects">
                         <div class="select-container">
                             <label for="origen">¿De dónde soy?</label>
-                            <select id="origen">
-                                @foreach ($paises as $pais)
-                                    <option value="{{ $pais->id }}"><img src="{{ $pais->imagen }}" alt="" style="width: 32; height: 32; margin-right: 10px">{{ $pais->nombre }}</option>
-                                @endforeach
-                            </select>
+                            <div class="custom-select" id="from-select">
+                                <div class="selected-option" data-value="{{ $paises[1]->id }}" id="origen">
+                                    <img src="{{ $paises[1]->imagen }}" alt="{{ $paises[1]->nombre }}"> {{ $paises[1]->nombre }}
+                                </div>
+                                <div class="dropdown-form">
+                                    <input type="text" class="search-input" placeholder="Buscar país...">
+                                    <div class="options-list">
+                                        @foreach ($paises as $pais)
+                                            <div class="option" data-value="{{ $pais->id }}">
+                                                <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="select-container">
                             <label for="destino">¿A dónde viajo?</label>
-                            <select id="destino">
-                                @foreach ($paises as $pais)
-                                    <option value="{{ $pais->id }}"><img src="{{ $pais->imagen }}" alt="" style="width: 32; height: 32; margin-right: 10px">{{ $pais->nombre }}</option>
-                                @endforeach
-                            </select>
+                            <div class="custom-select" id="to-select">
+                                <div class="selected-option" data-value="{{ $paises[0]->id }}" id="destino">
+                                    <img src="{{ $paises[0]->imagen }}" alt="{{ $paises[0]->nombre }}"> {{ $paises[0]->nombre }}
+                                </div>
+                                <div class="dropdown-form">
+                                    <input type="text" class="search-input" placeholder="Buscar país...">
+                                    <div class="options-list">
+                                        @foreach ($paises as $pais)
+                                            <div class="option" data-value="{{ $pais->id }}">
+                                                <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="hero-form-button-container">
                         <div class="hero-form-button">
-                            <button class="hero-button" id="buscarVisas">¡Comenzar ahora! <i class="fa fa-arrow-right"></i></button>
+                            <button class="hero-button" onclick="verVisa()">¡Comenzar ahora! <i class="fa fa-arrow-right"></i></button>
                         </div>
                     </div>
                 </div>
@@ -173,22 +193,68 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("buscarVisas").addEventListener("click", function() {
-                // Obtener los valores seleccionados de los selects
-                let pais1 = document.getElementById("origen").value;
-                let pais2 = document.getElementById("destino").value;
-                let posicion = "0";
+            const customSelects = document.querySelectorAll(".custom-select");
 
-                // Verificar que ambos países hayan sido seleccionados
-                if (!pais1 || !pais2) {
-                    alert("Por favor, selecciona ambos países.");
-                    return;
-                }
+            customSelects.forEach(select => {
+                const selectedOption = select.querySelector(".selected-option");
+                const dropdown = select.querySelector(".dropdown-form");
+                const searchInput = select.querySelector(".search-input");
+                const optionsList = select.querySelectorAll(".option");
 
-                // Construir la URL de la ruta y redirigir
-                let url = `/visas/${pais1}/${pais2}/${posicion}`;
-                window.location.href = url;
+                // Mostrar dropdown en el lugar del select
+                selectedOption.addEventListener("click", function () {
+                    dropdown.style.display = "block";
+                    searchInput.focus();
+                });
+
+                // Buscar país en el input
+                searchInput.addEventListener("input", function () {
+                    const filter = searchInput.value.toLowerCase();
+                    optionsList.forEach(option => {
+                        const text = option.textContent.toLowerCase();
+                        option.style.display = text.includes(filter) ? "flex" : "none";
+                    });
+                });
+
+                // Seleccionar un país
+                optionsList.forEach(option => {
+                    option.addEventListener("click", function () {
+                        const selectedId = this.getAttribute("data-value"); // Obtener ID del país seleccionado
+                        const optionText = this.textContent.trim(); // Obtener solo el texto
+                        let optionHTML = this.innerHTML; // Copiar contenido HTML (imagen + texto si hay)
+
+                        // **Actualizar UI del select**
+                        selectedOption.innerHTML = optionHTML;
+                        selectedOption.dataset.value = selectedId;
+                        dropdown.style.display = "none";
+                        searchInput.value = "";
+                        optionsList.forEach(opt => (opt.style.display = "flex"));
+                    });
+                });
+
+                // Cerrar dropdown si el usuario hace clic fuera
+                document.addEventListener("click", function (event) {
+                    if (!select.contains(event.target)) {
+                        dropdown.style.display = "none";
+                    }
+                });
             });
         });
+        function verVisa() {
+            // Obtener los valores seleccionados de los selects
+            let pais1 = document.getElementById("origen").getAttribute("data-value");
+            let pais2 = document.getElementById("destino").getAttribute("data-value");
+            let posicion = 0;
+
+            // Verificar que ambos países hayan sido seleccionados
+            if (!pais1 || !pais2) {
+                alert("Por favor, selecciona ambos países.");
+                return;
+            }
+
+            // Construir la URL de la ruta y redirigir
+            let url = `/visas/1/3/0`;
+            window.location.href = '/visas/'+pais1+'/'+pais2+'/'+posicion;
+        }
     </script>
 @endsection

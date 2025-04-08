@@ -32,3 +32,6 @@ columns:
     total: 20
     places: 2
     nullable: true
+  meses_espera:
+    type: integer
+    nullable: false

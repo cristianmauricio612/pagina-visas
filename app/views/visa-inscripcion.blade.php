@@ -127,7 +127,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-box-input" style="display: none;">
+                            <div class="form-box-input" style="display: none">
                                 <div data-ivisa-slug="consent_to_marketing_emails"
                                     data-ivisa-question-selector="general.consent_to_marketing_emails"
                                     class="form-box-date">
@@ -660,7 +660,7 @@
                             </div>
 
                             <div class="information-pago-hoy">
-                                <span style="flex: 1 1 0%;">Pago a realizar hoy&nbsp;</span>
+                                <span style="flex: 1 1 0%;">Servicio de trámite y asesoría&nbsp;</span>
                                 <span style="text-wrap: nowrap; width: fit-content;">
                                     $. {{ $visa->precio * $contadorViajero}}
                                 </span>
@@ -705,19 +705,23 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
+        let meses = {{$visa->meses_espera}};
         let calendar;
 
         document.addEventListener("DOMContentLoaded", function () {
             const input = document.getElementById("date-picker");
             const icon = document.getElementById("calendar-icon");
 
-            // Número de días mínimos desde hoy
-            const minDays = 3;
+            const minMonths = meses;
 
-            // Inicializar Flatpickr con opciones mejoradas
+            // Calcular la fecha mínima sumando meses
+            const today = new Date();
+            const minDate = new Date(today.getFullYear(), today.getMonth() + minMonths, today.getDate());
+
+            // Inicializar Flatpickr con minDate basado en meses
             calendar = flatpickr(input, {
                 dateFormat: "d/m/Y",
-                minDate: new Date().fp_incr(minDays),
+                minDate: minDate,
                 allowInput: false,
                 clickOpens: true,
                 positionElement: input,
@@ -1157,14 +1161,21 @@
                         let paisNacimiento = viajeroBox.querySelector(".selected-option[name='pais_nacimiento[]']")?.getAttribute("data-value");
                         let nivelEstudios = viajeroBox.querySelector(".selected-option[name='nivel_estudios[]']")?.getAttribute("data-value");
 
-                        if (!nacionalidad || !numeroPasaporte || isNaN(diaCaducidad) || diaCaducidad === "" ||isNaN(mesCaducidad) || mesCaducidad === "" || isNaN(anioCaducidad) || anioCaducidad === "" || !paisNacimiento || !nivelEstudios) {
+                        if (!nacionalidad || isNaN(diaCaducidad) || isNaN(mesCaducidad) || isNaN(anioCaducidad) || !paisNacimiento || !nivelEstudios) {
                             errores.push(`⚠️ Completa todos los datos del viajero ${i + 1}.`);
                         } else {
+                            let fechaCaducidad = "";
+
+                            // Si todos los campos de fecha están llenos, se arma la fecha
+                            if (diaCaducidad && mesCaducidad && anioCaducidad) {
+                                fechaCaducidad = `${anioCaducidad}/${mesCaducidad.padStart(2, "0")}/${diaCaducidad.padStart(2, "0")}`;
+                            }
+
                             formData.viajeros[i] = {
                                 ...formData.viajeros[i],
                                 nacionalidad_pasaporte: nacionalidad,
                                 numero_pasaporte: numeroPasaporte,
-                                fecha_caducidad_pasaporte: `${anioCaducidad}/${mesCaducidad.padStart(2, "0")}/${diaCaducidad.padStart(2, "0")}`,
+                                fecha_caducidad_pasaporte: fechaCaducidad,
                                 pais_nacimiento: paisNacimiento,
                                 nivel_estudios: nivelEstudios
                             };
@@ -1325,11 +1336,20 @@
                             </div>
 
                             <div class="tab-viajero-item">
+                                <div class="form-check" style="display: flex; align-items: center; gap: 7px;">
+                                    <input class="form-check-input ocultarInputs" type="checkbox" value="" id="ocultarInputs" style="width: 20px; height: 20px;">
+                                    <label class="form-check-label" for="ocultarInputs" style="margin-top: 7px;">
+                                        Omite introducir por ahora la información del pasaporte
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="tab-viajero-item numPasaporte">
                                 <label class="viajero-item-label"><span>Número de pasaporte</span></label>
                                 <input class="viajero-item-input" name="numero_pasaporte[]" type="text">
                             </div>
 
-                            <div class="tab-viajero-item">
+                            <div class="tab-viajero-item fechaPasaporte">
                                 <label class="viajero-item-label"><span>Fecha de caducidad del pasaporte</span></label>
                                 <div class="tab-viajero-date">
                                     <div class="viajero-date-container">
@@ -1407,6 +1427,43 @@
 
                 contenedor.innerHTML += viajeroHTML;
             }
+
+            // Espera a que el DOM se actualice
+            setTimeout(() => {
+                document.querySelectorAll('.ocultarInputs').forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        // Encuentra el contenedor específico del formulario de este viajero
+                        const viajeroForm = checkbox.closest('.tab-viajero-form');
+
+                        // Encuentra los inputs relacionados solo dentro de este viajero
+                        const numPasaporte = viajeroForm.querySelector('.numPasaporte');
+                        const fechaPasaporte = viajeroForm.querySelector('.fechaPasaporte');
+
+                        if (checkbox.checked) {
+                            numPasaporte.style.display = 'none';
+                            fechaPasaporte.style.display = 'none';
+
+                            // Limpiar los select dentro de fechaPasaporte
+                            const selects = fechaPasaporte.querySelectorAll('select');
+                            selects.forEach(select => {
+                                select.value = ""; // Limpia el valor
+                            });
+                        } else {
+                            numPasaporte.style.display = 'block';
+                            fechaPasaporte.style.display = 'block';
+
+                            // Seleccionar el primer <option> válido
+                            const selects = fechaPasaporte.querySelectorAll('select');
+                            selects.forEach(select => {
+                                if (select.options.length > 0) {
+                                    select.selectedIndex = 0; // Primer <option> (placeholder)
+                                }
+                            });
+                        }
+                    });
+                });
+            }, 0);
+
         }
     
         function actualizarListaViajeros() {

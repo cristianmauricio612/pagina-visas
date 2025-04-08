@@ -205,15 +205,17 @@
     --tw-shadow: 0 0 #0000;
     border-style: solid;
 }
+
 [type=checkbox]:checked {
     background-color: #000;
 }
+/*
 [type=checkbox]:checked::after {
     content: "✔";
     color: #fff;
     font-size: 16px;
     font-weight: bold;
-}
+}*/
 .form-accept-text{
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));

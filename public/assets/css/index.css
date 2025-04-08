@@ -37,7 +37,7 @@ h1, h4{
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     column-gap: 32px;
-    align-items: flex-end;
+    align-items: center;
     flex-direction: column;
     width: 100%;
     height: 100%;
@@ -94,39 +94,72 @@ h1, h4{
     line-height: 24px;
     margin-bottom: 8px;
 }
-.select-container select {
-    display: flex;
+
+/* STYLES FORMULARIO */
+.custom-select {
+    position: relative;
     width: 100%;
     cursor: pointer;
-    align-items: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-radius: 16px;
-    border-width: 1px;
-    --tw-border-opacity: 1;
-    border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
-    --tw-bg-opacity: 1;
-    padding: 18px 16px;
-    line-height: 20px;
-
-    appearance: none;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M7 10l5 5 5-5z"/></svg>'); 
-    background-repeat: no-repeat;
-    background-position: right 15px center; /* Mueve la flecha */
-    background-size: 30px;
-    padding-right: 40px; /* Ajusta el padding para evitar que el texto lo tape */
+    margin-bottom: 15px;
 }
-.select-container select::after {
-    content: '\f078'; /* FontAwesome dropdown icon */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
+
+.selected-option {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 16px 16px;
+    border-radius: 18px;
+}
+
+.selected-option img {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.dropdown-form {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: #555;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    width: 100%;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-width: 0;
+    padding: 20px 24px;
+    outline-width: 0px;
+    font-size: 1rem;
+    line-height: 16px;
+}
+
+.options-list {
+    max-height: 218px;
+    overflow-y: auto;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: #f1f1f1;
+}
+
+.option img {
+    width: 20px;
+    margin-right: 8px;
 }
 
 @media (min-width: 768px) {

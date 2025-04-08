@@ -316,7 +316,8 @@ class AdminController extends Controller
     {
         csrf()->validate();
 
-        $data = request()->get(['pais1_id', 'pais2_id', 'nombre', 'tiempo_validez', 'numero_entradas', 'estancia_maxima', 'necesita_visa', 'precio', 'tasa_gobierno']);
+        $data = request()->get(['pais1_id', 'pais2_id', 'nombre', 'tiempo_validez', 'numero_entradas', 
+        'estancia_maxima', 'necesita_visa', 'precio', 'tasa_gobierno', 'meses_espera']);
 
         // Validar datos obligatorios
         if ($data['pais1_id'] == $data['pais2_id']) {
@@ -339,6 +340,10 @@ class AdminController extends Controller
             return response()->json(['status' => 'error', 'message' => 'La tasa de gobierno debe ser un dato numerico'], 404);
         }
 
+        if (!is_numeric($data['meses_espera'])) {
+            return response()->json(['status' => 'error', 'message' => 'El tiempo de espera debe ser un dato numerico (EN MESES)'], 404);
+        }
+
         // Guardar la visa en la base de datos
         $visa = new Visa();
         $visa->pais1_id = $data['pais1_id'];
@@ -350,6 +355,7 @@ class AdminController extends Controller
         $visa->necesita_visa = $data['necesita_visa'];
         $visa->precio = $data['precio'];
         $visa->tasa_gobierno = $data['tasa_gobierno'];
+        $visa->meses_espera = $data['meses_espera'];
         $visa->save();
 
         return response()->json([
@@ -365,7 +371,7 @@ class AdminController extends Controller
         // Buscar el usuario por ID
         $visa = Visa::find($id);
 
-        $data = request()->get(['pais1_id', 'pais2_id', 'nombre', 'tiempo_validez', 'numero_entradas', 'estancia_maxima', 'necesita_visa', 'precio', 'tasa_gobierno']);
+        $data = request()->get(['pais1_id', 'pais2_id', 'nombre', 'tiempo_validez', 'numero_entradas', 'estancia_maxima', 'necesita_visa', 'precio', 'tasa_gobierno', 'meses_espera']);
 
         // Validar datos obligatorios
         if ($data['pais1_id'] == $data['pais2_id']) {
@@ -390,6 +396,10 @@ class AdminController extends Controller
             return response()->json(['status' => 'error', 'message' => 'La tasa de gobierno debe ser un dato numerico'], 404);
         }
 
+        if (!is_numeric($data['meses_espera'])) {
+            return response()->json(['status' => 'error', 'message' => 'El tiempo de espera debe ser un dato numerico (EN MESES)'], 404);
+        }
+
         // Actualizar solo los campos enviados
         foreach ($data as $key => $value) {
             if ($value === "") {
@@ -404,14 +414,14 @@ class AdminController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Usuario actualizado exitosamente',
+            'message' => 'Visa actualizada exitosamente',
             'visa' => $visa
         ], 200);
     }
 
     public function editVisa($id)
     {
-        // Buscar el producto en la base de datos por ID
+        // Buscar la visa en la base de datos por ID
         $visa = Visa::find($id);
 
         // Si no se encuentra el producto, mostrar error 404
@@ -467,7 +477,7 @@ class AdminController extends Controller
     public function updateOrder($id)
     {
         csrf()->validate();
-        // Buscar la categoria en la base de datos por ID
+        // Buscar el pedido en la base de datos por ID
         $order = VisaInscripcion::find($id);
 
         // Si no se encuentra el pedido, mostrar error 404

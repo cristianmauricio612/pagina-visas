@@ -16,7 +16,7 @@ columns:
     nullable: false
   numero_pasaporte:
     type: string
-    nullable: false
+    nullable: true
   fecha_caducidad_pasaporte:
     type: date
     nullable: true
