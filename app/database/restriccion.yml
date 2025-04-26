@@ -1,0 +1,7 @@
+columns:
+  variable_id:
+    type: integer
+    nullable: false
+  variable_restringida_id:
+    type: integer
+    nullable: false

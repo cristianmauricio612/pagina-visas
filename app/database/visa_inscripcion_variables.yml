@@ -1,0 +1,7 @@
+columns:
+  visa_inscripcion_id:
+    type: integer
+    nullable: false
+  variable_id:
+    type: integer
+    nullable: false

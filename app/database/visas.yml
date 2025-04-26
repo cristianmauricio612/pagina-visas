@@ -35,3 +35,6 @@ columns:
   meses_espera:
     type: integer
     nullable: false
+  mensaje:
+    type: string
+    nullable: true

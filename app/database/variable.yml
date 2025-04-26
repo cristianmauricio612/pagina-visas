@@ -1,0 +1,28 @@
+columns:
+  nombre:
+    type: string
+    nullable: false
+  tipo_elemento:
+    type: string
+    nullable: false
+  tipo_variable:
+    type: string
+    nullable: false
+  obligatoriedad:
+    type: boolean
+    nullable: false
+  placeholder:
+    type: string
+    nullable: true
+  encabezado:
+    type: string
+    nullable: false
+  advertencia:
+    type: string
+    nullable: true
+  valor:
+    type: string
+    nullable: true
+  isPais:
+    type: boolean
+    nullable: false

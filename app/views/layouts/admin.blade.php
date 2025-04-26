@@ -117,6 +117,52 @@
                     </ul>
                 </li>
 
+                {{-- Variables --}}
+                <li class="mb-2">
+                    <button
+                        class="flex items-center w-full text-left p-3 rounded-md outline-none hover:bg-gray-800 transition"
+                        onclick="toggleMenu('variables')">
+                        <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Variables
+                    </button>
+                    <ul id="variables" class="ml-6 mt-1 hidden transition-all">
+                        <li>
+                            <a href="{{route('admin.variables.listView')}}"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-list mr-2"></i> Listar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('admin.variables.addView')}}"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-plus-circle mr-2"></i> Crear
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Formularios --}}
+                <li class="mb-2">
+                    <button
+                        class="flex items-center w-full text-left p-3 rounded-md outline-none hover:bg-gray-800 transition"
+                        onclick="toggleMenu('formularios')">
+                        <i class="fa-solid fa-file-invoice mr-2"></i> Formularios
+                    </button>
+                    <ul id="formularios" class="ml-6 mt-1 hidden transition-all">
+                        <li>
+                            <a href="{{route('admin.formularios.listView')}}"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-list mr-2"></i> Listar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('admin.formularios.addView')}}"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-plus-circle mr-2"></i> Crear
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 {{-- Pedidos --}}
                 <li class="mb-2">
                     <button
@@ -139,7 +185,8 @@
         {{-- Botón de Cerrar Sesión --}}
         <div class="mt-auto">
             <a onclick="logout()"
-                class="w-full flex items-center justify-center bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition" style="cursor: pointer">
+                class="w-full flex items-center justify-center bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition"
+                style="cursor: pointer">
                 <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
             </a>
         </div>

@@ -2,27 +2,3 @@ columns:
   visa_inscripcion_id:
     type: string
     nullable: false
-  nombres_pasaporte:
-    type: string
-    nullable: false
-  apellidos_pasaporte:
-    type: string
-    nullable: false
-  fecha_nacimiento:
-    type: date
-    nullable: false
-  nacionalidad_pasaporte_id:
-    type: string
-    nullable: false
-  numero_pasaporte:
-    type: string
-    nullable: true
-  fecha_caducidad_pasaporte:
-    type: date
-    nullable: true
-  pais_nacimiento_id:
-    type: string
-    nullable: false
-  nivel_estudios:
-    type: string
-    nullable: false

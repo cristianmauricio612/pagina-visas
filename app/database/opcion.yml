@@ -1,0 +1,16 @@
+columns:
+  variable_id:
+    type: integer
+    nullable: false
+  valor:
+    type: string
+    nullable: true
+  imagen:
+    type: longtext
+    nullable: true
+  global:
+    type: boolean
+    nullable: false
+  contenido:
+    type: string
+    nullable: false

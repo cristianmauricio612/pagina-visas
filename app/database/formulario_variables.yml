@@ -1,0 +1,13 @@
+columns:
+  formulario_id:
+    type: integer
+    nullable: false
+  variable_id:
+    type: integer
+    nullable: false
+  orden:
+    type: integer
+    nullable: false
+  meses_espera:
+    type: integer
+    nullable: true

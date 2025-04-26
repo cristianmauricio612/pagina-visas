@@ -1,0 +1,5 @@
+columns:
+  visa_id:
+    type: integer
+    nullable: false
+    unique: true

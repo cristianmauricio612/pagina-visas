@@ -17,6 +17,7 @@
             $viajero1 = new App\Models\Viajero();
 
             $viajeros = [$viajero1];
+            $formulario = \App\Models\Formulario::with('variables')->where('visa_id',$visa->id)->first();
         @endphp
     <div class="visa-inscripcion" id="visa-inscripcion">
         <div class="visa-inscripcion-container">
@@ -63,6 +64,25 @@
                         </div>
 
                         <div class="tab-form-box">
+                            
+                            @foreach ($formulario->variables as $variable)
+                                @if ($variable->tipo_variable === 'VISA')
+                                    @if ($variable->tipo_elemento === 'DATE_PICKER')
+                                        @include('ui.DatePicker')
+                                    @endif
+                                    @if ($variable->tipo_elemento === 'INPUT_TEXT' || $variable->tipo_elemento === 'INPUT_NUMBER')
+                                        @include('ui.Input')
+                                    @endif
+                                    @if ($variable->tipo_elemento === 'CHECKBOX_RESTRICTIVE')
+                                        @include('ui.Checkbox')
+                                    @endif
+                                    @if ($variable->tipo_elemento === 'SELECT')
+                                        @include('ui.Select')
+                                    @endif
+                                @endif
+                            @endforeach
+                            
+                            <!-- 
                             <div class="form-box-input">
                                 <div class="form-box-date">
                                     <div class="">
@@ -127,6 +147,7 @@
                                     </div>
                                 </div>
                             </div>
+                            -->
                             <div class="form-box-input" style="display: none">
                                 <div data-ivisa-slug="consent_to_marketing_emails"
                                     data-ivisa-question-selector="general.consent_to_marketing_emails"
@@ -233,6 +254,24 @@
                             </div>
 
                             <div class="tab-viajero-form hidden">
+                                <!--
+                                @foreach ($formulario->variables as $variable)
+                                    @if ($variable->tipo_variable === 'VIAJERO')
+                                        @if ($variable->tipo_elemento === 'DATE_PICKER')
+                                            @include('ui.DatePicker')
+                                        @endif
+                                        @if ($variable->tipo_elemento === 'INPUT_TEXT' || $variable->tipo_elemento === 'INPUT_NUMBER')
+                                            @include('ui.Input')
+                                        @endif
+                                        @if ($variable->tipo_elemento === 'CHECKBOX_RESTRICTIVE')
+                                            @include('ui.Checkbox')
+                                        @endif
+                                        @if ($variable->tipo_elemento === 'SELECT')
+                                                @include('ui.Select')
+                                            @endif
+                                    @endif
+                                @endforeach
+                                -->
                                 <div class="tab-viajero-item">
                                     <div class="w-100 h-100">
                                         <div class="">
@@ -400,6 +439,24 @@
                                 </div>
 
                                 <div class="tab-viajero-form hidden">
+                                    <!--
+                                    @foreach ($formulario->variables as $variable)
+                                        @if ($variable->tipo_variable === 'PASAPORTE')
+                                            @if ($variable->tipo_elemento === 'DATE_PICKER')
+                                                @include('ui.DatePicker')
+                                            @endif
+                                            @if ($variable->tipo_elemento === 'INPUT_TEXT' || $variable->tipo_elemento === 'INPUT_NUMBER')
+                                                @include('ui.Input')
+                                            @endif
+                                            @if ($variable->tipo_elemento === 'CHECKBOX_RESTRICTIVE')
+                                                @include('ui.Checkbox')
+                                            @endif
+                                            @if ($variable->tipo_elemento === 'SELECT')
+                                                @include('ui.Select')
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                    -->
                                     <div class="tab-viajero-item">
                                         <div class="w-100 h-100">
                                             <label class="viajero-item-label">
@@ -705,41 +762,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
-        let meses = {{$visa->meses_espera}};
-        let calendar;
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const input = document.getElementById("date-picker");
-            const icon = document.getElementById("calendar-icon");
-
-            const minMonths = meses;
-
-            // Calcular la fecha mínima sumando meses
-            const today = new Date();
-            const minDate = new Date(today.getFullYear(), today.getMonth() + minMonths, today.getDate());
-
-            // Inicializar Flatpickr con minDate basado en meses
-            calendar = flatpickr(input, {
-                dateFormat: "d/m/Y",
-                minDate: minDate,
-                allowInput: false,
-                clickOpens: true,
-                positionElement: input,
-                showMonths: 2,
-            });
-
-            const openCalendar = () => {
-                input.focus();
-                setTimeout(() => {
-                    calendar.open();
-                }, 100);
-            };
-
-            // Escuchar eventos en el icono
-            icon.addEventListener("click", openCalendar);
-            input.addEventListener("click", openCalendar);
-
-            document.addEventListener("click", function (event) {
+        document.addEventListener("click", function (event) {
                 // Obtener todos los dropdowns
                 const allDropdowns = document.querySelectorAll(".dropdown-form");
 
@@ -802,8 +825,9 @@
                     });
                 }
             });
-        });
+    </script>
 
+    <script>
         let contadorViajero = @json($contadorViajero);
         const visa = @json($visa);
 

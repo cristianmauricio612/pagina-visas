@@ -117,6 +117,18 @@ app()->get('/admin/visas/agregar', ['name' => 'admin.visas.addView', function ()
 
 app()->get('/admin/visas/editar/{id}', ['name' => 'admin.visas.editView', 'AdminController@editVisa']);
 
+app()->get('/admin/formularios', ['name' => 'admin.formularios.listView', function () {render('admin.formularios.list');}]);
+
+app()->get('/admin/formularios/agregar', ['name' => 'admin.formularios.addView', function () {render('admin.formularios.add');}]);
+
+app()->get('/admin/formularios/editar/{id}', ['name' => 'admin.formularios.editView', 'AdminController@editFormulario']);
+
+app()->get('/admin/variables', ['name' => 'admin.variables.listView', function () {render('admin.variables.list');}]);
+
+app()->get('/admin/variables/agregar', ['name' => 'admin.variables.addView', function () {render('admin.variables.add');}]);
+
+app()->get('/admin/variables/editar/{id}', ['name' => 'admin.variables.editView', 'AdminController@editVariable']);
+
 /* RUTAS DEL ADMINISTRADOR */
 
 //USUARIOS
@@ -146,6 +158,22 @@ app()->put('/admin/visas/actualizar/{id}', ['name' => 'admin.visas.update', 'Adm
 app()->delete('/admin/visas/eliminar/{id}', ['name' => 'admin.visas.delete', 'AdminController@deleteVisa']);
 
 app()->get('/admin/visas/buscar', ['name' => 'admin.visas.search', 'AdminController@searchVisas']);
+
+//VARIABLES
+
+app()->post('/admin/variables/crear', ['name' => 'admin.variables.create', 'AdminController@createVariable']);
+
+app()->put('/admin/variables/actualizar/{id}', ['name' => 'admin.variables.update', 'AdminController@updateVariable']);
+
+app()->delete('/admin/variables/eliminar/{id}', ['name' => 'admin.variables.delete', 'AdminController@deleteVariable']);
+
+//FORMULARIOS
+
+app()->post('/admin/formularios/crear', ['name' => 'admin.formularios.create', 'AdminController@createFormulario']);
+
+app()->put('/admin/formularios/actualizar/{id}', ['name' => 'admin.formularios.update', 'AdminController@updateFormulario']);
+
+app()->delete('/admin/formularios/eliminar/{id}', ['name' => 'admin.formularios.delete', 'AdminController@deleteFormulario']);
 
 //PEDIDOS
 

@@ -6,7 +6,11 @@ use App\Models\Pais;
 use App\Models\User;
 use App\Models\Visa;
 use App\Models\VisaInscripcion;
-
+use App\Models\Variable;
+use App\Models\Opcion;
+use App\Models\Restriccion;
+use App\Models\Formulario;
+use App\Models\FormularioVariable;
 
 class AdminController extends Controller
 {
@@ -316,8 +320,18 @@ class AdminController extends Controller
     {
         csrf()->validate();
 
-        $data = request()->get(['pais1_id', 'pais2_id', 'nombre', 'tiempo_validez', 'numero_entradas', 
-        'estancia_maxima', 'necesita_visa', 'precio', 'tasa_gobierno', 'meses_espera']);
+        $data = request()->get([
+            'pais1_id',
+            'pais2_id',
+            'nombre',
+            'tiempo_validez',
+            'numero_entradas',
+            'estancia_maxima',
+            'necesita_visa',
+            'precio',
+            'tasa_gobierno',
+            'meses_espera'
+        ]);
 
         // Validar datos obligatorios
         if ($data['pais1_id'] == $data['pais2_id']) {
@@ -470,6 +484,378 @@ class AdminController extends Controller
         $visas = $query->get();
 
         return response()->json($visas);
+    }
+
+    //VARIABLES
+
+    public function createVariable()
+    {
+        csrf()->validate();
+
+        $data = request()->body();
+
+        if (empty($data['nombre']) || empty($data['tipo_elemento']) || empty($data['tipo_variable'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Debe completar todos los campos obligatorios'
+            ], 400);
+        }
+
+        if (Variable::where('nombre', $data['nombre'])->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Ya existe una variable con ese nombre'
+            ], 400);
+        }
+
+        $variable = new Variable();
+        $variable->nombre = $data['nombre'];
+        $variable->tipo_elemento = $data['tipo_elemento'];
+        $variable->tipo_variable = $data['tipo_variable'];
+        $variable->obligatoriedad = $data['obligatoriedad'] ? 1 : 0;
+        $variable->placeholder = $data['placeholder'] ?? null;
+        $variable->encabezado = $data['encabezado'] ?? null;
+        $variable->advertencia = $data['advertencia'] ?? null;
+        $variable->valor = $data['valor'] ?? null;
+        $variable->isPais = isset($data['isPais']) && $data['isPais'] ? 1 : 0;
+
+        $variable->save();
+
+
+        // Guardar opciones si el tipo_elemento es SELECT o SELECT_BUTTONS
+        if (
+            in_array($data['tipo_elemento'], ['SELECT', 'SELECT_BUTTONS']) &&
+            isset($_POST['opciones']) && is_array($_POST['opciones'])
+        ) {
+            // Solo guardar si isPais NO está activado
+            if (!$variable->isPais) {
+                $opcionesValidas = [];
+
+                // Filtrar opciones con contenido válido
+                foreach ($_POST['opciones'] as $index => $opcionData) {
+                    $contenido = $opcionData['contenido'] ?? '';
+                    if (!empty(trim($contenido))) {
+                        $opcionesValidas[] = $index; // Guardamos el índice para usarlo luego
+                    }
+                }
+
+                // Verificar mínimo 2 opciones válidas
+                if (count($opcionesValidas) < 2) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Debe agregar al menos 2 opciones con contenido.'
+                    ]);
+                }
+
+                // Si pasa la validación, guardar las opciones válidas
+                foreach ($opcionesValidas as $index) {
+                    $opcionData = $_POST['opciones'][$index];
+
+                    $valor = $opcionData['valor'] ?? null;
+                    $contenido = $opcionData['contenido'];
+                    $global = isset($opcionData['global']) ? 1 : 0;
+
+                    // Manejo de imagen (base64)
+                    $imagenBase64 = null;
+                    if (
+                        isset($_FILES['opciones']['tmp_name'][$index]['imagen']) &&
+                        is_uploaded_file($_FILES['opciones']['tmp_name'][$index]['imagen'])
+                    ) {
+                        $tmpName = $_FILES['opciones']['tmp_name'][$index]['imagen'];
+                        $imageData = file_get_contents($tmpName);
+                        $imagenBase64 = base64_encode($imageData);
+                    }
+
+                    Opcion::create([
+                        'variable_id' => $variable->id,
+                        'valor' => $valor,
+                        'imagen' => $imagenBase64,
+                        'contenido' => $contenido,
+                        'global' => $global
+                    ]);
+                }
+            }
+        }
+
+        // Guardar restricciones si es CHECKBOX_RESTRICTIVE
+        if (
+            $data['tipo_elemento'] === 'CHECKBOX_RESTRICTIVE' &&
+            !empty($data['bloqueos']) &&
+            is_array($data['bloqueos'])
+        ) {
+            foreach ($data['bloqueos'] as $bloqueo_id) {
+                Restriccion::create([
+                    'variable_id' => $variable->id,
+                    'variable_restringida_id' => $bloqueo_id
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Variable creada exitosamente',
+            'variable' => $variable
+        ], 201);
+    }
+
+    public function editVariable($id)
+    {
+        // Buscar la variable con sus relaciones necesarias
+        $variable = Variable::with(['opciones', 'restricciones'])->find($id);
+
+        // Si no se encuentra el producto, mostrar error 404
+        if (!$variable) {
+            return view('errors.404');
+        }
+
+        // Retornar la vista 'admin/usuario/edit' pasando el usuario
+        render('admin.variables.edit', compact('variable'));
+    }
+
+    public function updateVariable($id)
+    {
+        csrf()->validate();
+
+        $data = request()->body();
+
+        $variable = Variable::findOrFail($id);
+        $variable->nombre = $data['nombre'];
+        $variable->tipo_variable = $data['tipo_variable'] ?? null;
+        $variable->placeholder = $data['placeholder'] ?? null;
+        $variable->encabezado = $data['encabezado'] ?? null;
+        $variable->advertencia = $data['advertencia'] ?? null;
+        $variable->obligatoriedad = !empty($data['obligatoriedad']) ? 1 : 0;
+        $variable->isPais = !empty($data['isPais']) ? 1 : 0;
+        $variable->save();
+
+        // Actualizar opciones si el tipo_elemento es SELECT o SELECT_BUTTONS
+        if (in_array($variable->tipo_elemento, ['SELECT', 'SELECT_BUTTONS'])) {
+            // Solo actualizamos si isPais NO está activado
+            if (!$variable->isPais) {
+                if (!empty($data['opciones'])) {
+                    // Filtrar opciones válidas
+                    $opcionesValidas = array_filter($data['opciones'], function ($op) {
+                        return !empty(trim($op['contenido'] ?? ''));
+                    });
+
+                    if (count($opcionesValidas) < 2) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Debe agregar al menos 2 opciones con contenido.'
+                        ]);
+                    }
+
+                    // Actualizar las opciones válidas
+                    foreach ($opcionesValidas as $op) {
+                        $opcion = Opcion::find($op['id']);
+                        if ($opcion) {
+                            $opcion->valor = $op['valor'] ?? null;
+                            $opcion->imagen = $op['imagen'] ?? null;
+                            $opcion->contenido = $op['contenido'];
+                            $opcion->global = !empty($op['global']);
+                            $opcion->save();
+                        }
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Debe agregar al menos 2 opciones.'
+                    ]);
+                }
+            }
+        }
+
+        // Actualizar restricciones si es CHECKBOX_RESTRICTIVE
+        if ($variable->tipo_elemento === 'CHECKBOX_RESTRICTIVE') {
+            Restriccion::where('variable_id', $variable->id)->delete();
+            if (!empty($data['restricciones'])) {
+                foreach ($data['restricciones'] as $rid) {
+                    Restriccion::create([
+                        'variable_id' => $variable->id,
+                        'variable_restringida_id' => $rid
+                    ]);
+                }
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Variable actualizada exitosamente'
+        ]);
+    }
+
+
+    public function deleteVariable($id)
+    {
+        // Buscar la variable
+        $variable = Variable::find($id);
+
+        if (!$variable) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Variable no encontrada'
+            ], 404);
+        }
+
+        // Eliminar restricciones relacionadas (si las hay)
+        Restriccion::where('variable_id', $id)->delete();
+
+        // Eliminar opciones relacionadas (si las hay)
+        Opcion::where('variable_id', $id)->delete();
+
+        // Finalmente eliminar la variable
+        $variable->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Variable eliminada correctamente'
+        ]);
+    }
+
+    //FORMULARIOS
+
+    public function createFormulario()
+    {
+        csrf()->validate();
+        $data = request()->body();
+
+        // Validar campos requeridos
+        if (empty($data['visa_id']) || empty($data['variables']) || empty($data['ordenes'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Todos los campos son obligatorios, incluyendo el orden de las variables.'
+            ], 400);
+        }
+
+        // Validar que no exista un formulario para esta visa
+        if (Formulario::where('visa_id', $data['visa_id'])->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Ya existe un formulario asociado a esta visa.'
+            ], 400);
+        }
+
+        // Validar que cada variable tenga su orden válido
+        foreach ($data['variables'] as $variable_id) {
+            if (!isset($data['ordenes'][$variable_id]) || !is_numeric($data['ordenes'][$variable_id])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "El orden de la variable con ID {$variable_id} es inválido o está vacío."
+                ], 400);
+            }
+        }
+
+        // Crear el formulario
+        $formulario = new Formulario();
+        $formulario->visa_id = $data['visa_id'];
+        $formulario->save();
+
+        // Asociar variables con su orden y meses_espera si están disponibles
+        foreach ($data['variables'] as $variable_id) {
+            $orden = (int) $data['ordenes'][$variable_id];
+            $mesesEspera = isset($data['meses_espera'][$variable_id]) && is_numeric($data['meses_espera'][$variable_id])
+                ? (int) $data['meses_espera'][$variable_id]
+                : null;
+
+            FormularioVariable::create([
+                'formulario_id' => $formulario->id,
+                'variable_id' => $variable_id,
+                'orden' => $orden,
+                'meses_espera' => $mesesEspera
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Formulario creado exitosamente',
+            'formulario' => $formulario
+        ], 201);
+    }
+
+    public function editFormulario($id)
+    {
+        $formulario = Formulario::with('variables')->findOrFail($id);
+        $visas = Visa::all();
+        $variables = Variable::all()->groupBy('tipo_variable');
+
+        render('admin.formularios.edit', compact('formulario', 'visas', 'variables'));
+    }
+
+    public function updateFormulario($id)
+    {
+        csrf()->validate();
+        $data = request()->body();
+
+        // Validar campos requeridos
+        if (empty($data['visa_id']) || empty($data['variables']) || empty($data['ordenes'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Todos los campos son obligatorios, incluyendo el orden de las variables.'
+            ], 400);
+        }
+
+        // Validar que cada variable tenga su orden válido
+        foreach ($data['variables'] as $variable_id) {
+            if (!isset($data['ordenes'][$variable_id]) || !is_numeric($data['ordenes'][$variable_id])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "El orden de la variable con ID {$variable_id} es inválido o está vacío."
+                ], 400);
+            }
+        }
+
+        // Buscar y actualizar formulario
+        $formulario = Formulario::findOrFail($id);
+        $formulario->visa_id = $data['visa_id'];
+        $formulario->save();
+
+        // Eliminar relaciones anteriores
+        FormularioVariable::where('formulario_id', $formulario->id)->delete();
+
+        // Asociar nuevamente las variables con su orden
+        foreach ($data['variables'] as $variable_id) {
+            $orden = (int) $data['ordenes'][$variable_id];
+            $mesesEspera = isset($data['meses_espera'][$variable_id]) && is_numeric($data['meses_espera'][$variable_id])
+                ? (int) $data['meses_espera'][$variable_id]
+                : null;
+
+            FormularioVariable::create([
+                'formulario_id' => $formulario->id,
+                'variable_id' => $variable_id,
+                'orden' => $orden,
+                'meses_espera' => $mesesEspera
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Formulario actualizado exitosamente'
+        ]);
+    }
+
+    public function deleteFormulario($id)
+    {
+        csrf()->validate(); // Protege contra CSRF
+
+        $formulario = Formulario::find($id);
+
+        if (!$formulario) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Formulario no encontrado.'
+            ], 404);
+        }
+
+        // También puedes eliminar relaciones si las tienes (como variables asociadas)
+        // Por ejemplo:
+        $formulario->variables()->detach(); // Si es una relación many-to-many
+
+        $formulario->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Formulario eliminado correctamente.'
+        ]);
     }
 
     //PEDIDOS

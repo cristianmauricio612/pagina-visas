@@ -6,16 +6,7 @@ columns:
     type: string
     nullable: false
     unique: true
-  fecha_llegada:
-    type: date
-    nullable: false
-  fecha_salida:
-    type: date
-    nullable: true
-  correo:
-    type: string
-    nullable: false
-  pago_hoy:
+  pago_sintasa:
     type: decimal
     total: 20
     places: 2
