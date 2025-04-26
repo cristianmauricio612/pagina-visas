@@ -187,3 +187,5 @@ app()->post('/admin/login', ['name' => 'admin.login', 'AdminController@login']);
 
 app()->post('/admin/logout', 'AdminController@logout');
 
+app()->get('/cargar-viajero/{id}', ['name' => 'ui.Viajero', 'ViajeroController@cargarViajero']);
+

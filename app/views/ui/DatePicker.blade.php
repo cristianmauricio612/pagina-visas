@@ -66,41 +66,6 @@ $placeholder = $variable->placeholder ?? null;
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const inputs = document.querySelectorAll('.date-picker');
     
-            inputs.forEach(input => {
-                const minMonths = parseInt(input.dataset.minMonths || "0");
-                const iconId = '{{ $iconId }}';
-                const icon = document.getElementById(iconId);
-    
-                if (!icon) return;
-    
-                // Calcular la fecha mínima sumando meses
-                const today = new Date();
-                const minDate = new Date(today.getFullYear(), today.getMonth() + minMonths, today.getDate());
-    
-                const calendar = flatpickr(input, {
-                    dateFormat: "d/m/Y",
-                    minDate: minDate,
-                    allowInput: false,
-                    clickOpens: true,
-                    positionElement: input,
-                    showMonths: 2,
-                });
-    
-                const openCalendar = () => {
-                    input.focus();
-                    setTimeout(() => {
-                        calendar.open();
-                    }, 100);
-                };
-    
-                icon.addEventListener("click", openCalendar);
-                input.addEventListener("click", openCalendar);
-            });
-        });
-    </script>
     
 </div>
