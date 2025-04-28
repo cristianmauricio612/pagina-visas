@@ -271,7 +271,7 @@ class VisaInscripcionController extends Controller
                     <p style='font-size: 16px; color: #333;'>Si tienes alguna pregunta, no dudes en contactarnos.</p>
                     <p style='font-size: 16px; color: #333;'>Gracias por confiar en nosotros.</p>
 
-                    <a href='https://tu-sitio.com' style='display: inline-block; padding: 14px 24px; margin-top: 15px; font-size: 16px; color: #fff; background-color: rgb(54, 55, 143); text-decoration: none; border-radius: 5px;'>Ir a la página</a>
+                    <a href='https://evisa.dibujame.com' style='display: inline-block; padding: 14px 24px; margin-top: 15px; font-size: 16px; color: #fff; background-color: rgb(54, 55, 143); text-decoration: none; border-radius: 5px;'>Ir a la página</a>
 
                     <p style='margin-top: 20px; font-size: 14px; color: #888;'>© " . date('Y') . " AV Visa Asesores. Todos los derechos reservados.</p>
                 </div>

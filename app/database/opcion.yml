@@ -8,9 +8,6 @@ columns:
   imagen:
     type: longtext
     nullable: true
-  global:
-    type: boolean
-    nullable: false
   contenido:
     type: string
     nullable: false

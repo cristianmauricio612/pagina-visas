@@ -18,10 +18,17 @@
         <form id="variableForm" class="bg-white p-6 rounded-lg shadow-md">
             @csrf
 
+            {{-- Nombre Campo--}}
+            <div class="mb-4">
+                <label for="nombre_campo" class="block text-gray-700 font-medium">Nombre del Campo</label>
+                <input type="text" id="nombre_campo" name="nombre_campo" placeholder="Ejemplo: Fecha de Nacimiento"
+                    class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
             {{-- Nombre --}}
             <div class="mb-4">
-                <label for="nombre" class="block text-gray-700 font-medium">Nombre</label>
-                <input type="text" id="nombre" name="nombre"
+                <label for="nombre" class="block text-gray-700 font-medium">Nombre del Elemento</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ejemplo: fecha_nacimiento"
                     class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
 
@@ -37,7 +44,6 @@
                     <option value="SELECT">SELECT</option>
                     <option value="CHECKBOX_RESTRICTIVE">CHECKBOX_RESTRICTIVE</option>
                     <option value="CHECKBOX_INFORMATIVE">CHECKBOX_INFORMATIVE</option>
-                    <option value="SELECT_BUTTONS">SELECT_BUTTONS</option>
                 </select>
             </div>
 
@@ -65,8 +71,7 @@
             {{-- Es pais --}}
             <div id="isPaisContainer" class="mb-4 hidden">
                 <label class="inline-flex items-center">
-                    <input type="checkbox" id="isPais" name="isPais"
-                        class="form-checkbox h-5 w-5 text-blue-600">
+                    <input type="checkbox" id="isPais" name="isPais" class="form-checkbox h-5 w-5 text-blue-600">
                     <span class="ml-2 text-gray-700">¿Esta relacionado a Paises?</span>
                 </label>
             </div>
@@ -143,6 +148,7 @@
         });
 
         const tipoElemento = document.getElementById('tipo_elemento');
+        const tipoVariable = document.getElementById('tipo_variable');
         const opcionesSelect = document.getElementById('opcionesSelect');
         const variablesBloqueo = document.getElementById('variablesBloqueo');
         const isPaisContainer = document.getElementById('isPaisContainer');
@@ -161,7 +167,31 @@
             }
 
             isPaisContainer.classList.toggle('hidden', !mostrarOpciones);
-            variablesBloqueo.classList.toggle('hidden', selected !== 'CHECKBOX_RESTRICTIVE');
+
+            // Siempre ocultar variablesBloqueo primero
+            variablesBloqueo.classList.add('hidden');
+
+            if (selected === 'CHECKBOX_RESTRICTIVE') {
+                // Verificar inmediatamente el valor actual de tipoVariable
+                if (tipoVariable.value === 'VISA') {
+                    variablesBloqueo.classList.remove('hidden');
+                }else if(tipoVariable.value === 'VIAJERO'){
+                    variablesBloqueo.classList.remove('hidden');
+                } else if(tipoVariable.value === 'PASAPORTE'){
+                    variablesBloqueo.classList.remove('hidden');
+                }
+                
+                tipoVariable.addEventListener('change', function () {
+                    const selected2 = this.value;
+
+                    const mostrarVariables = selected2 === 'VISA';
+                    if (mostrarVariables) {
+                        variablesBloqueo.classList.remove('hidden');
+                    } else {
+                        variablesBloqueo.classList.add('hidden');
+                    }
+                });
+            }
         });
 
         // Cuando el checkbox isPais cambia
@@ -221,29 +251,22 @@
             const div = document.createElement('div');
             div.classList.add('opcion-item', 'mb-4', 'p-4', 'border', 'rounded', 'bg-gray-100');
             div.innerHTML = `
-                    <div class="mb-2">
-                        <label class="block text-sm font-medium text-gray-700">Valor (opcional)</label>
-                        <input type="text" name="opciones[${index}][valor]"
-                            class="w-full p-2 border rounded" placeholder="Ej. valor123">
-                    </div>
-                    <div class="mb-2">
-                        <label class="block text-sm font-medium text-gray-700">Imagen</label>
-                        <input type="file" name="opciones[${index}][imagen]" accept="image/*"
-                            class="w-full p-2 border rounded">
-                    </div>
-                    <div class="mb-2">
-                        <label class="block text-sm font-medium text-gray-700">Contenido</label>
-                        <input type="text" name="opciones[${index}][contenido]"
-                            class="w-full p-2 border rounded" required>
-                    </div>
-                    <div class="mb-2">
-                        <label class="inline-flex items-center">
-                            <input type="checkbox" name="opciones[${index}][global]" value="1"
-                                class="form-checkbox h-5 w-5 text-blue-600">
-                            <span class="ml-2 text-gray-700">¿Opción global?</span>
-                        </label>
-                    </div>
-                `;
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Valor (opcional)</label>
+                                <input type="text" name="opciones[${index}][valor]"
+                                    class="w-full p-2 border rounded" placeholder="Ej. valor123">
+                            </div>
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Imagen</label>
+                                <input type="file" name="opciones[${index}][imagen]" accept="image/*"
+                                    class="w-full p-2 border rounded">
+                            </div>
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Contenido</label>
+                                <input type="text" name="opciones[${index}][contenido]"
+                                    class="w-full p-2 border rounded" required>
+                            </div>
+                        `;
 
             contenedorOpciones.appendChild(div);
         });

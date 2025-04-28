@@ -41,7 +41,7 @@
                                         <label class="inline-flex items-center space-x-2">
                                             <input type="checkbox" name="variables[]" value="{{ $variable->id }}"
                                                 {{ in_array($variable->id, $variableIdsSeleccionadas) ? 'checked' : '' }}>
-                                            <span>{{ $variable->nombre }} ({{ $variable->tipo_elemento }})</span>
+                                            <span>{{ $variable->nombre_campo }} ({{ $variable->tipo_elemento }})</span>
                                         </label>
 
                                         <div class="flex items-center gap-2">

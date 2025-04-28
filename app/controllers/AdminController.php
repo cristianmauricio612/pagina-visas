@@ -509,6 +509,7 @@ class AdminController extends Controller
         }
 
         $variable = new Variable();
+        $variable->nombre_campo = $data['nombre_campo'];
         $variable->nombre = $data['nombre'];
         $variable->tipo_elemento = $data['tipo_elemento'];
         $variable->tipo_variable = $data['tipo_variable'];
@@ -553,7 +554,6 @@ class AdminController extends Controller
 
                     $valor = $opcionData['valor'] ?? null;
                     $contenido = $opcionData['contenido'];
-                    $global = isset($opcionData['global']) ? 1 : 0;
 
                     // Manejo de imagen (base64)
                     $imagenBase64 = null;
@@ -570,8 +570,7 @@ class AdminController extends Controller
                         'variable_id' => $variable->id,
                         'valor' => $valor,
                         'imagen' => $imagenBase64,
-                        'contenido' => $contenido,
-                        'global' => $global
+                        'contenido' => $contenido
                     ]);
                 }
             }
@@ -619,6 +618,7 @@ class AdminController extends Controller
         $data = request()->body();
 
         $variable = Variable::findOrFail($id);
+        $variable->nombre_campo = $data['nombre_campo'];
         $variable->nombre = $data['nombre'];
         $variable->tipo_variable = $data['tipo_variable'] ?? null;
         $variable->placeholder = $data['placeholder'] ?? null;
@@ -652,7 +652,6 @@ class AdminController extends Controller
                             $opcion->valor = $op['valor'] ?? null;
                             $opcion->imagen = $op['imagen'] ?? null;
                             $opcion->contenido = $op['contenido'];
-                            $opcion->global = !empty($op['global']);
                             $opcion->save();
                         }
                     }

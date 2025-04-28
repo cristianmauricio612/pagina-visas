@@ -8,10 +8,13 @@
         <form id="editVariableForm">
             @csrf
 
-            <input type="hidden" name="id" value="{{ $variable->id }}">
+            <div class="mb-4">
+                <label class="block font-medium">Nombre del Campo</label>
+                <input type="text" name="nombre_campo" value="{{ $variable->nombre_campo }}" class="w-full border rounded px-3 py-2" required>
+            </div>
 
             <div class="mb-4">
-                <label class="block font-medium">Nombre</label>
+                <label class="block font-medium">Nombre del Elemento</label>
                 <input type="text" name="nombre" value="{{ $variable->nombre }}" class="w-full border rounded px-3 py-2" required>
             </div>
 
@@ -88,10 +91,6 @@
                                     <input type="text" name="opciones[{{ $index }}][valor]" value="{{ $opcion->valor }}" class="w-full mb-2">
                                     <label>Imagen (base64):</label>
                                     <textarea name="opciones[{{ $index }}][imagen]" class="w-full mb-2">{{ $opcion->imagen }}</textarea>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" name="opciones[{{ $index }}][global]" {{ $opcion->global ? 'checked' : '' }}>
-                                        <span class="ml-2">Global</span>
-                                    </label>
                                 </div>
                             @endforeach
                         </div>

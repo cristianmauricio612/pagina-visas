@@ -21,7 +21,8 @@
                 <thead class="bg-gray-800 text-white">
                     <tr>
                         <th class="py-2 px-4">ID</th>
-                        <th class="py-2 px-4">Nombre</th>
+                        <th class="py-2 px-4">Nombre del Campo</th>
+                        <th class="py-2 px-4">Nombre del Elemento</th>
                         <th class="py-2 px-4">Tipo Elemento</th>
                         <th class="py-2 px-4">Tipo Variable</th>
                         <th class="py-2 px-4">Obligatoriedad</th>
@@ -34,6 +35,7 @@
                     @forelse ($variables as $variable)
                         <tr class="border-b hover:bg-gray-100">
                             <td class="py-2 px-4">{{ $variable->id }}</td>
+                            <td class="py-2 px-4">{{ $variable->nombre_campo }}</td>
                             <td class="py-2 px-4">{{ $variable->nombre }}</td>
                             <td class="py-2 px-4">{{ $variable->tipo_elemento }}</td>
                             <td class="py-2 px-4">{{ $variable->tipo_variable }}</td>
@@ -51,7 +53,6 @@
                                             <li>
                                                 {{ $opcion->contenido }}
                                                 @if ($opcion->valor) (Valor: {{ $opcion->valor }}) @endif
-                                                @if ($opcion->global) <span class="text-green-500">(Global)</span> @endif
                                             </li>
                                         @endforeach
                                     </ul>

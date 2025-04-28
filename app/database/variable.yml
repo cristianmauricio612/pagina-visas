@@ -2,6 +2,9 @@ columns:
   nombre:
     type: string
     nullable: false
+  nombre_campo:
+    type: string
+    nullable: false
   tipo_elemento:
     type: string
     nullable: false

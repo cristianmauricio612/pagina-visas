@@ -37,7 +37,7 @@
                                     <div class="flex items-center justify-between mb-2 space-x-4">
                                         <label class="inline-flex items-center space-x-2 flex-grow">
                                             <input type="checkbox" name="variables[]" value="{{ $variable->id }}">
-                                            <span>{{ $variable->nombre }} ({{ $variable->tipo_elemento }})</span>
+                                            <span>{{ $variable->nombre_campo }} ({{ $variable->tipo_elemento }})</span>
                                         </label>
 
                                         @if ($variable->tipo_elemento === 'DATE_PICKER')
