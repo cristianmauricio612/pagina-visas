@@ -256,6 +256,7 @@
             <div class="tab" id="tab3" style="display: none;">
                 <div class="tab-form">
                     <div id="viajeros-info-extra">
+
                         <div class="tab-form-title">
                             <span class="form-title-text">Tu información del pasaporte</span>
                         </div>
@@ -386,7 +387,8 @@
                                         <i class="fa-solid fa-user"></i>
                                     </div>
                                     <p style="word-break: break-word; margin-bottom: 0;">{{ $viajero->nombres_pasaporte }}
-                                        {{ $viajero->apellidos_pasaporte }}</p>
+                                        {{ $viajero->apellidos_pasaporte }}
+                                    </p>
                                 </div>
                             @endforeach
                         </div>
@@ -576,16 +578,17 @@
                     let tasaDiv = document.createElement("div");
                     tasaDiv.classList.add("information-pago-tasas");
                     tasaDiv.innerHTML = `
-                            <span style="flex: 1 1 0%;">Tasas gubernamentales</span>
-                            <span style="text-wrap: nowrap; width: fit-content;">$. ${tasaGobierno}</span>
-                        `;
+                                    <span style="flex: 1 1 0%;">Tasas gubernamentales</span>
+                                    <span style="text-wrap: nowrap; width: fit-content;">$. ${tasaGobierno}</span>
+                                `;
                     contenedorTasas.appendChild(tasaDiv);
                 }
             });
         }
-        
+
         //SI FUNCIONA
         function agregarViajero() {
+            console.log("Cantidad: " + contadorViajero);
             let contenedor = document.getElementById("contenedor-viajeros");
             contadorViajero++; // Incrementa el número del viajero
 
@@ -598,6 +601,7 @@
 
             // Añadir el nuevo viajero al contenedor primero para dar feedback visual
             contenedor.appendChild(nuevoViajero);
+            console.log("Cantidad modificada: " + contadorViajero);
 
             // Cargar el contenido desde el servidor
             fetch(`/cargar-viajero/{{ $formulario->id }}`)
@@ -625,11 +629,11 @@
                     const deleteButton = document.createElement('div');
                     deleteButton.className = 'delete-form';
                     deleteButton.innerHTML = `
-                            <div style="display: inline; margin-right: 10px; font-size: 16px;">
-                                <i class="fa-solid fa-trash"></i>
-                            </div>
-                            <span>Eliminar viajero</span>
-                        `;
+                                    <div style="display: inline; margin-right: 10px; font-size: 16px;">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </div>
+                                    <span>Eliminar viajero</span>
+                                `;
                     deleteButton.onclick = function () { eliminarViajero(this); };
 
                     // Encontrar el contenedor del formulario y añadir el botón
@@ -763,19 +767,6 @@
                 // Si hay menos contenedores que viajeros, crear los necesarios
                 while (contenedoresViajeros.length < formData.viajeros.length) {
                     agregarViajero();
-                    contenedoresViajeros = document.querySelectorAll('.tab-viajero-box');
-                }
-
-                // Si hay más contenedores que viajeros, eliminar los sobrantes
-                while (contenedoresViajeros.length > formData.viajeros.length) {
-                    const ultimoContenedor = contenedoresViajeros[contenedoresViajeros.length - 1];
-                    const botonEliminar = ultimoContenedor.querySelector('.delete-form');
-                    if (botonEliminar) {
-                        eliminarViajero(botonEliminar);
-                    } else {
-                        ultimoContenedor.remove();
-                        contadorViajero--;
-                    }
                     contenedoresViajeros = document.querySelectorAll('.tab-viajero-box');
                 }
 
@@ -979,7 +970,8 @@
                     let viajeros = [];
 
                     // Obtener todos los contenedores de viajeros
-                    const contenedoresViajeros = document.querySelectorAll('.tab-viajero-box');
+                    const contenedoresViajeros = tab2.querySelectorAll('.tab-viajero-box');
+                    console.log("Cantidad contenedores: " + contenedoresViajeros.length);
 
                     contenedoresViajeros.forEach((contenedor, indexViajero) => {
                         // Objeto para almacenar los datos de este viajero
@@ -1062,6 +1054,7 @@
                         }
                     });
 
+                    console.log("Cantidad Viajeros: " + viajeros.length);
                     // Validación general
                     if (viajeros.length === 0) {
                         errores.push("⚠️ Debes agregar al menos un viajero con datos válidos.");
@@ -1071,45 +1064,68 @@
                         alert(errores.join("\n"));
                         return;
                     }
-
+                    console.log("Cantidad antes de pasaporte: " + contadorViajero);
                     // Guardar los viajeros válidos en formData
                     formData.viajeros = viajeros;
+
                     actualizarViajeroInfoExtra();
                 } else if (index === 2) {
-                    let viajerosBoxes = document.querySelectorAll(".tab-viajero-box");
-                    let mitad = viajerosBoxes.length / 2;
-                    let viajerosInfo = Array.from(viajerosBoxes).slice(mitad);
+                    let viajerosBoxes = tab3.querySelectorAll(".tab-viajero-box");
 
-                    viajerosInfo.forEach((viajeroBox, i) => {
-                        let nacionalidad = viajeroBox.querySelector(".selected-option[name='nacionalidad_pasaporte[]']")?.getAttribute("data-value");
-                        let numeroPasaporte = viajeroBox.querySelector("input[name='numero_pasaporte[]']")?.value.trim();
-                        let diaCaducidad = viajeroBox.querySelector("select[name='dia[]']")?.value;
-                        let mesCaducidad = viajeroBox.querySelector("select[name='mes[]']")?.value;
-                        let anioCaducidad = viajeroBox.querySelector("select[name='anio[]']")?.value;
-                        let paisNacimiento = viajeroBox.querySelector(".selected-option[name='pais_nacimiento[]']")?.getAttribute("data-value");
-                        let nivelEstudios = viajeroBox.querySelector(".selected-option[name='nivel_estudios[]']")?.getAttribute("data-value");
+                    viajerosBoxes.forEach((viajeroBox, i) => {
+                        let viajero = {};
+                        let erroresViajero = [];
 
-                        if (!nacionalidad || isNaN(diaCaducidad) || isNaN(mesCaducidad) || isNaN(anioCaducidad) || !paisNacimiento || !nivelEstudios) {
-                            errores.push(`⚠️ Completa todos los datos del viajero ${i + 1}.`);
-                        } else {
-                            let fechaCaducidad = "";
+                        const elementosFormulario = viajeroBox.querySelectorAll('input, select, .selected-option');
 
-                            // Si todos los campos de fecha están llenos, se arma la fecha
-                            if (diaCaducidad && mesCaducidad && anioCaducidad) {
-                                fechaCaducidad = `${anioCaducidad}/${mesCaducidad.padStart(2, "0")}/${diaCaducidad.padStart(2, "0")}`;
+                        elementosFormulario.forEach(elemento => {
+                            const nombreCampo = elemento.name || elemento.getAttribute('name');
+                            if (nombreCampo) {
+                                const nombreBase = nombreCampo.replace(/\[\]/g, '');
+
+                                if (elemento.classList.contains('date-picker')) {
+                                    viajero[nombreBase] = elemento.value;
+
+                                    if (nombreBase.includes('fecha') && elemento.value) {
+                                        viajero[nombreBase] = formatFecha(elemento.value);
+                                    }
+                                } else if (elemento.type === 'checkbox') {
+                                    viajero[nombreBase] = elemento.checked;
+                                } else if (elemento.classList.contains('selected-option')) {
+                                    viajero[nombreBase] = elemento.getAttribute('data-value');
+                                } else if (elemento.tagName.toLowerCase() === 'input') {
+                                    viajero[nombreBase] = elemento.value.trim();
+                                } else if (elemento.tagName.toLowerCase() === 'select') {
+                                    viajero[nombreBase] = elemento.value;
+                                }
+
+                                // Validación de campo obligatorio
+                                if (elemento.hasAttribute('required') &&
+                                    (!viajero[nombreBase] || viajero[nombreBase] === '' || viajero[nombreBase] === null)) {
+
+                                    let labelTexto = '';
+                                    const labelElement = viajeroBox.querySelector(`label[for="${nombreCampo}"]`) ||
+                                        elemento.closest('.tab-viajero-item')?.querySelector('.viajero-item-label span') ||
+                                        elemento.closest('.form-box-input')?.querySelector('.form-label span');
+
+                                    if (labelElement) {
+                                        labelTexto = labelElement.textContent.trim();
+                                    } else {
+                                        labelTexto = nombreBase.charAt(0).toUpperCase() + nombreBase.slice(1).replace(/[_-]/g, ' ');
+                                    }
+
+                                    erroresViajero.push(`⚠️ El campo "${labelTexto}" es obligatorio para el viajero #${i + 1}.`);
+                                }
                             }
+                        });
 
+                        if (erroresViajero.length > 0) {
+                            errores = [...errores, ...erroresViajero];
+                        } else if (Object.keys(viajero).length > 0) {
                             formData.viajeros[i] = {
                                 ...formData.viajeros[i],
-                                nacionalidad_pasaporte: nacionalidad,
-                                numero_pasaporte: numeroPasaporte,
-                                fecha_caducidad_pasaporte: fechaCaducidad,
-                                pais_nacimiento: paisNacimiento,
-                                nivel_estudios: nivelEstudios
+                                ...viajero
                             };
-
-                            actualizarListaViajeros();
-                            actualizarTotalPago();
                         }
                     });
 
@@ -1117,7 +1133,11 @@
                         alert(errores.join("\n"));
                         return;
                     }
+
+                    actualizarListaViajeros();
+                    actualizarTotalPago();
                 }
+
 
                 switch (index) {
                     case 0:
@@ -1157,24 +1177,13 @@
                                     }
                                 }
 
-                                const datosFinales = {
-                                    ...formData,
-                                    fecha_llegada: fechaLlegada,
-                                    correo: formData.variables_dinamicas['correo'] ||
-                                        formData.variables_dinamicas['email'] ||
-                                        formData.variables_dinamicas['email_contacto'] || '',
-                                    telefono: formData.variables_dinamicas['telefono'] ||
-                                        formData.variables_dinamicas['phone'] ||
-                                        formData.variables_dinamicas['telefono_contacto'] || ''
-                                };
-
                                 const response = await fetch('/api/izipay/payload', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         "X-CSRF-TOKEN": csrfToken
                                     },
-                                    body: JSON.stringify(datosFinales)
+                                    body: JSON.stringify(formData)
                                 });
 
                                 data = await response.json(); // Asigna la respuesta JSON a data
@@ -1194,23 +1203,23 @@
 
                                 // Agregar los campos necesarios de la respuesta del backend
                                 form.innerHTML = `
-                                        <input type="hidden" name="vads_action_mode" value="${data.vads_action_mode}" />
-                                        <input type="hidden" name="vads_amount" value="${data.vads_amount}" />
-                                        <input type="hidden" name="vads_ctx_mode" value="${data.vads_ctx_mode}" />
-                                        <input type="hidden" name="vads_currency" value="${data.vads_currency}" /> 
-                                        <input type="hidden" name="vads_cust_email" value="${data.vads_cust_email}" />
-                                        <input type="hidden" name="vads_page_action" value="${data.vads_page_action}" />
-                                        <input type="hidden" name="vads_payment_config" value="${data.vads_payment_config}" />
-                                        <input type="hidden" name="vads_redirect_success_timeout" value="${data.vads_redirect_success_timeout}"/>
-                                        <input type="hidden" name="vads_return_mode" value="${data.vads_return_mode}"/>
-                                        <input type="hidden" name="vads_site_id" value="${data.vads_site_id}" />
-                                        <input type="hidden" name="vads_trans_date" value="${data.vads_trans_date}" />
-                                        <input type="hidden" name="vads_trans_id" value="${data.vads_trans_id}" />
-                                        <input type="hidden" name="vads_url_return" value="${data.vads_url_return}"/>
-                                        <input type="hidden" name="vads_version" value="${data.vads_version}" />
-                                        <input type="hidden" name="signature" value="${data.signature}"/>
-                                        <input type="submit" name="pagar" value="Pagar"/>
-                                    `;
+                                                <input type="hidden" name="vads_action_mode" value="${data.vads_action_mode}" />
+                                                <input type="hidden" name="vads_amount" value="${data.vads_amount}" />
+                                                <input type="hidden" name="vads_ctx_mode" value="${data.vads_ctx_mode}" />
+                                                <input type="hidden" name="vads_currency" value="${data.vads_currency}" /> 
+                                                <input type="hidden" name="vads_cust_email" value="${data.vads_cust_email}" />
+                                                <input type="hidden" name="vads_page_action" value="${data.vads_page_action}" />
+                                                <input type="hidden" name="vads_payment_config" value="${data.vads_payment_config}" />
+                                                <input type="hidden" name="vads_redirect_success_timeout" value="${data.vads_redirect_success_timeout}"/>
+                                                <input type="hidden" name="vads_return_mode" value="${data.vads_return_mode}"/>
+                                                <input type="hidden" name="vads_site_id" value="${data.vads_site_id}" />
+                                                <input type="hidden" name="vads_trans_date" value="${data.vads_trans_date}" />
+                                                <input type="hidden" name="vads_trans_id" value="${data.vads_trans_id}" />
+                                                <input type="hidden" name="vads_url_return" value="${data.vads_url_return}"/>
+                                                <input type="hidden" name="vads_version" value="${data.vads_version}" />
+                                                <input type="hidden" name="signature" value="${data.signature}"/>
+                                                <input type="submit" name="pagar" value="Pagar"/>
+                                            `;
 
                                 document.body.appendChild(form);
                                 form.submit();
@@ -1258,54 +1267,85 @@
             if (!formData.viajeros || formData.viajeros.length === 0) {
                 return;
             }
+            if (formData.viajeros.length != contadorViajero) {
+                console.log("Cantidad Formdata: " + formData.viajeros.length);
+                console.log("Cantidad contador: " + contadorViajero);
+            }
+
 
             // Crear un contenedor para cada viajero
             formData.viajeros.forEach((viajero, index) => {
-                // Crear estructura básica para el contenedor del viajero
-                const viajeroContainer = document.createElement('div');
-                viajeroContainer.className = 'tab-viajero-box';
+                if (index < contadorViajero) {
+                    // Crear estructura básica para el contenedor del viajero
+                    const viajeroContainer = document.createElement('div');
+                    viajeroContainer.className = 'tab-viajero-box';
 
-                // Crear el encabezado del viajero
-                const selectContainer = document.createElement('div');
-                selectContainer.className = 'tab-viajero-select';
+                    // Crear el encabezado del viajero
+                    const selectContainer = document.createElement('div');
+                    selectContainer.className = 'tab-viajero-select';
 
-                // Agregar el título del viajero
-                const textContainer = document.createElement('div');
-                textContainer.className = 'tab-viajero-text';
+                    // Agregar el título del viajero
+                    const textContainer = document.createElement('div');
+                    textContainer.className = 'tab-viajero-text';
 
-                const spanTitle = document.createElement('span');
-                spanTitle.className = 'viajero-text';
-                spanTitle.textContent = 'Viajero #' + (index + 1);
+                    const nombres = viajero.nombres || '';
 
-                // Crear el icono
-                const iconContainer = document.createElement('div');
-                iconContainer.className = 'tab-viajero-icon';
-                iconContainer.innerHTML = '<div class="ge"><i class="fa-solid fa-chevron-down" style="font-size: 14px;"></i></div>';
+                    const spanTitle = document.createElement('span');
+                    spanTitle.className = 'viajero-text';
+                    spanTitle.textContent = 'Viajero #' + (index + 1) + ' - ' + nombres;
 
-                // Formulario del viajero (oculto inicialmente)
-                const formContainer = document.createElement('div');
-                formContainer.className = 'tab-viajero-form hidden';
+                    // Crear el icono
+                    const iconContainer = document.createElement('div');
+                    iconContainer.className = 'tab-viajero-icon';
+                    iconContainer.innerHTML = '<div class="ge"><i class="fa-solid fa-chevron-down" style="font-size: 14px;"></i></div>';
 
-                // Mostrar información básica del viajero
-                const infoBox = document.createElement('div');
-                infoBox.className = 'tab-viajero-item';
+                    // Formulario del viajero (oculto inicialmente)
+                    const formContainer = document.createElement('div');
+                    formContainer.className = 'tab-viajero-form hidden';
 
-                // Mostrar datos del viajero (nombres y apellidos si existen)
-                const nombres = viajero.nombres || '';
-                const apellidos = viajero.apellidos || '';
-                infoBox.innerHTML = '<p><strong>Datos guardados:</strong> ' + nombres + ' ' + apellidos + '</p>';
+                    // Mostrar variables del pasaporte
+                    // Cargar el contenido desde el servidor
+                    fetch(`/cargar-pasaporte/{{ $formulario->id }}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error al cargar el viajero');
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            // Reemplazar el contenido del pasaporte con el HTML obtenido
+                            formContainer.innerHTML = html;
 
-                // Ensamblar la estructura
-                textContainer.appendChild(spanTitle);
-                selectContainer.appendChild(textContainer);
-                selectContainer.appendChild(iconContainer);
-                formContainer.appendChild(infoBox);
+                            console.log(formContainer);
 
-                viajeroContainer.appendChild(selectContainer);
-                viajeroContainer.appendChild(formContainer);
+                            // 🚀 Re-inicializar flatpickr SOLO en el nuevo viajero
+                            inicializarDatePickers(formContainer);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            formContainer.innerHTML = '<div class="error">Error al cargar el formulario. Intente nuevamente.</div>';
 
-                // Agregar al contenedor principal
-                contenedor.appendChild(viajeroContainer);
+                            const botonReintentar = document.createElement('button');
+                            botonReintentar.textContent = 'Reintentar';
+                            botonReintentar.className = 'btn btn-sm btn-warning mt-2';
+                            botonReintentar.onclick = () => {
+                                formContainer.remove();
+                                actualizarViajeroInfoExtra();
+                            };
+                            formContainer.appendChild(botonReintentar);
+                        });
+
+                    // Ensamblar la estructura
+                    textContainer.appendChild(spanTitle);
+                    selectContainer.appendChild(textContainer);
+                    selectContainer.appendChild(iconContainer);
+
+                    viajeroContainer.appendChild(selectContainer);
+                    viajeroContainer.appendChild(formContainer);
+
+                    // Agregar al contenedor principal
+                    contenedor.appendChild(viajeroContainer);
+                }
             });
         }
 
@@ -1314,18 +1354,18 @@
             if (!contenedorViajeros) return;
 
             let html = `
-                    <h5 class="viajeros-box-title">Viajeros</h5>
-                `;
+                            <h5 class="viajeros-box-title">Viajeros</h5>
+                        `;
 
             formData.viajeros.forEach((viajero, index) => {
                 html += `
-                        <div class="viajeros-box-item">
-                            <div style="display: inline;">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <p style="word-break: break-word; margin-bottom: 0;">${viajero.nombres} ${viajero.apellidos}</p>
-                        </div>
-                    `;
+                                <div class="viajeros-box-item">
+                                    <div style="display: inline;">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <p style="word-break: break-word; margin-bottom: 0;">${viajero.nombres} ${viajero.apellidos}</p>
+                                </div>
+                            `;
             });
 
             contenedorViajeros.innerHTML = html;
@@ -1341,9 +1381,9 @@
             let total = (precioVisa + tasaGobierno) * contadorViajero;
 
             contenedorTotal.innerHTML = `
-                    <span>Total a pagar hoy</span>
-                    <span>USD $. ${total.toFixed(2)}</span>
-                `;
+                            <span>Total a pagar hoy</span>
+                            <span>USD $. ${total.toFixed(2)}</span>
+                        `;
         }
 
         function formatFecha(fecha) {

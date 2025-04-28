@@ -21,8 +21,7 @@
     <div class="header" id="principal-nav">
         <div class="header-container">
             <a href="/" class="logo-container nav-link">
-                <img src="{{ assets("img/av.png") }}" alt="" style="height: 32px">
-                <span class="text-logo-container">Visa Asesores</span>
+                <img src="{{ assets("img/visas_travel_logo.png") }}" alt="" style="height: 50px">
             </a>
 
             <div class="menu-container">

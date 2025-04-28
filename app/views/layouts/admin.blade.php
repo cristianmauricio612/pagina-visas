@@ -34,8 +34,7 @@
 
         {{-- Logo y Nombre --}}
         <div class="flex items-center mb-6">
-            <img src="{{ assets('img/av.png') }}" alt="Visa Asesores" class="w-10 h-10 mr-3">
-            <span class="text-x font-semibold">Visa Asesores</span>
+            <img src="{{ assets('img/visas_travel_logo.png') }}" alt="Visa Asesores" class="mr-3">
         </div>
 
         <nav class="flex-1">

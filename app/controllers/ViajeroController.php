@@ -15,4 +15,14 @@ class ViajeroController extends Controller
 
         return render('ui.Viajero', ['formulario' => $formulario]);
     }
+
+    public function cargarPasaporte($id) {
+        $formulario = Formulario::with('variables')->where('id', $id)->first();
+
+        if (!$formulario) {
+            return response()->json(['error' => 'Formulario no encontrado'], 404);
+        }
+
+        return render('ui.Pasaporte', ['formulario' => $formulario]);
+    }
 }

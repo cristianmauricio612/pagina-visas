@@ -5,3 +5,6 @@ columns:
   variable_id:
     type: integer
     nullable: false
+  valor:
+    type: string
+    nullable: true

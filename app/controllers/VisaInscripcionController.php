@@ -2,9 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\Variable;
 use App\Models\Viajero;
+use App\Models\ViajeroVariable;
 use App\Models\VisaInscripcion;
 use App\Models\Visa;
+use App\Models\VisaInscripcionVariable;
 use Carbon\Carbon;
 use Leaf\Http\Session;
 use GuzzleHttp\Client;
@@ -64,7 +67,7 @@ class VisaInscripcionController extends Controller
         ], 201);
     }
 
-    private  function generatePurchaseNumber()
+    private function generatePurchaseNumber()
     {
         do {
             $purchaseNumber = substr(md5(time()), -6);
@@ -74,64 +77,84 @@ class VisaInscripcionController extends Controller
         return $purchaseNumber;
     }
 
-    private function getSignature($params,$key)
+    private function getSignature($params, $key)
     {
         $signature_content = "";
 
         ksort($params);
-        foreach($params as $name=>$value){
+        foreach ($params as $name => $value) {
             //Recovery of vads_ fields
-            if(substr($name,0,5)=='vads_'){
+            if (substr($name, 0, 5) == 'vads_') {
                 //Concatenation with "+"
-                $signature_content .= $value."+";
-             }
+                $signature_content .= $value . "+";
+            }
         }
 
         $signature_content .= $key;
 
         //Encoding base64 encoded chain with SHA-256 algorithm
-        $signature = base64_encode(hash_hmac('sha256',$signature_content, $key, true));
+        $signature = base64_encode(hash_hmac('sha256', $signature_content, $key, true));
 
         return $signature;
     }
 
-    public function checkout(){
+    public function checkout()
+    {
         csrf()->validate();
 
         $data = request()->body();
 
-        // Validar que se recibieron los datos necesarios
-        if (empty($data['viajeros']) || !is_array($data['viajeros']) || empty($data['visas_id']) || empty($data['fecha_llegada']) || empty($data['correo']) || empty($data['telefono'])) {
+        // Decodificar viajeros y variables_dinamicas si llegan como JSON string
+        if (isset($data['viajeros']) && is_string($data['viajeros'])) {
+            $data['viajeros'] = json_decode($data['viajeros'], true);
+        }
+
+        if (isset($data['variables_dinamicas']) && is_string($data['variables_dinamicas'])) {
+            $data['variables_dinamicas'] = json_decode($data['variables_dinamicas'], true);
+        }
+
+        // Validar que llegaron los campos básicos
+        if (
+            empty($data['viajeros']) || !is_array($data['viajeros']) ||
+            empty($data['variables_dinamicas']) || !is_array($data['variables_dinamicas']) ||
+            empty($data['visas_id'])
+        ) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Los campos fecha de llegada, correo y telefono son obligatorios'
+                'message' => 'Todos los campos son obligatorios'
             ], 400);
         }
+        error_log("FormData: " . print_r($data, true));
 
         $purchaseNumber = $this->generatePurchaseNumber();
         $data['purchase_number'] = $purchaseNumber;
 
-        // (Opcional) Guardar en sesión si es necesario
+        // (Opcional) Guardar en sesión toda la data, incluyendo variables dinámicas
         Session::set('data', $data);
 
+        // Buscar la visa
         $visa = Visa::find($data['visas_id']);
         if (!$visa) {
-            return response()->json(["status" => "error", "message" => "Visa no encontrada"], 404);
+            return response()->json([
+                "status" => "error",
+                "message" => "Visa no encontrada"
+            ], 404);
         }
 
+        // Calcular total (por cantidad de viajeros)
         $pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
-        $correo = $data['correo'];
+        $correo = $data['variables_dinamicas']['correo'] ?? null;
 
-        // Datos para Izipay
+        // Preparar payload para Izipay
         $payload = [
             'vads_action_mode' => "INTERACTIVE",
-            'vads_amount'        => intval(number_format($pago_total, 2, '.', '') * 100),
+            'vads_amount' => intval(number_format($pago_total, 2, '.', '') * 100),
             'vads_ctx_mode' => "TEST",
-            'vads_currency'      => '840',
+            'vads_currency' => '840',
             'vads_cust_email' => $correo,
             'vads_page_action' => "PAYMENT",
             'vads_payment_config' => "SINGLE",
-            "vads_redirect_success_timeout" => 5,
+            'vads_redirect_success_timeout' => 5,
             'vads_return_mode' => "GET",
             'vads_site_id' => 94909545,
             'vads_trans_date' => gmdate("YmdHis"),
@@ -147,6 +170,7 @@ class VisaInscripcionController extends Controller
 
         return response()->json($payload);
     }
+
 
     public function processPayment()
     {
@@ -181,35 +205,46 @@ class VisaInscripcionController extends Controller
             $visaInscripcion = new VisaInscripcion();
             $visaInscripcion->visas_id = $data['visas_id'];
             $visaInscripcion->numero_pedido = $data['purchase_number'];
-            $visaInscripcion->fecha_llegada = Carbon::createFromFormat('d/m/Y', $data['fecha_llegada']);
-            $visaInscripcion->fecha_salida = isset($data['fecha_salida']) ? Carbon::parse($data['fecha_salida']) : null;
-            $visaInscripcion->correo = $data['correo'];
-            $visaInscripcion->pago_hoy = $visa['precio'] * count($data['viajeros']);
+            $visaInscripcion->pago_sintasa = $visa['precio'] * count($data['viajeros']);
             $visaInscripcion->pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
             $visaInscripcion->tasa_gobierno_total = $visa['tasa_gobierno'] * count($data['viajeros']);
             $visaInscripcion->status_pago = "pagado";
             $visaInscripcion->save();
 
+            // Guardar variables dinámicas
+            foreach ($data["variables_dinamicas"] as $nombre => $valor) {
+                $variabletemp = Variable::where('nombre', $nombre)->first();
+                if ($variabletemp) { // Solo si existe la variable
+                    VisaInscripcionVariable::create([
+                        "visa_inscripcion_id" => $visaInscripcion->id,
+                        "variable_id" => $variabletemp->id,
+                        "valor" => $valor
+                    ]);
+                }
+            }
+
             // Guardar los viajeros asociados
             foreach ($data["viajeros"] as $viajero) {
-                Viajero::create([
+                $newViajero = Viajero::create([
                     "visa_inscripcion_id" => $visaInscripcion->id,
-                    "nombres_pasaporte" => $viajero['nombres'],
-                    "apellidos_pasaporte" => $viajero['apellidos'],
-                    "fecha_nacimiento" => Carbon::parse($viajero['fecha_nacimiento']),
-                    "nacionalidad_pasaporte_id" => $viajero['nacionalidad_pasaporte'],
-                    "numero_pasaporte" => !empty($viajero['numero_pasaporte']) ? $viajero['numero_pasaporte'] : null,
-                    "fecha_caducidad_pasaporte" => !empty($viajero['fecha_caducidad_pasaporte']) 
-                    ? Carbon::parse($viajero['fecha_caducidad_pasaporte']) 
-                    : null,
-                    "pais_nacimiento_id" => $viajero['pais_nacimiento'],
-                    "nivel_estudios" => $viajero['nivel_estudios'],
                 ]);
+
+                foreach ($viajero as $nombre => $valor) {
+                    $variabletemp = Variable::where('nombre', $nombre)->first();
+                    if ($variabletemp) { // Solo si existe la variable
+                        ViajeroVariable::create([
+                            "viajero_id" => $newViajero->id,
+                            "variable_id" => $variabletemp->id,
+                            "valor" => $valor
+                        ]);
+                    }
+                }
             }
 
             // ENVIAR CORREOS //
 
-            $usuarioEmail = $data['correo']; // Correo del usuario
+            $usuarioEmail = $data['variables_dinamicas']['correo'] ?? null; // Correo del usuario
+            $usuarioTelfono = $data['variables_dinamicas']['telefono'] ?? null; // Telefono del usuario
             $adminEmail = getenv('MAIL_SENDER_EMAIL'); // Tu correo
 
             $asunto = "Confirmacion de pago exitoso";
@@ -224,9 +259,9 @@ class VisaInscripcionController extends Controller
                             <span style='font-size: 18px; color: rgb(62, 76, 156); font-weight: bold;'>{$visaInscripcion->numero_pedido}</span>
                         </p>
                         <p style='font-size: 16px; color: #555;'><strong>Correo del Cliente:</strong> 
-                            <span style='word-wrap: break-word; display: block;'>{$visaInscripcion->correo}</span>
+                            <span style='word-wrap: break-word; display: block;'>{$usuarioEmail}</span>
                         </p>
-                        <p style='font-size: 16px; color: #555;'><strong>Número de Contacto:</strong> {$data['telefono']}</p>
+                        <p style='font-size: 16px; color: #555;'><strong>Número de Contacto:</strong> {$usuarioTelfono}</p>
                         <p style='font-size: 16px; color: #555;'><strong>Precio Total:</strong> $ {$visaInscripcion->pago_total}</p>
                         <p style='font-size: 16px; color: #555;'><strong>Estatus del Pago:</strong> 
                             <span style='color: green; font-weight: bold;'>{$visaInscripcion->status_pago}</span>
@@ -257,10 +292,11 @@ class VisaInscripcionController extends Controller
         }
     }
 
-    public function getVisaInscripcion($id){
+    public function getVisaInscripcion($id)
+    {
         $pedido_visa = VisaInscripcion::find($id);
         $visa = Visa::find($pedido_visa->visas_id);
 
-        render('session.show-order', compact('pedido_visa','visa'));
+        render('session.show-order', compact('pedido_visa', 'visa'));
     }
 }

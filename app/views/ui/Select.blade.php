@@ -94,7 +94,7 @@ usa $optionTextField)
     @else
         <div class="custom-select" id="{{ $id }}">
             <div class="selected-option" name="{{ $name }}"
-                data-value="{{ $selectedOption ? $selectedOption->valor : '' }}">
+                data-value="{{ $selectedOption ? $selectedOption->contenido : '' }}">
                 @if($selectedOption)
                     @if($selectedOption->imagen && isset($selectedOption->imagen))
                         <img src="{{ $selectedOption->imagen }}" alt="{{ $selectedOption->contenido }}">
@@ -110,7 +110,7 @@ usa $optionTextField)
                 @endif
                 <div class="options-list">
                     @foreach ($opciones as $opcion)
-                        <div class="option" data-value="{{ $opcion->valor }}">
+                        <div class="option" data-value="{{ $opcion->contenido }}">
                             @if($opcion->imagen && isset($opcion->imagen))
                                 <img src="{{ $opcion->imagen }}" alt="{{ $opcion->contenido }}">
                             @endif
