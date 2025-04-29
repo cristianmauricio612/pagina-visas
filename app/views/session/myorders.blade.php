@@ -1,8 +1,9 @@
 @extends('layouts.public')
-@section('title', 'Visa')
+@section('title', 'Mis Pedidos')
 
 @push('resources')
     <link href="{{ assets('css/myorders.css') }}" rel="stylesheet">
+    <link href="{{ assets('css/modal/show-order.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -11,7 +12,28 @@
         if (!$usuario) {
             redirect('/iniciar-sesion');
         }
-        $pedidos = \APP\MODELS\VisaInscripcion::where('correo', 'LIKE', $usuario['email'])->get();
+        
+        // Obtener la variable de correo desde la tabla de variables
+        $correoVariable = \App\Models\Variable::where('nombre', 'correo')->first();
+        
+        // Buscar los IDs de los pedidos que tienen el correo del usuario actual
+        $pedidosIds = [];
+        if ($correoVariable) {
+            $pedidosRelaciones = \App\Models\VisaInscripcionVariable::where('variable_id', $correoVariable->id)
+                ->where('valor', 'LIKE', $usuario['email'])
+                ->pluck('visa_inscripcion_id')
+                ->toArray();
+            
+            // Obtener los pedidos completos
+            $pedidos = \App\Models\VisaInscripcion::whereIn('id', $pedidosRelaciones)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // Fallback al método anterior si no se encuentra la variable
+            $pedidos = \APP\MODELS\VisaInscripcion::where('correo', 'LIKE', $usuario['email'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
     @endphp
     <div class="main-container">
         <div class="info-visa-container">
@@ -31,7 +53,6 @@
             <div class="saludo">
                 <span>Mis pedidos</span>
             </div>
-
         </div>
 
         <div class="orders-container">
@@ -47,11 +68,13 @@
                     <table class="orders-table">
                         <thead>
                             <tr>
-                                <th>Codigo</th>
-                                <th>Visa</th>
-                                <th>Fecha de llegada</th>
-                                <th>Fecha de salida</th>
+                                <th>Número de pedido</th>
+                                <th>Nombre de la Visa</th>
+                                <th>Fecha de creación</th>
+                                <th>Pago sin tasa</th>
+                                <th>Pago total de tasa</th>
                                 <th>Pago total</th>
+                                <th>Status</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -59,14 +82,26 @@
                             @foreach ($pedidos as $pedido)
                                 @php
                                     $visa = \APP\MODELS\Visa::find($pedido->visas_id);
+                                    // Formatear fecha de creación como dd/mm/aaaa
+                                    $fechaCreacion = \Carbon\Carbon::parse($pedido->created_at)->format('d/m/Y');
+                                    
+                                    // Determinar el color y texto del estado
+                                    $statusClasses = [
+                                        'pendiente' => 'status pending',
+                                        'pagado' => 'status approved',
+                                        'en proceso' => 'status processing',
+                                        'terminado' => 'status completed'
+                                    ];
+                                    $statusClass = $statusClasses[$pedido->status_pago] ?? 'status pending';
                                 @endphp
                                 <tr>
                                     <td>{{$pedido->numero_pedido}}</td>
                                     <td>{{$visa->nombre}}</td>
-                                    <td>{{$pedido->fecha_salida}}</td>
-                                    <td>{{$pedido->fecha_llegada}}</td>
-                                    <td>{{$pedido->pago_total}}</td>
-                                    <!-- <td><span class="status approved">Aprobada</span></td>-->
+                                    <td>{{$fechaCreacion}}</td>
+                                    <td>${{number_format($pedido->pago_sintasa, 2)}}</td>
+                                    <td>${{number_format($pedido->tasa_gobierno_total, 2)}}</td>
+                                    <td>${{number_format($pedido->pago_total, 2)}}</td>
+                                    <td><span class="{{$statusClass}}">{{ucfirst($pedido->status_pago)}}</span></td>
                                     <td>
                                         <a class="btn-view show-visa" href="{{route('account-show-order', $pedido->id)}}">
                                             <i class="fa-solid fa-eye"></i>
@@ -81,7 +116,7 @@
         </div>
     </div>  
 
-    <!-- Modal para Editar -->
+    <!-- Modal para visualizar detalles del pedido -->
     <div class="modal fade" id="show-visa-Modal" tabindex="-1" 
         aria-labelledby="showModalLabel" aria-hidden="true">
     </div> 
@@ -108,6 +143,5 @@
                 });
             });
         });
-
     </script>
 @endsection
