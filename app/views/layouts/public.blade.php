@@ -138,12 +138,12 @@
                                 </a>
                             </li>
                             <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#">Mis pedidos
+                                <a class="dropdown-item" href="{{route('account-mis-pedidos')}}">Mis pedidos
                                 </a>
                             </li>
                             <hr>
                             <li class="dropdown-submenu">
-                                <a class="dropdown-item" onclick="logout()">Cerrar Sesion
+                                <a class="dropdown-item" style="cursor: pointer" onclick="logout()">Cerrar Sesion
                                 </a>
                             </li>
                         </ul>

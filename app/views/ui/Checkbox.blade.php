@@ -23,8 +23,8 @@ Parámetros esperados:
     isset($elementos_afectados) && !empty($elementos_afectados) ? 'ocultarInputs' : '' }}" type="checkbox"
             value="{{ isset($variable->valor) ? $variable->valor : '' }}" id="{{ $variable->nombre }}"
             name="{{ $variable->nombre }}" data-elementos-afectados='@json($elementos_afectados)'
-            @if($variable->tipo_variable === 'VISA') data-contexto="visa" @endif {{ isset($obligatoriedad) && 
-            $obligatoriedad ? 'required' : '' }} {{ isset($variable->valor) && $variable->valor ? 'checked' : '' }}
+            @if($variable->tipo_variable === 'VISA') data-contexto="visa" @endif {{ isset($obligatoriedad) &&
+    $obligatoriedad ? 'required' : '' }} {{ isset($variable->valor) && $variable->valor ? 'checked' : '' }}
             style="width: 20px; height: 20px;">
 
         <label class="form-check-label" style="margin-top: 7px;">
@@ -68,6 +68,12 @@ Parámetros esperados:
                                 elemento.style.display = estaChecked ? 'none' : '';
                                 elemento.querySelectorAll('input, select, textarea').forEach(input => {
                                     input.disabled = estaChecked;
+                                    
+                                    if (estaChecked) {
+                                        input.removeAttribute('required');
+                                    } else {
+                                        input.setAttribute('required', true);
+                                    }
                                 });
                             }
                         });

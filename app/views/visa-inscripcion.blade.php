@@ -455,14 +455,14 @@
             const inputs = context.querySelectorAll('.date-picker');
 
             inputs.forEach(input => {
-                if (input._flatpickr) {
-                    return; // Ya tiene flatpickr inicializado
-                }
+                if (input._flatpickr) return; // Ya tiene flatpickr inicializado
 
                 const minMonths = parseInt(input.dataset.minMonths || "0");
 
                 const today = new Date();
-                const minDate = new Date(today.getFullYear(), today.getMonth() + minMonths, today.getDate());
+                const minDate = minMonths > 0
+                    ? new Date(today.getFullYear(), today.getMonth() + minMonths, today.getDate())
+                    : null;
 
                 const calendar = flatpickr(input, {
                     dateFormat: "d/m/Y",
@@ -471,18 +471,28 @@
                     clickOpens: true,
                     positionElement: input,
                     showMonths: 2,
+                    onReady: function(selectedDates, dateStr, instance) {
+                        // Mostrar la selección de año por defecto si no hay restricción
+                        if (!minDate) {
+                            instance.currentYearElement.click();
+                        }
+                    }
                 });
 
                 const openCalendar = () => {
                     input.focus();
                     setTimeout(() => {
                         calendar.open();
+                        if (!minDate) {
+                            calendar.currentYearElement?.click(); // Abrir selector de año si no hay minDate
+                        }
                     }, 100);
                 };
 
                 input.addEventListener("click", openCalendar);
             });
         }
+
 
         document.addEventListener("DOMContentLoaded", function () {
             inicializarDatePickers();
@@ -757,7 +767,7 @@
         let pais2 = @json($pais2);
 
         const csrfToken = "{{ csrf()->token() }}";
-
+        //SI FUNCIONA
         // Función para restaurar datos de viajeros cuando se vuelve al tab2
         function restaurarDatosTab2() {
             if (formData.viajeros && formData.viajeros.length > 0) {
@@ -937,20 +947,10 @@
 
                         // Validaciones específicas según el tipo de dato
                         if (valor) {
-                            // Validar correo electrónico
-                            if (nombreCampo === 'correo') {
-                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                                if (!emailRegex.test(valor)) {
-                                    errores.push("📧 Ingresa un correo electrónico válido.");
-                                }
-                            }
+                            const error = validacionesGenerales(nombreCampo, valor, 1);
 
-                            // Validar número de teléfono
-                            if (nombreCampo === 'telefono') {
-                                const telefonoRegex = /^\+?[0-9]{7,15}$/;
-                                if (!telefonoRegex.test(valor)) {
-                                    errores.push("📞 Ingresa un número de teléfono válido (7 a 15 dígitos, opcionalmente con '+').");
-                                }
+                            if(error != ""){
+                                errores.push(error);
                             }
 
                             // Formatear fechas si es necesario
@@ -1028,22 +1028,19 @@
 
                                     erroresViajero.push(`⚠️ El campo "${labelTexto}" es obligatorio para el viajero #${indexViajero + 1}.`);
                                 }
+
+                                let valor = viajero[nombreBase];
+
+                                // Validaciones específicas según el tipo de dato
+                                if (valor) {
+                                    const error = validacionesGenerales(nombreBase, valor, indexViajero);
+
+                                    if(error != ""){
+                                        erroresViajero.push(error);
+                                    }
+                                }
                             }
                         });
-
-                        /* Verificar edad si hay fecha de nacimiento
-                        if (viajero.fecha_nacimiento) {
-                            try {
-                                const fechaNacimiento = new Date(viajero.fecha_nacimiento);
-                                const edad = calcularEdad(fechaNacimiento);
-
-                                if (edad < 18) {
-                                    erroresViajero.push(`⚠️ El viajero #${indexViajero + 1} debe ser mayor de 18 años.`);
-                                }
-                            } catch (error) {
-                                console.error('Error al calcular edad:', error);
-                            }
-                        }*/
 
                         // Agregar todos los errores de este viajero
                         if (erroresViajero.length > 0) {
@@ -1115,6 +1112,17 @@
                                     }
 
                                     erroresViajero.push(`⚠️ El campo "${labelTexto}" es obligatorio para el viajero #${i + 1}.`);
+                                }
+
+                                let valor = viajero[nombreBase];
+
+                                // Validaciones específicas según el tipo de dato
+                                if (valor) {
+                                    const error = validacionesGenerales(nombreBase, valor, i);
+
+                                    if(error != ""){
+                                        erroresViajero.push(error);
+                                    }
                                 }
                             }
                         });
@@ -1235,6 +1243,40 @@
             }
         });
 
+        function validacionesGenerales(nombreCampo, valor, index){
+            let errores="";
+            // Validar correo electrónico
+            if (nombreCampo.includes('correo')) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(valor)) {
+                    errores = "📧 Ingresa un correo electrónico válido.";
+                }
+            }
+
+            // Validar número de teléfono
+            if (nombreCampo.includes('telefono') || nombreCampo.includes('numero')) {
+                const telefonoRegex = /^\+?[0-9]{7,15}$/;
+                if (!telefonoRegex.test(valor)) {
+                    errores = "📞 Ingresa un número de teléfono válido (7 a 15 dígitos, opcionalmente con '+').";
+                }
+            }
+
+            // Validar edad viajero
+            if (nombreCampo.includes('fecha_nacimiento')) {
+                const fechaNacimiento = parseFechaDDMMYYYY(valor);
+                if (!fechaNacimiento || isNaN(fechaNacimiento)) {
+                    errores = `⚠️ La fecha de nacimiento del viajero #${index + 1} no es válida.`;
+                } else {
+                    const edad = calcularEdad(fechaNacimiento);
+                    console.log("Edad: " + edad);
+                    if (edad < 18) {
+                        errores = `⚠️ El viajero #${index + 1} debe ser mayor de 18 años.`;
+                    }
+                }
+            }
+            return errores;
+        }
+
         // Función para calcular la edad a partir de la fecha de nacimiento
         function calcularEdad(fechaNacimiento) {
             let hoy = new Date();
@@ -1250,6 +1292,15 @@
             }
 
             return edad;
+        }
+
+        function parseFechaDDMMYYYY(fechaStr) {
+            if (typeof fechaStr !== "string") return null;
+
+            const [dia, mes, anio] = fechaStr.split("/").map(Number);
+            if (!dia || !mes || !anio) return null;
+
+            return new Date(anio, mes - 1, dia);
         }
 
         function actualizarViajeroInfoExtra() {

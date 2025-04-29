@@ -29,6 +29,7 @@
             @forelse ($inscripciones->reverse() as $inscripcion)
                     @php
                         $visa = \App\Models\Visa::find($inscripcion->visas_id);
+                        $inscripcionVariables = \App\Models\VisaInscripcionVariable::with('variable')->where('visa_inscripcion_id', $inscripcion->id)->get();
                         $viajeros = \App\Models\Viajero::where('visa_inscripcion_id', $inscripcion->id)->get();
                     @endphp
 
@@ -38,10 +39,11 @@
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-800">{{ $inscripcion->numero_pedido }}</h2>
                                 <p class="text-gray-600 text-sm">Visa: {{ $visa->nombre }}</p>
-                                <p class="text-gray-600 text-sm">Correo: {{ $inscripcion->correo }}</p>
-                                <p class="text-gray-600 text-sm">Fecha de llegada: {{ $inscripcion->fecha_llegada }}</p>
+                                <p class="text-gray-600 text-sm">inscripcion: {{ $inscripcion->pago_sintasa }}</p>
+                                <p class="text-gray-600 text-sm">Tasa de Gobierno Total: {{ $inscripcion->tasa_gobierno_total }}</p>
                                 <p class="text-gray-600 text-sm font-bold">Pago Total: MXN
-                                    {{ number_format($inscripcion->pago_total, 2) }}</p>
+                                    {{ number_format($inscripcion->pago_total, 2) }}
+                                </p>
                             </div>
 
                             {{-- Estado del Pedido --}}
@@ -77,25 +79,38 @@
                         <div id="viajeros_{{ $inscripcion->id }}" class="hidden mt-2 border-t pt-2 space-y-2">
                             @foreach ($viajeros as $viajero)
                                         @php
-                                            $nacionalidad_pasaporte = \App\Models\Pais::find($viajero->nacionalidad_pasaporte_id)->nombre;
-                                            $pais_nacimiento = \App\Models\Pais::find($viajero->pais_nacimiento_id)->nombre;
+                                            $viajeroVariables = \App\Models\ViajeroVariable::with('variable')->where('viajero_id', $viajero->id)->get();
                                         @endphp
                                         <div class="p-2 bg-gray-100 rounded-lg">
-                                            <p class="font-semibold">{{ $viajero->nombres_pasaporte }} {{ $viajero->apellidos_pasaporte }}</p>
-                                            <button onclick="toggleViajero({{ $viajero->id }})"
-                                                class="text-blue-600 hover:text-blue-800 text-sm font-semibold transition">
-                                                Ver Detalles
-                                            </button>
+                                            @php
+                                                $nombres = $viajeroVariables->firstWhere('variable.nombre', 'nombres')?->valor;
+                                                $apellidos = $viajeroVariables->firstWhere('variable.nombre', 'apellidos')?->valor;
+                                            @endphp
+
+                                            @if ($nombres && $apellidos)
+                                                <p class="font-semibold">{{ $nombres }} {{ $apellidos }}</p>
+                                                <button onclick="toggleViajero({{ $viajero->id }})"
+                                                    class="text-blue-600 hover:text-blue-800 text-sm font-semibold transition">
+                                                    Ver Detalles
+                                                </button>
+
+                                            @endif
 
                                             {{-- Detalles del Viajero --}}
                                             <div id="viajero_{{ $viajero->id }}" class="hidden mt-2 p-3 border rounded bg-white shadow-sm">
-                                                <p><strong>Fecha de Nacimiento:</strong> {{ $viajero->fecha_nacimiento }}</p>
-                                                <p><strong>Nacionalidad:</strong> {{ $nacionalidad_pasaporte }}</p>
-                                                <p><strong>Número de Pasaporte:</strong> {{ $viajero->numero_pasaporte }}</p>
-                                                <p><strong>País de Nacimiento:</strong> {{ $pais_nacimiento }}</p>
-                                                <p><strong>Nivel de Estudios:</strong> {{ $viajero->nivel_estudios }}</p>
-                                                <p><strong>Fecha de Caducidad del Pasaporte:</strong> {{ $viajero->fecha_caducidad_pasaporte }}
-                                                </p>
+                                                @foreach ($viajeroVariables as $viajeroVariable)
+                                                        @if ($viajeroVariable->variable->tipo_elemento != 'CHECKBOX_RESTRICTIVE')
+                                                            @if ($viajeroVariable->variable->isPais)
+                                                                    @php
+                                                                        $pais = \App\Models\Pais::find($viajeroVariable->valor);
+                                                                    @endphp
+                                                                    <p><strong>{{$viajeroVariable->variable->nombre_campo}}:</strong> {{$pais->nombre}}</p>
+                                                            @else
+                                                                <p><strong>{{$viajeroVariable->variable->nombre_campo}}:</strong>
+                                                                    {{$viajeroVariable->valor ?: 'Sin valor'}}</p>
+                                                            @endif
+                                                        @endif
+                                                @endforeach
                                             </div>
                                         </div>
                             @endforeach

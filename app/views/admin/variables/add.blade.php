@@ -154,6 +154,8 @@
         const isPaisContainer = document.getElementById('isPaisContainer');
         const isPais = document.getElementById('isPais');
 
+        let tipoVariableChangeHandler = null; // Referencia al listener para poder eliminarlo
+
         tipoElemento.addEventListener('change', function () {
             const selected = this.value;
 
@@ -170,27 +172,24 @@
 
             // Siempre ocultar variablesBloqueo primero
             variablesBloqueo.classList.add('hidden');
+            variablesBloqueo.innerHTML = '';
+
+            // Si ya existe un handler anterior en tipoVariable, lo quitamos
+            if (tipoVariableChangeHandler) {
+                tipoVariable.removeEventListener('change', tipoVariableChangeHandler);
+                tipoVariableChangeHandler = null;
+            }
 
             if (selected === 'CHECKBOX_RESTRICTIVE') {
-                // Verificar inmediatamente el valor actual de tipoVariable
-                if (tipoVariable.value === 'VISA') {
-                    variablesBloqueo.classList.remove('hidden');
-                }else if(tipoVariable.value === 'VIAJERO'){
-                    variablesBloqueo.classList.remove('hidden');
-                } else if(tipoVariable.value === 'PASAPORTE'){
-                    variablesBloqueo.classList.remove('hidden');
-                }
-                
-                tipoVariable.addEventListener('change', function () {
-                    const selected2 = this.value;
+                // Mostrar inmediatamente si tipoVariable ya es VISA/VIAJERO/PASAPORTE
+                mostrarVariablesBloqueo(tipoVariable.value);
 
-                    const mostrarVariables = selected2 === 'VISA';
-                    if (mostrarVariables) {
-                        variablesBloqueo.classList.remove('hidden');
-                    } else {
-                        variablesBloqueo.classList.add('hidden');
-                    }
-                });
+                // Definimos el nuevo listener
+                tipoVariableChangeHandler = function () {
+                    mostrarVariablesBloqueo(this.value);
+                };
+
+                tipoVariable.addEventListener('change', tipoVariableChangeHandler);
             }
         });
 
@@ -251,24 +250,71 @@
             const div = document.createElement('div');
             div.classList.add('opcion-item', 'mb-4', 'p-4', 'border', 'rounded', 'bg-gray-100');
             div.innerHTML = `
-                            <div class="mb-2">
-                                <label class="block text-sm font-medium text-gray-700">Valor (opcional)</label>
-                                <input type="text" name="opciones[${index}][valor]"
-                                    class="w-full p-2 border rounded" placeholder="Ej. valor123">
-                            </div>
-                            <div class="mb-2">
-                                <label class="block text-sm font-medium text-gray-700">Imagen</label>
-                                <input type="file" name="opciones[${index}][imagen]" accept="image/*"
-                                    class="w-full p-2 border rounded">
-                            </div>
-                            <div class="mb-2">
-                                <label class="block text-sm font-medium text-gray-700">Contenido</label>
-                                <input type="text" name="opciones[${index}][contenido]"
-                                    class="w-full p-2 border rounded" required>
-                            </div>
-                        `;
+                <div class="mb-2">
+                    <label class="block text-sm font-medium text-gray-700">Valor (opcional)</label>
+                    <input type="text" name="opciones[${index}][valor]"
+                        class="w-full p-2 border rounded" placeholder="Ej. valor123">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium text-gray-700">Imagen</label>
+                    <input type="file" name="opciones[${index}][imagen]" accept="image/*"
+                        class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium text-gray-700">Contenido</label>
+                    <input type="text" name="opciones[${index}][contenido]"
+                        class="w-full p-2 border rounded" required>
+                </div>
+            `;
 
             contenedorOpciones.appendChild(div);
         });
+    </script>
+    <script>
+        const variables = @json($variables);
+        function crearCheckboxVariables(tipoFiltrar) {
+            const container = document.createElement('div');
+            container.className = 'grid grid-cols-1 gap-2';
+
+            variables.forEach(variable => {
+                if (variable.tipo_variable === tipoFiltrar && variable.obligatoriedad) {
+                    const label = document.createElement('label');
+                    label.className = 'flex items-center space-x-2';
+
+                    const input = document.createElement('input');
+                    input.type = 'checkbox';
+                    input.name = 'bloqueos[]';
+                    input.value = variable.id;
+                    input.className = 'form-checkbox text-blue-500';
+
+                    const span = document.createElement('span');
+                    span.textContent = variable.nombre;
+
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    container.appendChild(label);
+                }
+            });
+
+            return container;
+        }
+
+        function mostrarVariablesBloqueo(tipo) {
+            variablesBloqueo.innerHTML = '';
+
+            if (tipo === 'VISA' || tipo === 'VIAJERO' || tipo === 'PASAPORTE') {
+                const label = document.createElement('label');
+                label.className = 'block text-gray-700 font-medium mb-2';
+                label.textContent = "Seleccionar variables a bloquear - " + tipo;
+
+                const contenido = crearCheckboxVariables(tipo);
+
+                variablesBloqueo.appendChild(label);
+                variablesBloqueo.appendChild(contenido);
+                variablesBloqueo.classList.remove('hidden');
+            } else {
+                variablesBloqueo.classList.add('hidden');
+            }
+        }
     </script>
 @endsection

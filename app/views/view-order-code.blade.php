@@ -7,15 +7,17 @@
 
 @section('content')
     @php
-        $pedido_id= session()->get('pedido_visa');
+        $pedido_id = session()->get('pedido_visa');
         $visa_id = session()->get('visa');
 
-        if($pedido_id == null && $visa_id == null){
+        if ($pedido_id == null && $visa_id == null) {
             redirect('/iniciar-sesion');
         }
 
-        $pedido_visa = \APP\Models\VisaInscripcion::find($pedido_id['id']);
-        $visa = \APP\Models\Visa::find($visa_id['id']);
+        $pedido_visa = \App\Models\VisaInscripcion::find($pedido_id['id']);
+        $visa = \App\Models\Visa::find($visa_id['id']);
+        $pedidoVariables = \App\Models\VisaInscripcionVariable::with('variable')
+            ->where('visa_inscripcion_id', $pedido_visa['id'])->get();
     @endphp
 
     <div class="main-container">
@@ -43,9 +45,10 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Visa</th>
-                            <th>Fecha de llegada</th>
-                            <th>Fecha de salida</th>
-                            <th>Pago total</th>
+                            <th>Pago sin Tasa</th>
+                            <th>Pago Total</th>
+                            <th>Tasa de Gobierno Total</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -53,9 +56,10 @@
                         <tr>
                             <td>{{$pedido_visa->numero_pedido}}</td>
                             <td>{{$visa->nombre}}</td>
-                            <td>{{$pedido_visa->fecha_salida}}</td>
-                            <td>{{$pedido_visa->fecha_llegada}}</td>
+                            <td>{{$pedido_visa->pago_sintasa}}</td>
                             <td>{{$pedido_visa->pago_total}}</td>
+                            <td>{{$pedido_visa->tasa_gobierno_total}}</td>
+                            <td>{{$pedido_visa->status_pago}}</td>
                             <!-- <td><span class="status approved">Aprobada</span></td>-->
                             <td>
                                 <a class="btn-view show-visa" data-bs-toggle="modal" data-bs-target="#show-visa-Modal">
@@ -78,39 +82,31 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        
+
                         <!-- Sección de Información General -->
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <h6 class="text-muted">Código del Pedido:</h6>
                                 <p class="fw-bold">{{$pedido_visa->numero_pedido}}</p>
                             </div>
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Fecha de Salida:</h6>
-                                <p class="fw-bold">{{$pedido_visa->fecha_salida}}</p>
-                            </div>
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Fecha de Llegada:</h6>
-                                <p class="fw-bold">{{$pedido_visa->fecha_llegada}}</p>
-                            </div>
+                            @foreach ($pedidoVariables as $pedidoVariable)
+                                @if ($pedidoVariable->variable->tipo_elemento != 'CHECKBOX_RESTRICTIVE')
+                                    
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted">{{$pedidoVariable->variable->nombre_campo}}:</h6>
+                                        @if ($pedidoVariable->variable->isPais)
+                                            @php
+                                                $pais = \App\Models\Pais::find($pedidoVariable->valor);
+                                            @endphp
+                                            <td>{{$pais->nombre}}</td>
+                                        @else
+                                            <td>{{$pedidoVariable->valor ?: 'Sin valor'}}</td>
+                                        @endif
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
-        
-                        <!-- Pago -->
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Pago Total:</h6>
-                                <span class="badge bg-info fs-6">$ {{$pedido_visa->pago_total}}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Pago Hoy:</h6>
-                                <span class="badge bg-info fs-6">$ {{$pedido_visa->pago_hoy}}</span>
-                            </div>
-                            <div class="col-md-4">
-                                <h6 class="text-muted">Tasa gobierno total:</h6>
-                                <span class="badge bg-info fs-6">$ {{$pedido_visa->tasa_gobierno_total}}</span>
-                            </div>
-                        </div>
-        
+
                         <!-- Tabla de Información Adicional -->
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -156,45 +152,57 @@
                                 </tbody>
                             </table>
                         </div>
-        
+
                         <!-- Sección de Viajeros -->
-                        <div class="mt-4" >
+                        <div class="mt-4">
                             <h5 class="text-primary">Información de Viajeros y Pasaporte</h5>
                             <div class="table-responsive" style="max-width: 100%;">
                                 <table class="table table-bordered">
+                                    @php
+                                        $primerViajero = \App\Models\Viajero::where('visa_inscripcion_id', $pedido_visa->id)->first();
+                                        $viajeros = \App\Models\Viajero::where('visa_inscripcion_id', $pedido_visa->id)->get();
+                                    @endphp
+
                                     <thead class="table-light">
                                         <tr>
                                             <th>N°</th>
-                                            <th>Nombres</th>
-                                            <th>Appelidos</th>
-                                            <th>Fecha de nacimiento</th>
-                                            <th>País de nacimiento</th>
-                                            <th>Nivel de Estudio</th>
-                                            <th>Pasaporte</th>
-                                            <th>Nacionalidad Pasaporte</th>
-                                            <th>Fecha de caducidad</th>
+                                            @if ($primerViajero)
+                                                @php
+                                                    $viajeroVariables  = \App\Models\ViajeroVariable::with('variable')
+                                                        ->where('viajero_id', $primerViajero->id)->get();
+                                                @endphp
+                                                @foreach ($viajeroVariables as $viajeroVariable)
+                                                    @if ($viajeroVariable->variable->tipo_elemento != 'CHECKBOX_RESTRICTIVE')
+                                                        <th>{{ $viajeroVariable->variable->nombre_campo }}</th>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         @php
-                                            $viajeros = \APP\MODELS\Viajero::where('visa_inscripcion_id','LIKE',$pedido_visa->id)->get();
+                                            $index = 1;
                                         @endphp
                                         @foreach($viajeros as $viajero)
                                             @php
-                                                $pais_nacimiento = \APP\MODELS\Pais::find($viajero->pais_nacimiento_id);
-                                                $nacionalidad_pasaporte = \APP\MODELS\Pais::find($viajero->nacionalidad_pasaporte_id);
-                                                $index = 1;
+                                                $viajeroVariables = \App\Models\ViajeroVariable::with('variable')
+                                                    ->where('viajero_id', $viajero->id)->get();
                                             @endphp
                                             <tr>
                                                 <td>{{$index}}</td>
-                                                <td>{{$viajero->nombres_pasaporte}}</td>
-                                                <td>{{$viajero->apellidos_pasaporte}}</td>
-                                                <td>{{$viajero->fecha_nacimiento}}</td>
-                                                <td>{{$pais_nacimiento->nombre}}</td>
-                                                <td>{{$viajero->nivel_estudios}}</td>
-                                                <td>{{$viajero->numero_pasaporte}}</td>
-                                                <td>{{$nacionalidad_pasaporte->nombre}}</td>
-                                                <td>{{$viajero->fecha_caducidad_pasaporte}}</td>
+                                                @foreach ($viajeroVariables as $viajeroVariable)
+                                                    @if ($viajeroVariable->variable->tipo_elemento != 'CHECKBOX_RESTRICTIVE')
+                                                        @if ($viajeroVariable->variable->isPais)
+                                                            @php
+                                                                $pais = \App\Models\Pais::find($viajeroVariable->valor);
+                                                            @endphp
+                                                            <td>{{$pais->nombre}}</td>
+                                                        @else
+                                                            <td>{{$viajeroVariable->valor ?: 'Sin valor'}}</td>
+                                                        @endif
+                                                    @endif
+                                                @endforeach
                                             </tr>
                                             @php
                                                 $index++;
@@ -220,19 +228,19 @@
                     "X-CSRF-TOKEN": "{{ csrf()->token() }}" // Token CSRF
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    alert("✅ Pedido cerrado correctamente");
-                    window.location.href = "/iniciar-sesion"; // Redirigir al login
-                } else {
-                    alert("❌ Error: " + data.message);
-                }
-            })
-            .catch(error => {
-                console.error("❌ Error inesperado: ", error);
-                alert("❌ Ocurrió un error inesperado.");
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("✅ Pedido cerrado correctamente");
+                        window.location.href = "/iniciar-sesion"; // Redirigir al login
+                    } else {
+                        alert("❌ Error: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Error inesperado: ", error);
+                    alert("❌ Ocurrió un error inesperado.");
+                });
         }
     </script>
 @endsection
