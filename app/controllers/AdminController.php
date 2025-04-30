@@ -72,7 +72,9 @@ class AdminController extends Controller
         // Verificar si el usuario admin ya está registrado
         if (strtolower($data['nombre']) === 'admin') {
             if (User::whereRaw('LOWER(nombre) = ?', [strtolower($data['nombre'])])->exists()) {
-                return response()->json(['status' => 'error', 'message' => 'El nombre "admin" no está permitido'], 402);
+                if($user->nombre!=$data['nombre']){
+                    return response()->json(['status' => 'error', 'message' => 'El nombre "admin" no está permitido'], 402);
+                }
             }
         }
 
@@ -87,7 +89,7 @@ class AdminController extends Controller
                 return response()->json(['status' => 'error', 'message' => 'Las contraseñas no coinciden'], 400);
             }
 
-            $user->contraseña = $data['contraseña'];
+            $user->contraseña = password_hash($data['contraseña'], PASSWORD_BCRYPT); // Cifrar la contraseña;
         }
 
 

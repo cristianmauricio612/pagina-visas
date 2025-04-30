@@ -17,7 +17,7 @@
     <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
         <!-- Logo -->
         <div class="flex justify-center mb-6">
-            <img src="{{assets('img/av.png')}}" alt="Logo" class="h-12">
+            <img src="{{ assets("img/visas_travel_logo.png") }}" alt="Logo" class="h-12">
         </div>
 
         <!-- Título -->
