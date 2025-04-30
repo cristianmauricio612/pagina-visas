@@ -89,12 +89,13 @@
 
                                             @if ($nombres && $apellidos)
                                                 <p class="font-semibold">{{ $nombres }} {{ $apellidos }}</p>
-                                                <button onclick="toggleViajero({{ $viajero->id }})"
-                                                    class="text-blue-600 hover:text-blue-800 text-sm font-semibold transition">
-                                                    Ver Detalles
-                                                </button>
-
+                                            @else
+                                                <p class="font-semibold">Faltan datos del viajero</p>
                                             @endif
+                                            <button onclick="toggleViajero({{ $viajero->id }})"
+                                                class="text-blue-600 hover:text-blue-800 text-sm font-semibold transition">
+                                                Ver Detalles
+                                            </button>
 
                                             {{-- Detalles del Viajero --}}
                                             <div id="viajero_{{ $viajero->id }}" class="hidden mt-2 p-3 border rounded bg-white shadow-sm">
