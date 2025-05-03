@@ -76,13 +76,13 @@
 
                 {{-- Precio --}}
                 <div class="mb-4">
-                    <label for="precio" class="block text-gray-700 font-semibold mb-2">Precio (MXN)</label>
+                    <label for="precio" class="block text-gray-700 font-semibold mb-2">Precio ($)</label>
                     <input type="number" step="0.01" name="precio" id="precio" class="p-2 border rounded w-full" value="{{$visa->precio}}" placeholder="00.00" required>
                 </div>
 
                 {{-- Tasa de Gobierno --}}
                 <div class="mb-4">
-                    <label for="tasa_gobierno" class="block text-gray-700 font-semibold mb-2">Tasa de Gobierno (MXN)</label>
+                    <label for="tasa_gobierno" class="block text-gray-700 font-semibold mb-2">Tasa de Gobierno ($)</label>
                     <input type="number" step="0.01" name="tasa_gobierno" id="tasa_gobierno" class="p-2 border rounded w-full" value="{{$visa->tasa_gobierno}}" placeholder="00.00" required>
                 </div>
 

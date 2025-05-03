@@ -684,7 +684,7 @@ input::placeholder {
     border: 1px solid #ccc;
     padding: 10px;
     padding-left: 20px;
-    border-radius: 18px;
+    border-radius: 10px;
 }
 
 .selected-option img {
@@ -697,7 +697,7 @@ input::placeholder {
     width: 100%;
     background: white;
     border: 1px solid #ccc;
-    border-radius: 18px;
+    border-radius: 10px;
     top: 0;
     left: 0;
     display: none;

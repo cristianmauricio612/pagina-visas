@@ -371,12 +371,9 @@
                                     <img src="{{ $pais2->imagen }}" height="40" width="40">
                                 </div>
 
-                                <p class="informacion-general-item">Válido por: <span class="info-general-item-black">2 años
-                                        desde la emisión</span></p>
-                                <p class="informacion-general-item">Estancia máxima: <span class="info-general-item-black">2
-                                        años por entrada</span></p>
-                                <p class="informacion-general-item" style="margin: 0;">Número de entradas: <span
-                                        class="info-general-item-black">Entrada múltiple</span></p>
+                                <p class="informacion-general-item">Válido por: <span class="info-general-item-black">{{ $visa->tiempo_validez }}</span></p>
+                                <p class="informacion-general-item">Estancia máxima: <span class="info-general-item-black">{{ $visa->estancia_maxima }}</span></p>
+                                <p class="informacion-general-item" style="margin: 0;">Número de entradas: <span class="info-general-item-black">{{ $visa->numero_entradas }}</span></p>
                             </div>
                         </div>
                         <div class="viajeros-box">
@@ -492,7 +489,6 @@
                 input.addEventListener("click", openCalendar);
             });
         }
-
 
         document.addEventListener("DOMContentLoaded", function () {
             inicializarDatePickers();

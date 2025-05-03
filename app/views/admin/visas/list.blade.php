@@ -59,8 +59,8 @@
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->numero_entradas }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->estancia_maxima }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->necesita_visa ? 'Sí' : 'No' }}</td>
-                            <td class="py-2 px-4 whitespace-nowrap">MXN {{ number_format($visa->precio, 2) }}</td>
-                            <td class="py-2 px-4 whitespace-nowrap">MXN {{ number_format($visa->tasa_gobierno, 2) }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">$ {{ number_format($visa->precio, 2) }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">$ {{ number_format($visa->tasa_gobierno, 2) }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->meses_espera }} meses</td>
                             <td class="py-2 px-4 flex space-x-2 whitespace-nowrap">
                                 <a href="{{route('admin.visas.editView', $visa->id)}}" class="text-blue-500 hover:text-blue-700">
@@ -156,8 +156,8 @@
                                     <td class="py-2 px-4 whitespace-nowrap">${visa.numero_entradas}</td>
                                     <td class="py-2 px-4 whitespace-nowrap">${visa.estancia_maxima}</td>
                                     <td class="py-2 px-4 whitespace-nowrap">${visa.necesita_visa ? 'Si' : 'No'}</td>
-                                    <td class="py-2 px-4 whitespace-nowrap">MXN ${visa.precio ? parseFloat(visa.precio).toFixed(2) : '0.00'}</td>
-                                    <td class="py-2 px-4 whitespace-nowrap">MXN ${visa.tasa_gobierno ? parseFloat(visa.tasa_gobierno).toFixed(2) : '0.00'}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">$ ${visa.precio ? parseFloat(visa.precio).toFixed(2) : '0.00'}</td>
+                                    <td class="py-2 px-4 whitespace-nowrap">$ ${visa.tasa_gobierno ? parseFloat(visa.tasa_gobierno).toFixed(2) : '0.00'}</td>
                                     <td class="py-2 px-4 whitespace-nowrap">${visa.meses_espera} meses</td>
 
                                     <td class="py-2 px-4 flex space-x-2 whitespace-nowrap">

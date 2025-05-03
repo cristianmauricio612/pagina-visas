@@ -41,7 +41,7 @@
                                 <p class="text-gray-600 text-sm">Visa: {{ $visa->nombre }}</p>
                                 <p class="text-gray-600 text-sm">inscripcion: {{ $inscripcion->pago_sintasa }}</p>
                                 <p class="text-gray-600 text-sm">Tasa de Gobierno Total: {{ $inscripcion->tasa_gobierno_total }}</p>
-                                <p class="text-gray-600 text-sm font-bold">Pago Total: MXN
+                                <p class="text-gray-600 text-sm font-bold">Pago Total: $
                                     {{ number_format($inscripcion->pago_total, 2) }}
                                 </p>
                             </div>

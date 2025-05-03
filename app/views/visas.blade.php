@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="visa-information-text">
                                     <div class="visa-text-label">Válido por</div>
-                                    <div class="visa-text-content">{{ $visa_temp->tiempo_validez }} desde la emisión</div>
+                                    <div class="visa-text-content">{{ $visa_temp->tiempo_validez }}</div>
                                 </div>
                             </div>
 
@@ -157,7 +157,7 @@
                                 </div>
                                 <div class="visa-information-text">
                                     <div class="visa-text-label">Estancia máxima</div>
-                                    <div class="visa-text-content">{{ $visa_temp->estancia_maxima }} por entrada</div>
+                                    <div class="visa-text-content">{{ $visa_temp->estancia_maxima }}</div>
                                 </div>
                             </div>
                         </div>
