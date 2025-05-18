@@ -23,7 +23,7 @@
             <div class="visa-title">
                 ¡Aplica ahora para tu
                 @if ($visas->isNotEmpty())
-                    @if ($visa_temp->necesita_visa === 0)
+                    @if (!$visa_temp->necesita_visa)
                         <span>trip</span>
                     @else
                         <span>{{ $visa_temp->nombre }}</span>
@@ -34,7 +34,7 @@
             </div>
 
             @if ($visas->isNotEmpty())
-                @if ($visa_temp->necesita_visa === 0)
+                @if (!$visa_temp->necesita_visa)
                     <div class="visa-verification-img">
                         <img src="{{ assets('img/no-necesitas-visa.png') }}" alt="">
                     </div>
@@ -75,7 +75,7 @@
                 <label class="origen-label">Solicitar</label>
                 <div class="custom-select">
                     @if ($visas->isNotEmpty())
-                        @if ($visa_temp->necesita_visa !== 0)
+                        @if ($visa_temp->necesita_visa)
                             <div id="visa" class="selected-option" data-value="{{ $visa_temp->id }}">
                                 {{ $visa_temp->nombre }} - {{ $visa_temp->tiempo_validez }}, {{ $visa_temp->numero_entradas }}
                             </div>
@@ -93,7 +93,7 @@
                         <input type="text" class="search-input">
                         <div class="options-list">
                             @if ($visas->isNotEmpty())
-                                @if ($visa_temp->necesita_visa !== 0)
+                                @if ($visa_temp->necesita_visa)
                                     @foreach ($visas as $visa)
                                         <div class="option" data-value="{{ $visa->id }}">
                                             {{ $visa->nombre }} - {{ $visa->tiempo_validez }}, {{ $visa->numero_entradas }}
@@ -117,7 +117,7 @@
 
         <div class="visas-information">
             @if ($visas->isNotEmpty())
-                @if ($visa_temp->necesita_visa !== 0)
+                @if ($visa_temp->necesita_visa)
                     <div class="visa-information-container">
                         <span class="visa-information-span">
                             <div style="display: inline;">
@@ -173,7 +173,7 @@
                 @endif
             @else
                 <div class="visa-information-button">
-                    <button id="solicitarVisa" disabled>Solicitar ahora</button>
+                    <button id="solicitarVisa">Contactanos</button>
                 </div>
             @endif
         </div>
@@ -199,12 +199,21 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("solicitarVisa").addEventListener("click", function() {
+                if (visas && visas.length > 0) {
+                    // Obtener los valores seleccionados de los selects
                 // Obtener los valores seleccionados de los selects
+                    let id = document.getElementById("visa").getAttribute("data-value");
                 let id = document.getElementById("visa").getAttribute("data-value");
-
+                
+                    // Construir la URL de la ruta y redirigir
                 // Construir la URL de la ruta y redirigir
+                    let url = `/visa-inscripcion/${id}/${posicion}`;
                 let url = `/visa-inscripcion/${id}/${posicion}`;
+                    window.location.href = url;
                 window.location.href = url;
+                } else {
+                    window.location.href = '/contact';
+                }
             });
 
             const customSelects = document.querySelectorAll(".custom-select");
