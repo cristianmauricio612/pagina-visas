@@ -1,176 +1,73 @@
 @extends('layouts.public')
 @section('title', 'Contacto')
-@push('resources')
-    <link href="{{assets('css/contact.css') }}" rel="stylesheet">
-@endpush
+
 @section('content')
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Navegación de migas de pan -->
+        <div class="text-sm text-gray-500 mb-6">
+            <a href="/" class="hover:text-blue-600">Inicio</a>
+            <span class="mx-2">></span>
+            <span class="font-bold">Contáctanos</span>
+        </div>
 
-    @php
-        $paises = \App\Models\Pais::all();
-    @endphp
+        <!-- Título principal -->
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Contáctanos</h1>
 
-    <div class="container my-5">
-        <h1 class="fw-bold text-center py-5" style="font-size: 3rem">CONTACTO</h1>
-        <div class="row row-cols-1 row-cols-md-2 my-5">
-            <div class="col d-flex justify-content-center mb-3">
-                <img style="max-width: 100%" class="rounded-5" src="{{assets('img/elegirnos.jpg')}}" alt="">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+            <!-- Chatea con nosotros -->
+            <div class="bg-teal-900 text-white rounded-xl p-8 col-span-2 md:h-4/5">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-teal-800 rounded-md flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-3">Chatea con nosotros</h2>
+                <p class="mb-4">Contáctanos por WhatsApp, estamos disponibles las 24 horas del día, los 7 días de la semana.</p>
+                
+                <a href="https://wa.me/923647947" class="inline-flex items-center bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-2xl transition duration-300 mt-3">
+                    Chatear por WhatsApp
+                    <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
             </div>
-            <div class="col">
-                <h2 class="fw-bold">
-                    ¡Contáctanos y Viaja al país de tus sueños!
-                </h2>
-                <p>
-                    ¿Estás listo para emprender el viaje al país que siempre soñaste? Que ningun trámite de Visa te detenga,
-                    nuestros asesores se ocuparán de todo, tu solo alista tus maletas.
-                </p>
+
+            <!-- Envíanos un e-mail -->
+            <div class="bg-white border border-gray-200 rounded-lg p-8 col-span-3">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Envíanos un e-mail</h2>
+                <p class="text-gray-600 mb-6">Tiempo de respuesta: 3 horas</p>
+                
+                <p class="text-gray-700 mb-4">Si necesitas ayuda, envíanos un email a <a href="mailto:contacto@visastraveltours.com" class="text-blue-600 hover:underline">contacto@visastraveltours.com</a></p>
+                
+                <p class="text-gray-700 mb-4">Si tienes una solicitud en curso, asegúrate de incluir tu número de pedido y contactarnos desde tu correo registrado.</p>
+                
+                <p class="text-gray-700 mb-4">Para obtener información sobre los requisitos de visa para tu viaje, indícanos tu nacionalidad, país de residencia y destino.</p>
+                
+                <p class="text-gray-700">Ofrecemos tiempos de respuesta más rápidos a través de WhatsApp y mediante nuestro chat en línea.</p>
             </div>
         </div>
 
-        <div class="container">
-            <div class="row row-cols-1 row-cols-md-3 contact-container rounded-5 p-5 my-5">
-                <div class="col">
-                    <h2>LLÁMANOS</h2>
-                    <p>+51 959 590 094 / +51 980 514 075</p>
-                    <p>+51 967 284 888 / +51 967 911 764</p>
-                    <p>+51 960 308 837</p>
-                </div>
-                <div class="col">
-                    <h2>E-MAIL</h2>
-                    <p>visastravel.info@gmail.com</p>
-                </div>
-
-                <div class="col">
-                    <h2>VISÍTANOS</h2>
-                    <p>Calle Monitor Huascar 165, Santiago de Surco, Lima, Perú</p>
-                    <p>Lunes – Viernes de 08:00 am a 06:00 pm</p>
-                    <p>Lunes – Viernes de 08:00 am a 06:00 pm</p>
-                </div>
+        <!-- Usa nuestras herramientas de autoayuda -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Usa nuestras herramientas de autoayuda</h2>
+            <p class="text-gray-600 mb-6">Consulta nuestras herramientas de fácil acceso que pueden ahorrarte tiempo.</p>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                <a href="/" class="flex justify-between items-center py-4 px-2 border-b border-gray-200 hover:bg-gray-100 transition duration-150 rounded">
+                    <span class="text-gray-800 font-medium">Iniciar nueva solicitud</span>
+                    <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                <a href="/iniciar-sesion" class="flex justify-between items-center py-4 px-2 hover:bg-gray-100 transition duration-150 rounded">
+                    <span class="text-gray-800 font-medium">Inicia sesión en tu cuenta</span>
+                    <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
             </div>
-        </div>
-        <div class="container mt-5">
-            <h2 class="text-center fw-bold">FORMULARIO <br> DE CONTACTO</h2>
-            <p class="text-center">Nuestros asesores se pondrán en contacto contigo.</p>
-
-
-            <form id="contactForm">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="nombre" class="form-label">Nombre *</label>
-                        <input type="text" class="form-control" name="nombre" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="apellidos" class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" name="apellidos">
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email *</label>
-                    <input type="email" class="form-control" name="email" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="telefono" class="form-label">Teléfono *</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="telefono" required placeholder="+51 987 654 321">
-                    </div>
-                </div>
-
-                <div class="row mb-0 mb-md-3">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <label for="nacionalidad" class="form-label">Nacionalidad *</label>
-                        <select class="form-select" name="nacionalidad" required>
-                            <option selected>Seleccione una opción</option>
-                            @foreach ($paises as $pais)
-                                <option>{{ $pais->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <label for="dobleNacionalidad" class="form-label">¿Tiene doble nacionalidad? *</label>
-                        <select class="form-select" name="dobleNacionalidad" required>
-                            <option selected>Seleccione una opción</option>
-                            <option>Si</option>
-                            <option>No</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-0 mb-md-3">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <label for="paisDestino" class="form-label">País de Destino *</label>
-                        <select class="form-select" name="paisDestino" required>
-                            <option selected>Seleccione una opción</option>
-                            @foreach ($paises as $pais)
-                                <option>{{ $pais->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <label for="motivoViaje" class="form-label">Motivo de Viaje *</label>
-                        <select class="form-select" name="motivoViaje" required>
-                            <option selected>Seleccione una opción</option>
-                            <option value="Turismo">Turismo</option>
-                            <option value="Asistir a un evento (Conferencia, boda, concierto, etc)">Asistir a un evento
-                                (Conferencia, boda, concierto, etc)</option>
-                            <option value="Atención Médica">Atención Médica</option>
-                            <option value="Negocios">Negocios</option>
-                            <option value="Trabajo">Trabajo</option>
-                            <option value="Estudios">Estudios</option>
-                            <option value="Tengo una escala en este país">Tengo una escala en este país</option>
-                            <option value="Otros">Otros</option>
-                        </select>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="detalleConsulta" class="form-label">Detalle su consulta: *</label>
-                    <textarea class="form-control" name="detalleConsulta" rows="3" required></textarea>
-                </div>
-
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" name="consentimiento" required>
-                    <label class="form-check-label" for="consentimiento">Estoy de acuerdo con la política de
-                        privacidad.</label>
-                </div>
-
-                <button type="submit" class="button-send-form">ENVIAR</button>
-            </form>
         </div>
     </div>
-
-    <script>
-        const csrfToken = "{{ csrf()->token() }}";
-
-        document.getElementById("contactForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Evita la recarga
-
-            const formData = new FormData(event.target);
-            const data = Object.fromEntries(formData.entries());
-
-            fetch("/contact-mail", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    "X-CSRF-TOKEN": csrfToken
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("✅ " + data.message);
-                        document.getElementById("contactForm").reset();
-                    } else {
-                        alert("❌ " + data.errors.join("\n"));
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("❌ Hubo un problema al enviar el formulario.");
-                });
-        });
-    </script>
-
 @endsection

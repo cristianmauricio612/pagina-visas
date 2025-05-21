@@ -1,100 +1,117 @@
 @extends('layouts.public')
 @section('title', 'Sobre nosotros')
-@push('resources')
-    <link href="{{assets('css/about-us.css') }}" rel="stylesheet">
-@endpush
 @section('content')
 
+<div class="container mx-auto px-4">
+    <!-- Sección principal centrada -->
+    <div class="max-w-4xl mx-auto text-center mb-12 mt-8">
+        <h1 class="font-headings tracking-tight scroll-mt-[120px] text-5xl font-bold text-gray-800 mb-6">Viaja sin preocupaciones, nosotros nos encargamos del resto</h1>
+        <p class="text-xl text-gray-600">
+            En Visas Travel & Tours, entendemos que cada viaje es una nueva oportunidad, una experiencia por vivir y una historia por contar. Nuestro propósito es hacer que todo el proceso de trámite de visas sea tan sencillo y libre de estrés como el destino que sueñas visitar.
+        </p>
+    </div>
 
-    <div class="container py-5">
-        <h1 class="text-center" style="font-size: 1rem; font-weight: bold">SOBRE NOSOTROS</h1>
+    <!-- Imagen centrada debajo del texto principal -->
+    <div class="max-w-4xl mx-auto mb-24">
+        <img src="{{assets('img/elegirnos.jpg')}}" alt="Nuestro equipo" class="w-full h-auto rounded-lg shadow-lg">
+    </div>
 
-        <h2 class="text-center au-subtitle">
-            ¿QUIÉNES SOMOS?
-        </h2>
-
-        <div class="d-flex justify-content-center pt-3">
-            <img class="au-image" src="{{assets('img/elegirnos.jpg')}}" alt="">
+    <!-- Primera sección alternada: Texto a la izquierda, imagen a la derecha -->
+    <div class="flex flex-col md:flex-row items-center max-w-6xl mx-auto mb-24">
+        <div class="w-full md:w-1/2 md:pr-12 mb-8 md:mb-0">
+            <h2 class="font-headings tracking-tight scroll-mt-[120px] text-4xl font-bold text-gray-800 mb-6">Ayudarte es nuestro objetivo número 1</h2>
+            <p class="text-xl text-gray-600 mb-4">
+                Nuestra misión es clara: ser tu aliado en cada solicitud de visa, garantizando que tu experiencia sea fluida, rápida y exitosa. Sabemos que cada cliente es único, por eso personalizamos nuestros servicios para adaptarnos a tus necesidades y hacer que el proceso sea lo más simple posible.
+            </p>
         </div>
+        <div class="w-full md:w-1/2">
+            <img src="{{assets('img/elegirnos.jpg')}}" alt="Nuestro servicio" class="w-full h-auto rounded-lg shadow-lg">
+        </div>
+    </div>
 
+    <!-- Segunda sección alternada: Imagen a la izquierda, texto a la derecha -->
+    <div class="flex flex-col md:flex-row-reverse items-center max-w-6xl mx-auto mb-24">
+        <div class="w-full md:w-1/2 md:pl-12 mb-8 md:mb-0">
+            <h2 class="font-headings tracking-tight scroll-mt-[120px] text-4xl font-bold text-gray-800 mb-6">Nuestra atención se basa en 3 pilares</h2>
+            <ul class="text-xl text-gray-600 space-y-4">
+                <li>
+                    <span class="font-bold">Experiencia y conocimiento:</span> Más de una década asesorando a miles de viajeros, con un equipo especializado en diferentes tipos de visas.
+                </li>
+                <li>
+                    <span class="font-bold">Compromiso y transparencia:</span> Cada caso es importante para nosotros, por eso trabajamos con integridad y claridad en cada paso.
+                </li>
+                <li>
+                    <span class="font-bold">Cercanía y empatía:</span> No solo somos expertos en trámites, sino también en entender tus preocupaciones y expectativas.
+                </li>
+            </ul>
+        </div>
+        <div class="w-full md:w-1/2">
+            <img src="{{assets('img/elegirnos.jpg')}}" alt="Nuestros pilares" class="w-full h-auto rounded-lg shadow-lg">
+        </div>
+    </div>
 
-        <div class="row d-md-flex d-block custom-container my-5">
-            <div class="col-12 col-md-4">
-                <div class="custom-card d-flex align-items-start">
-                    <div class="d-flex flex-md-column justify-content-center">
-                        <div class="py-md-3 d-flex justify-content-center"><i class="fas fa-star me-3 me-md-0"></i></div>
-                        <div class="">
-                            <p class="mb-0 text-center">
-                                Más que una VISA, es ir por lo que amas. Somos una organización que brinda asesoramiento a nuestros clientes en la obtención de la Visa a los Estados Unidos, Canadá, Reino Unido, Australia, Nueva Zelanda, China, India, Japón y Dubai.
-                            </p></div>
-                    </div>
+    <!-- Tercera sección: Números destacados en tarjetas -->
+    <div class="max-w-6xl mx-auto mb-16 px-4">
+        <h2 class="font-headings tracking-tight scroll-mt-[120px] text-4xl font-bold text-gray-900 mb-10">Los números importan, así que aquí mostramos algunos de ellos...</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Tarjeta 1 -->
+            <div class="bg-gray-50 p-8 rounded-lg">
+                <div class="bg-purple-100 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
                 </div>
+                
+                <h3 class="text-6xl font-bold text-gray-900 mb-4">2,000+</h3>
+                
+                <p class="text-xl text-gray-600">
+                    Visas aprobadas para destinos como EE.UU., Canadá, Australia, y más países alrededor del mundo.
+                </p>
             </div>
-            <div class="col-12 col-md-4">
-                <div class="custom-card d-flex align-items-start">
-                    <div class="d-flex flex-md-column justify-content-center">
-                        <div class="py-md-3 d-flex justify-content-center"><i class="fas fa-thumbs-up me-3 me-md-0"></i></div>
-                        <div class="">
-                            <p class="mb-0 text-center">
-                                Ofrecemos diferentes tipos de visas para que usted como cliente pueda desarrollar todas las actividades deseadas en su destino. Visas de turismo, visa de estudio, peticiones, visa de novios, visa de tránsito, Green Card, visa de tripulante y mucho más.
-                            </p></div>
-                    </div>
+            
+            <!-- Tarjeta 2 -->
+            <div class="bg-gray-50 p-8 rounded-lg">
+                <div class="bg-orange-100 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
                 </div>
+                
+                <h3 class="text-6xl font-bold text-gray-900 mb-4">3,000+</h3>
+                
+                <p class="text-xl text-gray-600">
+                    Renovaciones exitosas de visas realizadas, garantizando que tus planes no se detengan en ningún momento.
+                </p>
             </div>
-            <div class="col-12 col-md-4">
-                <div class="custom-card d-flex align-items-start">
-                    <div class="d-flex flex-md-column justify-content-center">
-                        <div class="py-md-3 d-flex justify-content-center"><i class="fas fa-globe me-3 me-md-0"></i></div>
-                        <div class="">
-                            <p class="mb-0 text-center">Estamos al tanto con las regulaciones impuestas por el gobierno con respecto a la Covid-19. Además, nuestra atención es 100% virtual brindando mayor seguridad a nuestros clientes.</p></div>
-                    </div>
+            
+            <!-- Tarjeta 3 -->
+            <div class="bg-gray-50 p-8 rounded-lg">
+                <div class="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
+                
+                <h3 class="text-6xl font-bold text-gray-900 mb-4">5,000+</h3>
+                
+                <p class="text-xl text-gray-600">
+                    Viajeros satisfechos que confiaron en nosotros para hacer realidad sus sueños de viaje a destinos internacionales.
+                </p>
             </div>
         </div>
     </div>
 
-    <div class="container pt-5" style="padding-bottom: 5rem">
-    <h2 class="text-center au-subtitle">NUESTRO ENFOQUE</h2>
-
-    <div class="d-flex justify-content-center pt-3">
-        <img class="au-image" src="{{assets('img/elegirnos.jpg')}}" alt="">
+    <!-- Cuarta sección centrada -->
+    <div class="max-w-4xl mx-auto text-center mb-8">
+        <h2 class="font-headings tracking-tight scroll-mt-[120px] text-4xl font-bold text-gray-800 mb-6">¿Qué estamos construyendo?</h2>
+        <p class="text-xl text-gray-600 mb-8">
+            Estamos creando un futuro donde cada vez más personas puedan cumplir sus sueños de viajar sin fronteras. Nos esforzamos por ser más que una agencia de visas, queremos ser el puente que conecta tus deseos con destinos en todo el mundo. Buscamos innovar constantemente, ofrecer un servicio excepcional y construir relaciones a largo plazo con nuestros clientes, para que siempre puedas contar con nosotros en cada nueva aventura.
+        </p>
+        <p class="text-xl font-semibold text-gray-700">
+            Gracias por confiar en Visas Travel & Tours. Sigamos construyendo historias juntos.
+        </p>
     </div>
-
-
-        <div class="row d-md-flex d-block custom-container my-5">
-            <div class="col-12 col-md-4">
-                <div class="custom-card d-flex align-items-start">
-                    <div class="d-flex flex-column justify-content-center">
-                        <div class="py-md-3 mb-3 d-flex justify-content-center"><i class="fa-solid fa-eye"></i></div>
-                        <div class="py-md-3 d-flex justify-content-center fw-bold">VISIÓN</div>
-                        <div class="">
-                            <p class="mb-0 text-center">Ser los lideres en nuestro sector para contribuir a que las personas puedan viajar sin restricciones a cualquier parte del mundo y ser ciudadanos sin fronteras.</p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="custom-card d-flex align-items-start">
-                    <div class="d-flex flex-column justify-content-center">
-                        <div class="py-md-3 mb-3 d-flex justify-content-center"><i class="fa-solid fa-bullseye"></i></div>
-                        <div class="py-md-3 d-flex justify-content-center fw-bold">MISIÓN</div>
-                        <div class="">
-                            <p class="mb-0 text-center">Asesorar a todas las personas para que puedan viajar a cualquier parte del mundo de manera legal, facilitando todos los procesos de visa.</p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="custom-card d-flex align-items-start">
-                    <div class="d-flex flex-column justify-content-center">
-                        <div class="py-md-3 mb-3 d-flex justify-content-center"><i class="fa-solid fa-scale-balanced"></i></div>
-                        <div class="py-md-3 d-flex justify-content-center fw-bold">VALORES</div>
-                        <div class="">
-                            <p class="mb-0 text-center">Orientación al cliente Confidencialidad Transparencia Responsabilidad Social Apoyo al Colaborador Competitividad laboral.</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+</div>
 
 @endsection

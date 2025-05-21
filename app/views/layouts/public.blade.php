@@ -11,6 +11,7 @@
     <link href="{{assets('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{assets('fontawesome/css/all.css')}}" rel="stylesheet">
     <link href="{{assets('css/styles.css') }}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     @stack('resources')
 </head>
 @php
@@ -26,90 +27,18 @@
 
             <div class="menu-container">
                 <nav class="nav-container">
-                    <div class="dropdown">
-                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <span>Obtener mi visa</span>
-                            <i class="fa-solid fa-angle-down i-content"></i>
-                            <i class="fa-solid fa-angle-up i-content" hidden></i>
-                        </span>
-
-                        <ul class="dropdown-menu dropdown-menu-end mt-3">
-                            <li>
-                                <a class="dropdown-item" href="{{route('estados-unidos-p-esta')}}">
-                                    <img class="gn gv hr entered loaded"
-                                        data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
-                                        alt="KE Flag" data-ll-status="loaded"
-                                        src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
-                                        style="height:16px; width:16px">
-                                    Estados Unidos ESTA
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{route('india-p-tourist-e-visa')}}">
-                                    <img class="ne nm oi entered loaded"
-                                        data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
-                                        alt="Bandera IN" data-ll-status="loaded"
-                                        src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
-                                        style="height:16px; width:16px">
-                                    Visa de turista de la India
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{route('canada-p-eta')}}">
-                                    <img class="ne nm oi entered loaded"
-                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
-                                    alt="Bandera de CA" data-ll-status="loaded"
-                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
-                                    style="height:16px; width:16px">
-                                    Autorizacion electronica de viaje de Canada
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="dropdown ms-4">
-                        <span class="dropdown-custom dropdown-toggle-custom" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <span>Viaja con seguridad</span>
-                            <i class="fa-solid fa-angle-down i-content"></i>
-                            <i class="fa-solid fa-angle-up i-content" hidden></i>
-                        </span>
-
-                        <ul class="dropdown-menu dropdown-menu-end mt-3">
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item sub-dropdown-toggle" href="#">Viaja con seguridad
-                                    <i class="fa-solid fa-angle-down sub-icon"></i>
-                                </a>
-                                <ul class="submenu">
-                                    <li><a class="dropdown-item" href="{{route('about-visa')}}">¿Qué es una visa?</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item sub-dropdown-toggle" href="#">Documentación y visados más
-                                    comunes
-                                    <i class="fa-solid fa-angle-down sub-icon"></i>
-                                </a>
-                                <ul class="submenu">
-                                    <li><a class="dropdown-item" href="{{route('electronic-visa')}}">Visa electrónica
-                                            (eVisa)</a></li>
-                                    <li><a class="dropdown-item" href="{{route('arrived-visa')}}">Visa de llegada</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item sub-dropdown-toggle" href="#">Lo más destacado
-                                    <i class="fa-solid fa-angle-down sub-icon"></i>
-                                </a>
-                                <ul class="submenu">
-                                    <li><a class="dropdown-item" href="{{route('price-canadience-visa')}}">Precio de la
-                                            visa canadiense</a></li>
-                                    <li><a class="dropdown-item" href="{{route('visa-validity')}}">Vigencia visado de
-                                            Estados Unidos</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                    <a href="/" class="nav-link">
+                        <span class="dropdown-custom dropdown-toggle-custom">Inicio</span>
+                    </a>
+                    <a href="/about-us" class="nav-link ms-4">
+                        <span class="dropdown-custom dropdown-toggle-custom">Nosotros</span>
+                    </a>
+                    <a href="/blog" class="nav-link ms-4">
+                        <span class="dropdown-custom dropdown-toggle-custom">Blog</span>
+                    </a>
+                    <a href="/contact" class="nav-link ms-4">
+                        <span class="dropdown-custom dropdown-toggle-custom">Contactanos</span>
+                    </a>
                 </nav>
                 <div class="country-container ms-4">
                     <span>ES</span>
@@ -206,88 +135,28 @@
         <div class="side-menu-content">
             <div class="title-modal-vertical">Explora</div>
             <ul class="modal-vertical-list">
-                <!-- Primera opción con submenús -->
                 <li class="modal-vertical-item modal-vertical-has-submenu">
-                    <div class="modal-vertical-title">
-                        <span><i class="fa-solid fa-passport"></i> Obtener mi visa</span>
-                        <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
-                    </div>
-                    <ul class="modal-vertical-submenu">
-                        <li class="modal-vertical-title">
-                            <a href="{{route('estados-unidos-p-esta')}}">
-                                <img class="gn gv hr entered loaded"
-                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
-                                    alt="KE Flag" data-ll-status="loaded"
-                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/KE.png"
-                                    style="height:16px; width:16px">
-                                Estados Unidos ESTA
-                            </a>
-                        </li>
-                        <li class="modal-vertical-title">
-                            <a href="{{route('india-p-tourist-e-visa')}}">
-                                <img class="ne nm oi entered loaded"
-                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
-                                    alt="Bandera IN" data-ll-status="loaded"
-                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/IN.png"
-                                    style="height:16px; width:16px">
-                                Visa de turista de la India
-                            </a>
-                        </li>
-                        <li class="modal-vertical-title">
-                            <a href="{{route('canada-p-eta')}}">
-                                <img class="ne nm oi entered loaded"
-                                    data-src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
-                                    alt="Bandera de CA" data-ll-status="loaded"
-                                    src="https://d1bfs3rtmjstvi.cloudfront.net/img/circle-flags/CA.png"
-                                    style="height:16px; width:16px">
-                                Autorizacion electronica de viaje de Canada
-                            </a>
-                        </li>
-                    </ul>
+                    <a href="/" class="nav-link">
+                        <span class="dropdown-custom dropdown-toggle-custom">Inicio</span>
+                    </a>
                 </li>
 
-                <!-- Segunda opción con submenús anidados -->
-                <li class="modal-vertical-item modal-vertical-has-submenu">
-                    <div class="modal-vertical-title">
-                        <span><i class="fa-solid fa-plane"></i> Viaja con seguridad</span>
-                        <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
-                    </div>
-                    <ul class="modal-vertical-submenu">
-                        <li class="modal-vertical-item modal-vertical-has-submenu">
-                            <div class="modal-vertical-title">
-                                <span>Viaja con seguridad</span>
-                                <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
-                            </div>
-                            <ul class="modal-vertical-submenu">
-                                <li class="modal-vertical-title"><a href="{{route('about-visa')}}">¿Qué es una visa?</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="modal-vertical-item modal-vertical-has-submenu">
-                            <div class="modal-vertical-title">
-                                <span>Documentación y visados más comunes</span>
-                                <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
-                            </div>
-                            <ul class="modal-vertical-submenu">
-                                <li class="modal-vertical-title"><a href="{{route('electronic-visa')}}">Visa electrónica
-                                        (eVisa)</a></li>
-                                <li class="modal-vertical-title"><a href="{{route('arrived-visa')}}">Visa de llegada</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="modal-vertical-item modal-vertical-has-submenu">
-                            <div class="modal-vertical-title">
-                                <span>Lo mas destacado</span>
-                                <i class="fa-solid fa-angle-down modal-vertical-toggle-submenu"></i>
-                            </div>
-                            <ul class="modal-vertical-submenu">
-                                <li class="modal-vertical-title"><a href="{{route('price-canadience-visa')}}">Precio de
-                                        la visa canadiense</a></li>
-                                <li class="modal-vertical-title"><a href="{{route('visa-validity')}}">Vigencia visado de
-                                        Estados Unidos</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                <li class="modal-vertical-item modal-vertical-has-submenu mt-3">
+                    <a href="/about-us" class="nav-link">
+                        <span class="dropdown-custom dropdown-toggle-custom">Nosotros</span>
+                    </a>
+                </li>
+
+                <li class="modal-vertical-item modal-vertical-has-submenu mt-3">
+                    <a href="/blog" class="nav-link">
+                        <span class="dropdown-custom dropdown-toggle-custom">Blog</span>
+                    </a>
+                </li>
+
+                <li class="modal-vertical-item modal-vertical-has-submenu mt-3">
+                    <a href="/contact" class="nav-link">
+                        <span class="dropdown-custom dropdown-toggle-custom">Contactanos</span>
+                    </a>
                 </li>
             </ul>
 
@@ -307,8 +176,8 @@
             @else
                 <button class="btn-login" onclick="logout()">Cerrar sesión</button>
             @endif
-            
-            
+
+
         </div>
     </div>
 
@@ -338,101 +207,105 @@
 
     @yield('content')
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <!-- Sección de Visas más solicitadas -->
-                <div class="col-md-4">
-                    <h5 class="m-0">
-                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#visasList" aria-expanded="false">
-                            Visas más solicitadas
-                        </button>
-                        <span class="desktop-title">Visas más solicitadas</span>
-                    </h5>
-                    <ul class="list-unstyled collapse d-md-block" id="visasList">
-                        <li><a href="{{route('canada-p-eta')}}">Canada ETA</a></li>
-                        <li><a href="{{route('estados-unidos-p-esta')}}">Estados Unidos ESTA</a></li>
-                        <li><a href="{{route('india-p-tourist-e-visa')}}">India eVISA</a></li>
-                    </ul>
+    <!-- Footer con Tailwind CSS -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-6xl mx-auto mb-8 px-4">
+            <!-- Sección de logotipos superior -->
+            <div class="mx-auto px-4 flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 md:gap-8">
+                <div class="w-1/3">
+                    <img src="{{ assets('img/visas_travel_logo.png') }}" alt="Visas Travel" class="h-16" />
                 </div>
-
-                <!-- Sección de Blogs sobre viajes -->
-                <div class="col-md-4">
-                    <h5 class="m-0">
-                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#blogsList" aria-expanded="false">
-                            Nuestros blogs sobre viajes
-                        </button>
-                        <span class="desktop-title">Nuestros blogs sobre viajes</span>
-                    </h5>
-                    <ul class="list-unstyled collapse d-md-block" id="blogsList">
-                        <li><a href="#">Visa de Vietnam para Argentinos</a></li>
-                        <li><a href="#">Requisitos y costos de la visa para Turquía</a></li>
-                        <li><a href="#">¿Puedo visitar Canadá con una visa de EE. UU.?</a></li>
-                        <li><a href="#">Visa EAU - Visa de tránsito para los Emiratos Árabes Unidos</a></li>
-                        <li><a href="#">¿Puedo ir a México una Green Card?</a></li>
-                    </ul>
-                </div>
-
-                <!-- Sección de la Empresa -->
-                <div class="col-md-4">
-                    <h5 class="m-0">
-                        <button class="btn btn-link dropdown-toggle mobile-dropdown" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#empresaList" aria-expanded="false">
-                            Empresa
-                        </button>
-                        <span class="desktop-title">Empresa</span>
-                    </h5>
-                    <ul class="list-unstyled collapse d-md-block" id="empresaList">
-                        <li><a href="{{route('about-us')}}">Sobre Visa Asesores</a></li>
-                        <li><a href="{{route('contact')}}">Contáctate con nosotros</a></li>
-                    </ul>
+                <div class="md:w-2/3 flex md:justify-end space-x-8">
+                    <div>
+                        <img src="{{ assets('img/camara_de_comercio.png') }}" alt="Cámara de Comercio de Lima" class="h-14" onerror="this.src='https://www.camaralima.org.pe/wp-content/uploads/2020/07/ccl_logo.png'; this.onerror=null;" />
+                    </div>
+                    <div>
+                        <img src="{{ assets('img/ministerio_de_comercio_exterior_y_turismo.png') }}" alt="Ministerio de Comercio Exterior y Turismo" class="h-14" onerror="this.src='https://cdn.www.gob.pe/uploads/document/file/505717/mincetur_logo.png'; this.onerror=null;" />
+                    </div>
                 </div>
             </div>
 
-            <!-- Redes Sociales -->
-            <div class="text-center py-4">
-                <h5 class="m-0 pb-3">Conéctate con nosotros:</h5>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+            <!-- Contenido principal del footer -->
+            <div class="mx-auto px-4 grid grid-cols-1 md:grid-cols-4 md:gap-4 gap-6">
+                <!-- Columna 1: Información de contacto -->
+                <div class="space-y-2 md:!text-left text-center text-xl md:text-base">
+                    <p class="font-medium">Calle Monitor Huascar 165</p>
+                    <p class="font-medium">Santiago de Surco</p>
+                    <p class="font-medium">Lima, Perú</p>
+
+                    <!-- Iconos de redes sociales -->
+                    <div class="flex md:justify-start justify-center space-x-2 mt-4">
+                        <a href="#" class="bg-red-600 hover:bg-red-700 rounded-full p-2 inline-flex items-center justify-center w-8 h-8">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-red-600 hover:bg-red-700 rounded-full p-2 inline-flex items-center justify-center w-8 h-8">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-red-600 hover:bg-red-700 rounded-full p-2 inline-flex items-center justify-center w-8 h-8">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="bg-red-600 hover:bg-red-700 rounded-full p-2 inline-flex items-center justify-center w-8 h-8">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
                 </div>
+
+                <div class="col-span-2 w-full mx-auto grid grid-cols-2 md:gap-4 gap-6">
+                    <!-- Columna 2: Botones de contacto y reclamos -->
+                    <div class="space-y-4">
+                        <a href="tel:+51923647947" class="text-white px-4 flex items-center">
+                            <div class="bg-red-600 rounded-full flex items-center justify-center w-8 h-8 mr-3">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <span class="uppercase font-bold text-xl md:text-base">LLÁMANOS</span>
+                        </a>
+
+                        <a href="mailto:contacto@visastraveltours.com" class="text-white px-4 flex items-center">
+                            <div class="bg-red-600 rounded-full flex items-center justify-center w-8 h-8 mr-3">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <span class="uppercase font-bold text-xl md:text-base">ESCRÍBENOS</span>
+                        </a>
+
+                        <a href="#" class="text-white px-4 flex items-center">
+                            <div class="flex-shrink-0">
+                                <img src="{{ assets('img/libro_de_reclamaciones.jpg') }}" alt="Libro de Reclamaciones" class="h-16 sm:h-18 rounded-xl"/>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Columna 3: Enlaces -->
+                    <div>
+                        <h3 class="font-bold md:text-xl text-2xl mb-3">Enlaces</h3>
+                        <ul class="space-y-2">
+                            <li><a href="/" class="hover:text-red-400 text-xl md:text-base">INICIO</a></li>
+                            <li><a href="/about-us" class="hover:text-red-400 text-xl md:text-base">NOSOTROS</a></li>
+                            <li><a href="/blog" class="hover:text-red-400 text-xl md:text-base">BLOG</a></li>
+                            <li><a href="/contact" class="hover:text-red-400 text-xl md:text-base">CONTACTO</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Columna 4: Mapa -->
+                <div>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.8356217684604!2d-77.00781908509946!3d-12.126869891407335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c7e2b04d70b7%3A0x60c9d537af0c98e6!2sVisas%20Travel%20-%20Tr%C3%A1mites%20de%20Visas!5e0!3m2!1ses-419!2spe!4v1653332342217!5m2!1ses-419!2spe" class="w-full h-40 rounded" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mx-auto px-4 text-center my-6">
+                <p class="text-sm">Más que una VISA, es ir por lo que amas. Somos una organización que brinda asesoramiento a nuestros clientes en la obtención de la Visa a los USA, Canadá, Reino Unido, Australia, Nueva Zelanda, China, India, Japón.</p>
             </div>
 
             <!-- Línea divisoria -->
-            <hr class="border-light">
+            <hr class="border-gray-700 my-4 mx-4">
 
-            <!-- Sección inferior -->
-            <div class="row text-center">
-                <div class="col-md-6">
-                    <p class="mb-0">© 2014-2025 Visa Asesores. Todos los derechos reservados.</p>
-                    <p>
-                        <a href="#">Condiciones del servicio</a> |
-                        <a href="#">Política de privacidad</a>
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p><i class="fas fa-phone"></i> +34 518 88 00 30</p>
-                    <p>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Spain.svg" width="20">
-                        Español
-                        | $ USD ▼
-                    </p>
-                    <!-- Botones de descarga -->
-                    <div class="d-flex justify-content-center">
-                        <a href="#" class="me-2">
-                            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                                width="120">
-                        </a>
-                        <a href="#">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                                width="135">
-                        </a>
-                    </div>
+            <!-- Footer inferior con copyright y políticas -->
+            <div class="mx-auto px-4 text-center text-xs text-gray-400">
+                <p>© 2010 - 2024 Visas Travel & tours Todos los derechos reservados</p>
+                <div class="flex justify-center space-x-4 mt-1">
+                    <a href="#" class="hover:text-white">POLÍTICAS DE PRIVACIDAD Y PROTECCIÓN DE DATOS</a>
+                    <a href="#" class="hover:text-white">DESCARGO DE RESPONSABILIDADES</a>
                 </div>
             </div>
         </div>
