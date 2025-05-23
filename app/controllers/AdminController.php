@@ -942,4 +942,20 @@ class AdminController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Sesión cerrada']);
     }
 
+    //RECLAMACIONES
+
+    /**
+     * Ver reclamación específica
+     */
+    public function viewReclamacion($id)
+    {
+        $reclamacion = \App\Models\LibroReclamacion::find($id);
+
+        if (!$reclamacion) {
+            // Redirigir con error si no existe
+            return redirect('/admin/reclamaciones')->with('error', 'Reclamación no encontrada');
+        }
+
+        return render('admin.reclamaciones.view', compact('reclamacion'));
+    }
 }

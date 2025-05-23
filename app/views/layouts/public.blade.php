@@ -267,7 +267,7 @@
                             <span class="uppercase font-bold text-xl md:text-base">ESCRÍBENOS</span>
                         </a>
 
-                        <a href="#" class="text-white px-4 flex items-center">
+                        <a href="{{route('libro-reclamaciones')}}" class="text-white px-4 flex items-center">
                             <div class="flex-shrink-0">
                                 <img src="{{ assets('img/libro_de_reclamaciones.jpg') }}" alt="Libro de Reclamaciones" class="h-16 sm:h-18 rounded-xl"/>
                             </div>

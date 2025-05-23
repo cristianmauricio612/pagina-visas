@@ -46,6 +46,12 @@ app()->get('/pedido', ['name' => 'order', function () {render('view-order-code')
 
 app()->post('/close-order', 'UsuarioController@close_order');
 
+app()->get('/libro-de-reclamaciones', ['name' => 'libro-reclamaciones', function () {render('reclamaciones.index');}]);
+
+app()->post('/libro-de-reclamaciones/registrar', ['name' => 'registrar-reclamacion', 'LibroReclamacionController@registrarReclamacion']);
+
+app()->get('/libro-de-reclamaciones/exitoso', ['name' => 'reclamacion-exitosa', function () {render('reclamaciones.exitoso');}]);
+
 //SESSION
 
 app()->get('/iniciar-sesion', ['name' => 'iniciar-sesion', function () {render('session.login');}]);
@@ -85,7 +91,7 @@ app()->get('/pago-exitoso', ['name' => 'pago-exitoso', function () {render('pago
 app()->get('/pago-fallido', ['name' => 'pago-fallido', function () {render('pagos.error');}]);
 
 app()->get('/limpiar-pedidos', function () {
-    VisaInscripcion::limpiarPedidosPendientes(); 
+    VisaInscripcion::limpiarPedidosPendientes();
     return response()->json(["message" => "Pedidos pendientes eliminados"]);
 });
 
@@ -191,3 +197,14 @@ app()->get('/cargar-viajero/{id}', ['name' => 'ui.Viajero', 'ViajeroController@c
 
 app()->get('/cargar-pasaporte/{id}', ['name' => 'ui.Pasaporte', 'ViajeroController@cargarPasaporte']);
 
+// LIBRO DE RECLAMACIONES
+
+app()->get('/admin/reclamaciones', ['name' => 'admin.reclamaciones.listView', function () {render('admin.reclamaciones.list');}]);
+
+app()->get('/admin/reclamaciones/ver/{id}', ['name' => 'admin.reclamaciones.viewView', function ($id) {render('admin.reclamaciones.view', compact('id'));}]);
+
+app()->get('/admin/reclamaciones/listar', ['name' => 'admin.reclamaciones.list', 'LibroReclamacionController@listarReclamaciones']);
+
+app()->get('/admin/reclamaciones/obtener/{id}', ['name' => 'admin.reclamaciones.get', 'LibroReclamacionController@getReclamacion']);
+
+app()->put('/admin/reclamaciones/responder/{id}', ['name' => 'admin.reclamaciones.responder', 'LibroReclamacionController@responderReclamacion']);

@@ -178,6 +178,23 @@
                         </li>
                     </ul>
                 </li>
+
+                {{-- Reclamaciones --}}
+                <li class="mb-2">
+                    <button
+                        class="flex items-center w-full text-left p-3 rounded-md outline-none hover:bg-gray-800 transition"
+                        onclick="toggleMenu('reclamaciones')">
+                        <i class="fas fa-clipboard-list mr-2"></i> Reclamaciones
+                    </button>
+                    <ul id="reclamaciones" class="ml-6 mt-1 hidden transition-all">
+                        <li>
+                            <a href="{{route('admin.reclamaciones.listView')}}"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-list mr-2"></i> Listar
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
 

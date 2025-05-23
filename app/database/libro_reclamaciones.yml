@@ -1,0 +1,55 @@
+columns:
+  tipo_documento:
+    type: string
+    nullable: false
+  numero_documento:
+    type: string
+    nullable: false
+  nombres_apellidos:
+    type: string
+    nullable: false
+  menor_edad:
+    type: boolean
+    nullable: false
+  apoderado:
+    type: string
+    nullable: true
+  direccion:
+    type: string
+    nullable: false
+  correo:
+    type: string
+    nullable: false
+  telefono:
+    type: string
+    nullable: true
+  fecha_incidente:
+    type: date
+    nullable: false
+  bien_contratado:
+    type: string
+    nullable: false
+  descripcion_bien:
+    type: string
+    nullable: false
+  tipo_incidente:
+    type: string
+    nullable: false
+  monto:
+    type: decimal
+    nullable: true
+  detalle:
+    type: text
+    nullable: false
+  pedido_consumidor:
+    type: string
+    nullable: false
+  estado:
+    type: string
+    nullable: false
+  respuesta:
+    type: text
+    nullable: true
+  fecha_respuesta:
+    type: date
+    nullable: true
