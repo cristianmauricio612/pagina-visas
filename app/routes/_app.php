@@ -208,3 +208,11 @@ app()->get('/admin/reclamaciones/listar', ['name' => 'admin.reclamaciones.list',
 app()->get('/admin/reclamaciones/obtener/{id}', ['name' => 'admin.reclamaciones.get', 'LibroReclamacionController@getReclamacion']);
 
 app()->put('/admin/reclamaciones/responder/{id}', ['name' => 'admin.reclamaciones.responder', 'LibroReclamacionController@responderReclamacion']);
+
+app()->delete('/admin/reclamaciones/eliminar/{id}', ['name' => 'admin.reclamaciones.delete', 'LibroReclamacionController@eliminarReclamacion']);
+
+app()->get('/admin/reclamaciones/exportar-excel', ['name' => 'admin.reclamaciones.exportExcel', 'LibroReclamacionController@exportarExcel']);
+
+app()->get('/admin/reclamaciones/exportar-pdf/{id}', ['name' => 'admin.reclamaciones.exportPDF', 'LibroReclamacionController@exportarPDF']);
+
+app()->put('/admin/reclamaciones/cambiar-estado/{id}', ['name' => 'admin.reclamaciones.cambiarEstado', 'LibroReclamacionController@cambiarEstado']);

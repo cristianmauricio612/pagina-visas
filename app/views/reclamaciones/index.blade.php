@@ -245,10 +245,44 @@
             </div>
         </div>
 
+        <!-- CAPTCHA -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+            <h2 class="text-xl font-bold text-blue-800 mb-6 pb-2 border-b-2 border-blue-800">
+                3. VERIFICACIÓN DE SEGURIDAD
+            </h2>
+
+            <div class="mb-4">
+                <p class="text-sm text-gray-600 mb-4">Por favor, complete la verificación de seguridad para enviar su reclamación.</p>
+
+                <!-- CAPTCHA Simple Matemático -->
+                <div class="bg-gray-50 p-4 rounded-md border border-gray-300">
+                    <label for="captcha" class="block text-sm font-medium text-gray-700 mb-2">
+                        Resuelva la siguiente operación: <span id="captchaQuestion" class="font-bold text-lg"></span> <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" id="captcha" name="captcha"
+                           class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="?" required>
+                    <input type="hidden" id="captchaAnswer" name="captcha_answer">
+                    <div class="invalid-feedback text-red-500 text-sm mt-1 hidden">Por favor, ingrese la respuesta correcta.</div>
+
+                    <button type="button" id="refreshCaptcha" class="mt-2 text-blue-600 hover:text-blue-800 text-sm flex items-center focus:outline-none border-0">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Generar nueva pregunta
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alternativa: Google reCAPTCHA (comentado) -->
+            <!-- Para usar Google reCAPTCHA, descomente el siguiente código y agregue su clave del sitio -->
+            <!-- <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div> -->
+        </div>
+
         <!-- Botón de envío -->
         <div class="text-center">
             <button type="submit" id="btnEnviar"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300 shadow-lg hover:shadow-xl">
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300 shadow-lg hover:shadow-xl border-0">
                 <span id="btnTexto">ENVIAR RECLAMACIÓN</span>
                 <svg id="btnSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -274,7 +308,7 @@
                     Su reclamación ha sido registrada exitosamente. Le responderemos en un plazo máximo de 30 días calendario.
                 </p>
             </div>
-            <div class="items-center px-4 py-3">
+            <div class="items-center px-4 py-3 border-0">
                 <button id="btnCerrarModal"
                         class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
                     Cerrar
@@ -297,6 +331,54 @@ document.addEventListener('DOMContentLoaded', function() {
         maxDate: "today",
         allowInput: true,
         placeholder: "dd/mm/aaaa"
+    });
+
+    // CAPTCHA Simple
+    let captchaAnswer = 0;
+
+    function generateCaptcha() {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        const operations = ['+', '-', '*'];
+        const operation = operations[Math.floor(Math.random() * operations.length)];
+
+        let question = '';
+
+        switch(operation) {
+            case '+':
+                captchaAnswer = num1 + num2;
+                question = `${num1} + ${num2} = `;
+                break;
+            case '-':
+                // Asegurar que el resultado no sea negativo
+                const max = Math.max(num1, num2);
+                const min = Math.min(num1, num2);
+                captchaAnswer = max - min;
+                question = `${max} - ${min} = `;
+                break;
+            case '*':
+                captchaAnswer = num1 * num2;
+                question = `${num1} × ${num2} = `;
+                break;
+        }
+
+        document.getElementById('captchaQuestion').textContent = question;
+        document.getElementById('captchaAnswer').value = captchaAnswer;
+        document.getElementById('captcha').value = '';
+    }
+
+    // Generar CAPTCHA inicial
+    generateCaptcha();
+
+    // Botón para refrescar CAPTCHA
+    document.getElementById('refreshCaptcha').addEventListener('click', function() {
+        generateCaptcha();
+        const captchaInput = document.getElementById('captcha');
+        captchaInput.classList.remove('border-red-500');
+        const errorElement = captchaInput.parentNode.querySelector('.invalid-feedback');
+        if (errorElement) {
+            errorElement.classList.add('hidden');
+        }
     });
 
     // Manejar menor de edad
@@ -439,6 +521,23 @@ document.addEventListener('DOMContentLoaded', function() {
         if (esMenor && !apoderadoInput.value.trim()) {
             showError(apoderadoInput, 'Este campo es requerido para menores de edad.');
             isValid = false;
+        }
+
+        // Validar CAPTCHA
+        const captchaInput = document.getElementById('captcha');
+        const captchaUserAnswer = parseInt(captchaInput.value);
+        const captchaCorrectAnswer = parseInt(document.getElementById('captchaAnswer').value);
+
+        if (!captchaInput.value.trim()) {
+            showError(captchaInput, 'Por favor, resuelva la operación matemática.');
+            isValid = false;
+        } else if (captchaUserAnswer !== captchaCorrectAnswer) {
+            showError(captchaInput, 'La respuesta es incorrecta. Por favor, inténtelo nuevamente.');
+            isValid = false;
+            // Generar nuevo CAPTCHA si falla
+            setTimeout(() => {
+                generateCaptcha();
+            }, 1000);
         }
 
         return isValid;

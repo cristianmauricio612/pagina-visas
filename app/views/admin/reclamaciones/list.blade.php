@@ -19,7 +19,7 @@
         </h1>
 
         {{-- Estadísticas rápidas --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             @php
                 $pendientes = $reclamaciones->where('estado', 'Pendiente')->count();
                 $proceso = $reclamaciones->where('estado', 'En proceso')->count();
@@ -30,10 +30,6 @@
             <div class="bg-yellow-100 border-l-4 border-yellow-500 p-3 rounded">
                 <div class="text-sm text-yellow-700">Pendientes</div>
                 <div class="text-2xl font-bold text-yellow-800">{{ $pendientes }}</div>
-            </div>
-            <div class="bg-blue-100 border-l-4 border-blue-500 p-3 rounded">
-                <div class="text-sm text-blue-700">En Proceso</div>
-                <div class="text-2xl font-bold text-blue-800">{{ $proceso }}</div>
             </div>
             <div class="bg-green-100 border-l-4 border-green-500 p-3 rounded">
                 <div class="text-sm text-green-700">Resueltas</div>
@@ -48,12 +44,11 @@
         {{-- Filtros y Buscador --}}
         <div class="flex flex-col md:flex-row justify-between mb-6 gap-4">
             <div class="flex flex-col md:flex-row gap-2 md:gap-4">
-                <input type="text" id="search-input" placeholder="Buscar por cliente o documento..." 
+                <input type="text" id="search-input" placeholder="Buscar por cliente o documento..."
                        class="p-2 border rounded w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <select id="filter-estado" class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
                     <option value="">Todos los estados</option>
                     <option value="Pendiente">🟡 Pendiente</option>
-                    <option value="En proceso">🔵 En proceso</option>
                     <option value="Resuelto">🟢 Resuelto</option>
                     <option value="Rechazado">🔴 Rechazado</option>
                 </select>
@@ -63,7 +58,7 @@
                     <option value="Queja">💬 Queja</option>
                 </select>
             </div>
-            <button onclick="exportarReclamaciones()" 
+            <button onclick="exportarReclamaciones()"
                     class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
                 <i class="fas fa-download mr-2"></i>Exportar
             </button>
@@ -87,13 +82,13 @@
                 <tbody id="reclamaciones-table-body">
                     @forelse ($reclamaciones as $reclamacion)
                         @php
-                            $fechaIncidente = \Carbon\Carbon::parse($reclamacion->fecha_incidente);
+                            $fechaIncidente = \Carbon\Carbon::parse($reclamacion->created_at);
                             $fechaLimite = $fechaIncidente->addDays(30);
                             $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaLimite, false);
                             $urgente = $diasRestantes <= 5 && $reclamacion->estado === 'Pendiente';
                         @endphp
-                        <tr class="border-b hover:bg-gray-100 {{ $urgente ? 'bg-red-50 border-red-200' : '' }}" 
-                            data-cliente="{{ strtolower($reclamacion->nombres_apellidos) }}" 
+                        <tr class="border-b hover:bg-gray-100 {{ $urgente ? 'bg-red-50 border-red-200' : '' }}"
+                            data-cliente="{{ strtolower($reclamacion->nombres_apellidos) }}"
                             data-documento="{{ $reclamacion->numero_documento }}"
                             data-estado="{{ $reclamacion->estado }}"
                             data-tipo="{{ $reclamacion->tipo_incidente }}">
@@ -116,7 +111,7 @@
                             </td>
                             <td class="py-2 px-4">
                                 <div class="text-sm">{{ $fechaIncidente->format('d/m/Y') }}</div>
-                                <div class="text-xs text-gray-500">{{ $fechaIncidente->diffForHumans() }}</div>
+                                <div class="text-xs text-gray-500">{{ $fechaIncidente->locale('es')->diffForHumans() }}</div>
                             </td>
                             <td class="py-2 px-4">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
@@ -128,7 +123,6 @@
                                     @endswitch">
                                     @switch($reclamacion->estado)
                                         @case('Pendiente') 🟡 @break
-                                        @case('En proceso') 🔵 @break
                                         @case('Resuelto') 🟢 @break
                                         @case('Rechazado') 🔴 @break
                                     @endswitch
@@ -160,7 +154,7 @@
                                         <i class="fas fa-reply"></i>
                                     </a>
                                 @endif
-                                <button type="button" class="text-red-500 hover:text-red-700 p-1 rounded transition" 
+                                <button type="button" class="text-red-500 hover:text-red-700 p-1 rounded transition"
                                         data-id="{{ $reclamacion->id }}" onclick="deleteReclamacion(this)"
                                         title="Eliminar">
                                     <i class="fas fa-trash"></i>
@@ -227,8 +221,8 @@
                 const estado = row.getAttribute('data-estado');
                 const tipo = row.getAttribute('data-tipo');
 
-                const matchSearch = searchTerm === '' || 
-                                  cliente.includes(searchTerm) || 
+                const matchSearch = searchTerm === '' ||
+                                  cliente.includes(searchTerm) ||
                                   documento.includes(searchTerm);
                 const matchEstado = estadoFilter === '' || estado === estadoFilter;
                 const matchTipo = tipoFilter === '' || tipo === tipoFilter;
@@ -276,7 +270,6 @@
         }
 
         function exportarReclamaciones() {
-            // Implementar exportación
             alert("🚧 Funcionalidad de exportación en desarrollo");
         }
 

@@ -8,10 +8,10 @@
             header('Location: /admin/reclamaciones');
             exit();
         }
-        
+
         $fechaIncidente = \Carbon\Carbon::parse($reclamacion->fecha_incidente);
         $fechaRegistro = \Carbon\Carbon::parse($reclamacion->created_at);
-        $fechaLimite = $fechaIncidente->copy()->addDays(30);
+        $fechaLimite = $fechaRegistro->copy()->addDays(30);
         $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaLimite, false);
         $urgente = $diasRestantes <= 5 && in_array($reclamacion->estado, ['Pendiente', 'En proceso']);
         $vencido = $diasRestantes < 0 && in_array($reclamacion->estado, ['Pendiente', 'En proceso']);
@@ -28,7 +28,7 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div class="mb-4 md:mb-0">
                 <div class="flex items-center mb-2">
-                    <a href="{{route('admin.reclamaciones.listView')}}" 
+                    <a href="{{route('admin.reclamaciones.listView')}}"
                        class="text-blue-600 hover:text-blue-800 mr-3">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
@@ -40,12 +40,12 @@
                     <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
                         {{ $vencido ? 'bg-red-200 text-red-800' : 'bg-orange-200 text-orange-800' }}">
                         <i class="fas fa-exclamation-triangle mr-2"></i>
-                        {{ $vencido ? 'VENCIDA' : 'URGENTE' }} - 
+                        {{ $vencido ? 'VENCIDA' : 'URGENTE' }} -
                         {{ $vencido ? 'Venció hace ' . abs($diasRestantes) . ' días' : $diasRestantes . ' días restantes' }}
                     </div>
                 @endif
             </div>
-            
+
             {{-- Estados rápidos --}}
             <div class="flex flex-wrap gap-2">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
@@ -220,7 +220,7 @@
                 </div>
 
                 {{-- Formulario de respuesta --}}
-                @if(in_array($reclamacion->estado, ['Pendiente', 'En proceso']))
+                @if(in_array($reclamacion->estado, ['Pendiente']))
                     <div id="responder" class="bg-white rounded-lg shadow-md border p-6">
                         <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                             <i class="fas fa-reply mr-2 text-blue-600"></i>
@@ -232,18 +232,17 @@
                                     Nuevo Estado <span class="text-red-500">*</span>
                                 </label>
                                 <select id="nuevoEstado" name="estado" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-                                    <option value="En proceso" {{ $reclamacion->estado === 'En proceso' ? 'selected' : '' }}>🔵 En proceso</option>
-                                    <option value="Resuelto">🟢 Resuelto</option>
+                                    <option value="Resuelto" {{ $reclamacion->estado === 'Resuelto' ? 'selected' : '' }}>🟢 Resuelto</option>
                                     <option value="Rechazado">🔴 Rechazado</option>
                                 </select>
                             </div>
-                            
+
                             <div>
                                 <label for="respuesta" class="block text-sm font-medium text-gray-700 mb-2">
                                     Respuesta <span class="text-red-500">*</span>
                                 </label>
-                                <textarea id="respuesta" name="respuesta" rows="6" 
-                                          class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                                <textarea id="respuesta" name="respuesta" rows="6"
+                                          class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                           placeholder="Escriba aquí la respuesta detallada a la reclamación..." required>{{ $reclamacion->respuesta }}</textarea>
                                 <div class="text-sm text-gray-500 mt-1">
                                     Mínimo 50 caracteres. Sea claro y profesional en su respuesta.
@@ -251,11 +250,11 @@
                             </div>
 
                             <div class="flex space-x-3">
-                                <button type="submit" 
+                                <button type="submit"
                                         class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
                                     <i class="fas fa-paper-plane mr-2"></i>Enviar Respuesta
                                 </button>
-                                <button type="button" onclick="previewResponse()" 
+                                <button type="button" onclick="previewResponse()"
                                         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
                                     <i class="fas fa-eye mr-2"></i>Vista Previa
                                 </button>
@@ -268,15 +267,15 @@
                 <div class="bg-white rounded-lg shadow-md border p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Acciones</h3>
                     <div class="space-y-3">
-                        <button onclick="enviarRecordatorio()" 
+                        <button onclick="enviarRecordatorio()"
                                 class="w-full bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition">
                             <i class="fas fa-bell mr-2"></i>Enviar Recordatorio
                         </button>
-                        <button onclick="exportarPDF()" 
+                        <button onclick="exportarPDF()"
                                 class="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
                             <i class="fas fa-file-pdf mr-2"></i>Exportar PDF
                         </button>
-                        <button onclick="deleteReclamacion({{ $reclamacion->id }})" 
+                        <button onclick="deleteReclamacion({{ $reclamacion->id }})"
                                 class="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
                             <i class="fas fa-trash mr-2"></i>Eliminar
                         </button>
@@ -298,7 +297,7 @@
         // Manejar envío de respuesta
         document.getElementById('respuestaForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const estado = document.getElementById('nuevoEstado').value;
             const respuesta = document.getElementById('respuesta').value;
 
@@ -353,7 +352,7 @@
                 alert('Escriba una respuesta primero.');
                 return;
             }
-            
+
             // Crear modal de vista previa
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50';
@@ -364,7 +363,7 @@
                         <p class="whitespace-pre-wrap">${respuesta}</p>
                     </div>
                     <div class="mt-4 flex justify-end">
-                        <button onclick="this.closest('.fixed').remove()" 
+                        <button onclick="this.closest('.fixed').remove()"
                                 class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
                             Cerrar
                         </button>

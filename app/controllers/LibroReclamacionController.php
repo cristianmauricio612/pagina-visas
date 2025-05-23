@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\LibroReclamacion;
 use Carbon\Carbon;
 use Exception;
+use Leaf\Helpers\Password;
 
 class LibroReclamacionController extends Controller
 {
@@ -24,6 +25,14 @@ class LibroReclamacionController extends Controller
         csrf()->validate();
 
         $data = request()->body();
+
+        // Validar CAPTCHA
+        if (!isset($data['captcha']) || !isset($data['captcha_answer'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Verificación de seguridad fallida'
+            ], 400);
+        }
 
         // Validaciones básicas
         $errores = $this->validarDatosReclamacion($data);
@@ -152,6 +161,7 @@ class LibroReclamacionController extends Controller
     private function generarCorreoUsuarioNuevaReclamacion($reclamacion, $numeroReclamacion)
     {
         $fechaIncidente = Carbon::parse($reclamacion->fecha_incidente)->format('d/m/Y');
+        $fechaRegistro = Carbon::parse($reclamacion->created_at)->format('d/m/Y H:i');
 
         return "
             <div style='font-family: Arial, sans-serif; max-width: 600px; width: 100%; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; text-align: center; box-sizing: border-box;'>
@@ -164,6 +174,7 @@ class LibroReclamacionController extends Controller
                         <span style='font-size: 18px; color: #0066b2; font-weight: bold;'>#{$numeroReclamacion}</span>
                     </p>
                     <p style='font-size: 16px; color: #555;'><strong>Tipo:</strong> {$reclamacion->tipo_incidente}</p>
+                    <p style='font-size: 16px; color: #333;'><strong>Fecha de Registro:</strong> {$fechaRegistro}</p>
                     <p style='font-size: 16px; color: #555;'><strong>Fecha del Incidente:</strong> {$fechaIncidente}</p>
                     <p style='font-size: 16px; color: #555;'><strong>Estado:</strong>
                         <span style='color: #ffa500; font-weight: bold;'>{$reclamacion->estado}</span>
@@ -471,7 +482,7 @@ class LibroReclamacionController extends Controller
 
         try {
             $reclamacion = LibroReclamacion::find($id);
-            
+
             if (!$reclamacion) {
                 return response()->json([
                     'status' => 'error',
@@ -493,5 +504,164 @@ class LibroReclamacionController extends Controller
                 'message' => 'Error interno del servidor'
             ], 500);
         }
+    }
+
+    /**
+     * Cambiar solo el estado de una reclamación (sin respuesta)
+     */
+    public function cambiarEstado($id)
+    {
+        csrf()->validate();
+
+        $data = request()->body();
+
+        if (empty($data['estado'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El estado es obligatorio'
+            ], 400);
+        }
+
+        $estadosValidos = ['Pendiente', 'En proceso', 'Resuelto', 'Rechazado'];
+        if (!in_array($data['estado'], $estadosValidos)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Estado no válido'
+            ], 400);
+        }
+
+        try {
+            $reclamacion = LibroReclamacion::find($id);
+
+            if (!$reclamacion) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Reclamación no encontrada'
+                ], 404);
+            }
+
+            $estadoAnterior = $reclamacion->estado;
+            $reclamacion->update(['estado' => $data['estado']]);
+
+            // Enviar notificación si el estado cambió
+            if ($estadoAnterior !== $data['estado']) {
+                $this->enviarCorreoCambioEstado($reclamacion, $estadoAnterior);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Estado actualizado exitosamente'
+            ]);
+
+        } catch (Exception $e) {
+            error_log("Error al cambiar estado: " . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error interno del servidor'
+            ], 500);
+        }
+    }
+
+    /**
+     * Enviar correo cuando cambia el estado
+     */
+    private function enviarCorreoCambioEstado($reclamacion, $estadoAnterior)
+    {
+        $usuarioEmail = $reclamacion->correo;
+        $adminEmail = getenv('MAIL_SENDER_EMAIL');
+        $numeroReclamacion = str_pad($reclamacion->id, 6, '0', STR_PAD_LEFT);
+
+        // Correo para el usuario
+        $asuntoUsuario = "Actualización de su Reclamación #{$numeroReclamacion} - Visas Travel";
+        $asuntoAdmin = "Actualización de Reclamación #{$numeroReclamacion} - Visas Travel";
+        $colorEstado = $this->getColorEstado($reclamacion->estado);
+
+        $mensajeUsuario = "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; width: 100%; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; text-align: center; box-sizing: border-box;'>
+                <h2 style='color: #0066b2; font-size: 24px;'>🔔 Estado Actualizado</h2>
+                <p style='font-size: 16px; color: #333;'>Estimado(a) <strong>{$reclamacion->nombres_apellidos}</strong>,</p>
+                <p style='font-size: 16px; color: #333;'>El estado de su reclamación ha sido actualizado.</p>
+
+                <div style='background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 20px 0; text-align: left;'>
+                    <p style='font-size: 16px; color: #555;'><strong>Número de Reclamación:</strong>
+                        <span style='font-size: 18px; color: #0066b2; font-weight: bold;'>#{$numeroReclamacion}</span>
+                    </p>
+                    <p style='font-size: 16px; color: #555;'><strong>Estado Anterior:</strong> {$estadoAnterior}</p>
+                    <p style='font-size: 16px; color: #555;'><strong>Nuevo Estado:</strong>
+                        <span style='color: {$colorEstado}; font-weight: bold;'>{$reclamacion->estado}</span>
+                    </p>
+                </div>
+
+                <p style='font-size: 16px; color: #333;'>Seguimos trabajando en su solicitud.</p>
+
+                <a href='https://visastraveltours.com' style='display: inline-block; padding: 14px 24px; margin-top: 15px; font-size: 16px; color: #fff; background-color: #0066b2; text-decoration: none; border-radius: 5px;'>Ir a la página</a>
+
+                <p style='margin-top: 20px; font-size: 14px; color: #888;'>© " . date('Y') . " Visas Travel. Todos los derechos reservados.</p>
+            </div>
+        ";
+
+        // Correo para el administrador
+        $mensajeAdmin = "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; text-align: left;'>
+                <h2 style='color: #17a2b8; text-align: center;'>🔄 Estado de Reclamación Actualizado</h2>
+
+                <div style='background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);'>
+                    <p><strong>Reclamación:</strong> #{$numeroReclamacion}</p>
+                    <p><strong>Cliente:</strong> {$reclamacion->nombres_apellidos}</p>
+                    <p><strong>Estado Anterior:</strong> {$estadoAnterior}</p>
+                    <p><strong>Nuevo Estado:</strong> <span style='color: {$colorEstado}; font-weight: bold;'>{$reclamacion->estado}</span></p>
+                    <p><strong>Actualizado:</strong> " . Carbon::now()->format('d/m/Y H:i') . "</p>
+                </div>
+            </div>
+        ";
+
+        // Enviar correos
+        MailController::sendEmail($usuarioEmail, $asuntoUsuario, $mensajeUsuario);
+        MailController::sendEmail($adminEmail, $asuntoAdmin, $mensajeAdmin);
+    }
+
+    /**
+     * Enviar recordatorio de vencimiento
+     */
+    private function enviarRecordatorioVencimiento($reclamacion, $diasRestantes)
+    {
+        $adminEmail = getenv('MAIL_SENDER_EMAIL');
+        $numeroReclamacion = str_pad($reclamacion->id, 6, '0', STR_PAD_LEFT);
+        $urgencia = $diasRestantes <= 2 ? '🚨 URGENTE' : '⚠️ IMPORTANTE';
+
+        $asunto = "{$urgencia}: Reclamación #{$numeroReclamacion} próxima a vencer";
+
+        $mensaje = "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 2px solid #dc3545; border-radius: 10px; background-color: #fff5f5;'>
+                <h2 style='color: #dc3545; text-align: center;'>{$urgencia} Recordatorio de Vencimiento</h2>
+
+                <div style='background-color: #fff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #dc3545;'>
+                    <p style='font-size: 18px; color: #dc3545; font-weight: bold; margin: 0;'>
+                        ⏰ Quedan solo {$diasRestantes} días para responder
+                    </p>
+                </div>
+
+                <div style='background-color: #fff; padding: 15px; border-radius: 8px;'>
+                    <p><strong>Reclamación:</strong> #{$numeroReclamacion}</p>
+                    <p><strong>Cliente:</strong> {$reclamacion->nombres_apellidos}</p>
+                    <p><strong>Tipo:</strong> {$reclamacion->tipo_incidente}</p>
+                    <p><strong>Estado Actual:</strong> {$reclamacion->estado}</p>
+                    <p><strong>Fecha Límite:</strong> " . Carbon::parse($reclamacion->created_at)->addDays(30)->format('d/m/Y') . "</p>
+                </div>
+
+                <div style='text-align: center; margin-top: 20px;'>
+                    <a href='" . route('admin.reclamaciones.viewView', $reclamacion->id) . "'
+                       style='display: inline-block; padding: 14px 24px; font-size: 16px; color: #fff; background-color: #dc3545; text-decoration: none; border-radius: 5px;'>
+                        Responder Ahora
+                    </a>
+                </div>
+
+                <p style='text-align: center; color: #666; font-size: 14px; margin-top: 20px;'>
+                    Recuerde que debe responder dentro del plazo legal de 30 días calendario.
+                </p>
+            </div>
+        ";
+
+        MailController::sendEmail($adminEmail, $asunto, $mensaje);
     }
 }
