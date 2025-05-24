@@ -24,12 +24,12 @@
                 ¡Aplica ahora para tu
                 @if ($visas->isNotEmpty())
                     @if (!$visa_temp->necesita_visa)
-                        <span>trip</span>
+                        <span>trip!</span>
                     @else
-                        <span>{{ $visa_temp->nombre }}</span>
+                        <span>{{ $visa_temp->nombre }}!</span>
                     @endif
                 @else
-                    <span>trip</span>
+                    <span>trip!</span>
                 @endif
             </div>
 
@@ -168,7 +168,7 @@
                     </div>
                 @else
                     <div class="visa-information-button">
-                        <button id="solicitarVisa" disabled>Solicitar ahora</button>
+                        <button id="solicitarVisa">Iniciar otra vez</button>
                     </div>
                 @endif
             @else
@@ -185,6 +185,7 @@
         let pais1 = @json($pais1);
         let pais2 = @json($pais2);
         let posicion = @json($posicion);
+        let visa_temp = @json($visa_temp);
 
         function actualizarPagina() {
 
@@ -200,11 +201,16 @@
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("solicitarVisa").addEventListener("click", function() {
                 if (visas && visas.length > 0) {
-                    // Obtener los valores seleccionados de los selects
-                    let id = document.getElementById("visa").getAttribute("data-value");
-                    // Construir la URL de la ruta y redirigir
-                    let url = `/visa-inscripcion/${id}/${posicion}`;
-                    window.location.href = url;
+
+                    if(visa_temp && visa_temp.necesita_visa){
+                        // Obtener los valores seleccionados de los selects
+                        let id = document.getElementById("visa").getAttribute("data-value");
+                        // Construir la URL de la ruta y redirigir
+                        let url = `/visa-inscripcion/${id}/${posicion}`;
+                        window.location.href = url;
+                    } else {
+                        window.location.href = '/';
+                    }
                 } else {
                     window.location.href = '/contact';
                 }
