@@ -278,10 +278,10 @@
                     <div>
                         <h3 class="font-bold md:text-xl text-2xl mb-3">Enlaces</h3>
                         <ul class="space-y-2">
-                            <li><a href="/" class="hover:text-red-400 text-xl md:text-base">INICIO</a></li>
-                            <li><a href="/about-us" class="hover:text-red-400 text-xl md:text-base">NOSOTROS</a></li>
-                            <li><a href="/blog" class="hover:text-red-400 text-xl md:text-base">BLOG</a></li>
-                            <li><a href="/contact" class="hover:text-red-400 text-xl md:text-base">CONTACTO</a></li>
+                            <li><a href="/" class="hover:text-red-400 text-xl md:text-base">Inicio</a></li>
+                            <li><a href="/about-us" class="hover:text-red-400 text-xl md:text-base">Nosotros</a></li>
+                            <li><a href="/blog" class="hover:text-red-400 text-xl md:text-base">Blog</a></li>
+                            <li><a href="/contact" class="hover:text-red-400 text-xl md:text-base">Contacto</a></li>
                         </ul>
                     </div>
                 </div>

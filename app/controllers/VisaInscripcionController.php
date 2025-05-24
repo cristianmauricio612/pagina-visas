@@ -171,7 +171,6 @@ class VisaInscripcionController extends Controller
         return response()->json($payload);
     }
 
-
     public function processPayment()
     {
         $dataResult = $_GET;
