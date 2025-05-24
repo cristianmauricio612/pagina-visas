@@ -159,11 +159,11 @@ class VisaInscripcionController extends Controller
             'vads_site_id' => 94909545,
             'vads_trans_date' => gmdate("YmdHis"),
             'vads_trans_id' => $purchaseNumber,
-            'vads_url_return' => 'http://localhost:5500/api/izipay/response',
+            'vads_url_return' => env('APP_URL').'api/izipay/response',
             'vads_version' => "V2",
         ];
 
-        $clave_secreta = env('TOKEN_SECRET');
+        $clave_secreta = env('TOKEN_SECRET_TEST');
 
         // Generar firma
         $payload['signature'] = $this->getSignature($payload, $clave_secreta);
@@ -255,15 +255,15 @@ class VisaInscripcionController extends Controller
                     <p style='font-size: 16px; color: #333;'>Tu pago ha sido procesado correctamente. A continuación, los detalles de tu transacción:</p>
 
                     <div style='background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 20px 0; text-align: left; word-wrap: break-word;'>
-                        <p style='font-size: 16px; color: #555;'><strong>ID de Transacción:</strong> 
+                        <p style='font-size: 16px; color: #555;'><strong>ID de Transacción:</strong>
                             <span style='font-size: 18px; color: rgb(62, 76, 156); font-weight: bold;'>{$visaInscripcion->numero_pedido}</span>
                         </p>
-                        <p style='font-size: 16px; color: #555;'><strong>Correo del Cliente:</strong> 
+                        <p style='font-size: 16px; color: #555;'><strong>Correo del Cliente:</strong>
                             <span style='word-wrap: break-word; display: block;'>{$usuarioEmail}</span>
                         </p>
                         <p style='font-size: 16px; color: #555;'><strong>Número de Contacto:</strong> {$usuarioTelfono}</p>
                         <p style='font-size: 16px; color: #555;'><strong>Precio Total:</strong> $ {$visaInscripcion->pago_total}</p>
-                        <p style='font-size: 16px; color: #555;'><strong>Estatus del Pago:</strong> 
+                        <p style='font-size: 16px; color: #555;'><strong>Estatus del Pago:</strong>
                             <span style='color: green; font-weight: bold;'>{$visaInscripcion->status_pago}</span>
                         </p>
                     </div>

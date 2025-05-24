@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    
+
     @php
         $paises = \App\Models\Pais::all();
 
@@ -192,7 +192,7 @@
 
             // Construir la nueva URL con los países seleccionados
             const nuevaURL = `/visas/${pais1.id}/${pais2.id}/${posicion}`;
-            
+
             // Redirigir a la nueva URL (esto recarga la página)
             window.location.href = nuevaURL;
         }
@@ -201,16 +201,10 @@
             document.getElementById("solicitarVisa").addEventListener("click", function() {
                 if (visas && visas.length > 0) {
                     // Obtener los valores seleccionados de los selects
-                // Obtener los valores seleccionados de los selects
                     let id = document.getElementById("visa").getAttribute("data-value");
-                let id = document.getElementById("visa").getAttribute("data-value");
-                
                     // Construir la URL de la ruta y redirigir
-                // Construir la URL de la ruta y redirigir
                     let url = `/visa-inscripcion/${id}/${posicion}`;
-                let url = `/visa-inscripcion/${id}/${posicion}`;
                     window.location.href = url;
-                window.location.href = url;
                 } else {
                     window.location.href = '/contact';
                 }
