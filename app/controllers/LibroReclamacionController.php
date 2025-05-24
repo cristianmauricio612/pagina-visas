@@ -314,7 +314,7 @@ class LibroReclamacionController extends Controller
             ], 400);
         }
 
-        $estadosValidos = ['Pendiente', 'En proceso', 'Resuelto', 'Rechazado'];
+        $estadosValidos = ['Pendiente', 'Resuelto', 'Rechazado'];
         if (!in_array($data['estado'], $estadosValidos)) {
             return response()->json([
                 'status' => 'error',
@@ -454,8 +454,6 @@ class LibroReclamacionController extends Controller
         switch ($estado) {
             case 'Pendiente':
                 return '#ffa500';
-            case 'En proceso':
-                return '#17a2b8';
             case 'Resuelto':
                 return '#28a745';
             case 'Rechazado':
@@ -522,7 +520,7 @@ class LibroReclamacionController extends Controller
             ], 400);
         }
 
-        $estadosValidos = ['Pendiente', 'En proceso', 'Resuelto', 'Rechazado'];
+        $estadosValidos = ['Pendiente', 'Resuelto', 'Rechazado'];
         if (!in_array($data['estado'], $estadosValidos)) {
             return response()->json([
                 'status' => 'error',

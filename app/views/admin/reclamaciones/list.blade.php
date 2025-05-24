@@ -22,7 +22,6 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             @php
                 $pendientes = $reclamaciones->where('estado', 'Pendiente')->count();
-                $proceso = $reclamaciones->where('estado', 'En proceso')->count();
                 $resueltas = $reclamaciones->where('estado', 'Resuelto')->count();
                 $rechazadas = $reclamaciones->where('estado', 'Rechazado')->count();
             @endphp
@@ -117,7 +116,6 @@
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                     @switch($reclamacion->estado)
                                         @case('Pendiente') bg-yellow-100 text-yellow-800 @break
-                                        @case('En proceso') bg-blue-100 text-blue-800 @break
                                         @case('Resuelto') bg-green-100 text-green-800 @break
                                         @case('Rechazado') bg-red-100 text-red-800 @break
                                     @endswitch">
@@ -130,7 +128,7 @@
                                 </span>
                             </td>
                             <td class="py-2 px-4">
-                                @if($reclamacion->estado === 'Pendiente' || $reclamacion->estado === 'En proceso')
+                                @if($reclamacion->estado === 'Pendiente')
                                     <div class="text-sm {{ $diasRestantes <= 5 ? 'text-red-600 font-bold' : ($diasRestantes <= 10 ? 'text-orange-600' : 'text-gray-600') }}">
                                         {{ $diasRestantes > 0 ? $diasRestantes . ' días' : 'Vencido' }}
                                     </div>
@@ -147,7 +145,7 @@
                                     title="Ver detalles">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                @if($reclamacion->estado === 'Pendiente' || $reclamacion->estado === 'En proceso')
+                                @if($reclamacion->estado === 'Pendiente')
                                     <a href="{{route('admin.reclamaciones.viewView', $reclamacion->id)}}#responder"
                                         class="text-green-500 hover:text-green-700 p-1 rounded transition"
                                         title="Responder">
