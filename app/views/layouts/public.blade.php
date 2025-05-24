@@ -213,7 +213,7 @@
             <!-- Sección de logotipos superior -->
             <div class="mx-auto px-4 flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 md:gap-8">
                 <div class="w-1/3">
-                    <img src="{{ assets('img/visas_travel_logo.png') }}" alt="Visas Travel" class="h-16" />
+                    <img src="{{ assets('img/visas_travel_logo_transparente.png') }}" alt="Visas Travel" class="h-16" />
                 </div>
                 <div class="md:w-2/3 flex md:justify-end space-x-8">
                     <div>
