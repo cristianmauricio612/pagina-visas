@@ -1,0 +1,7 @@
+columns:
+  blog_id:
+    type: integer
+    nullable: false
+  tag_id:
+    type: integer
+    nullable: false

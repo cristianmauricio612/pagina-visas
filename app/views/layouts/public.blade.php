@@ -12,6 +12,7 @@
     <link href="{{assets('fontawesome/css/all.css')}}" rel="stylesheet">
     <link href="{{assets('css/styles.css') }}" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.izipay.pe/payments/v1/js/index.js" defer></script>
     @stack('resources')
 </head>
 @php

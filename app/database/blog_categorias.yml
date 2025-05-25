@@ -1,0 +1,19 @@
+columns:
+  nombre:
+    type: string
+    nullable: false
+    unique: true
+  descripcion:
+    type: text
+    nullable: true
+  color:
+    type: string
+    nullable: true
+    default: '#667eea'
+  icono:
+    type: string
+    nullable: true
+  activa:
+    type: boolean
+    nullable: false
+    default: true

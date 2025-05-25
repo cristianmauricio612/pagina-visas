@@ -1,0 +1,12 @@
+columns:
+  nombre:
+    type: string
+    nullable: false
+    unique: true
+  descripcion:
+    type: text
+    nullable: true
+  uso_contador:
+    type: integer
+    nullable: true
+    default: 0

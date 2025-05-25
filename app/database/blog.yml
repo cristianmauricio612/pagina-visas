@@ -1,0 +1,45 @@
+columns:
+  titulo:
+    type: string
+    nullable: false
+  slug:
+    type: string
+    nullable: false
+    unique: true
+  categoria_id:
+    type: integer
+    nullable: false
+  contenido:
+    type: text
+    nullable: false
+  resumen:
+    type: text
+    nullable: true
+  imagen:
+    type: string
+    nullable: true
+  autor:
+    type: string
+    nullable: false
+    default: 'Visas Travel'
+  tiempo_lectura:
+    type: integer
+    nullable: true
+    default: 5
+  estado:
+    type: string
+    nullable: false
+    default: 'borrador'
+  vistas:
+    type: integer
+    nullable: true
+    default: 0
+  fecha_publicacion:
+    type: datetime
+    nullable: true
+  meta_description:
+    type: string
+    nullable: true
+  meta_keywords:
+    type: string
+    nullable: true
