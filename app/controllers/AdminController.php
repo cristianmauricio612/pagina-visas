@@ -11,6 +11,10 @@ use App\Models\Opcion;
 use App\Models\Restriccion;
 use App\Models\Formulario;
 use App\Models\FormularioVariable;
+use App\Models\Blog;
+use App\Models\BlogCategoria;
+use App\Models\BlogTag;
+use Exception;
 
 class AdminController extends Controller
 {
@@ -138,7 +142,7 @@ class AdminController extends Controller
 
     public function searchUsers()
     {
-        $descripcion = trim(request()->get('descripcion', '')); // Obtener descripción correctamente
+        $descripcion = trim(request()->get('descripcion') ?? ''); // Obtener descripción correctamente
 
         if ($descripcion === '') {
             $users = User::all(); // Devolver todos los productos si la descripción está vacía
@@ -300,7 +304,7 @@ class AdminController extends Controller
 
     public function searchCountries()
     {
-        $descripcion = trim(request()->get('descripcion', '')); // Obtener descripción correctamente
+        $descripcion = trim(request()->get('descripcion') ?? ''); // Obtener descripción correctamente
 
         if ($descripcion === '') {
             $paises = Pais::all(); // Devolver todos los paises si la descripción está vacía
@@ -466,7 +470,7 @@ class AdminController extends Controller
 
     public function searchVisas()
     {
-        $descripcion = trim(request()->get('descripcion', ''));
+        $descripcion = trim(request()->get('descripcion') ?? '');
 
         // Cargar las relaciones con pais1 y pais2
         $query = Visa::with(['pais1', 'pais2']);
@@ -957,5 +961,420 @@ class AdminController extends Controller
         }
 
         return render('admin.reclamaciones.view', compact('reclamacion'));
+    }
+
+    //BLOG
+
+    /**
+     * Mostrar la vista de edición de blog
+     */
+    public function editBlog($id)
+    {
+        $blog = Blog::find($id);
+
+        if (!$blog) {
+            return render('errors.404');
+        }
+
+        return render('admin.blog.edit', compact('blog'));
+    }
+
+    /**
+     * Crear nuevo artículo de blog
+     */
+    public function createBlog()
+    {
+        csrf()->validate();
+
+        $data = request()->body();
+
+        // Validar datos requeridos
+        $errores = $this->validarDatosBlog($data);
+
+        if (!empty($errores)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Errores de validación',
+                'errors' => $errores
+            ], 400);
+        }
+
+        try {
+            // Procesar imagen si existe
+            $archivoImagen = $_FILES['imagen'] ?? null;
+
+            // Crear el artículo
+            $blog = Blog::crearBlog($data, $archivoImagen);
+
+            // Procesar tags si existen
+            if (!empty($data['tags'])) {
+                $this->procesarTags($blog, $data['tags']);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Artículo creado exitosamente',
+                'data' => $blog
+            ], 201);
+
+        } catch (Exception $e) {
+            error_log("Error al crear artículo: " . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al crear el artículo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Actualizar artículo existente
+     */
+    public function updateBlog($id)
+    {
+        csrf()->validate();
+
+        $blog = Blog::find($id);
+
+        if (!$blog) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El artículo no existe'
+            ], 404);
+        }
+
+        $data = request()->body();
+
+        // Validar datos
+        $errores = $this->validarDatosBlog($data, $id);
+
+        if (!empty($errores)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Errores de validación',
+                'errors' => $errores
+            ], 400);
+        }
+
+        try {
+            // Actualizar slug si cambió el título
+            if (isset($data['titulo']) && $data['titulo'] !== $blog->titulo) {
+                $data['slug'] = Blog::generarSlug($data['titulo']);
+            }
+
+            // Procesar fecha de publicación
+            if (isset($data['estado']) && $data['estado'] === 'publicado' && !$blog->fecha_publicacion) {
+                $data['fecha_publicacion'] = date('Y-m-d H:i:s');
+            }
+
+            // Procesar nueva imagen si existe
+            $archivoImagen = $_FILES['imagen'] ?? null;
+            if ($archivoImagen && $archivoImagen['size'] > 0) {
+                $imagenData = file_get_contents($archivoImagen['tmp_name']);
+                $base64 = base64_encode($imagenData);
+                $data['imagen'] = "data:image/jpeg;base64," . $base64;
+            }
+
+            // Actualizar campos
+            foreach ($data as $key => $value) {
+                if (in_array($key, $blog->fillable)) {
+                    $blog->$key = $value;
+                }
+            }
+
+            $blog->save();
+
+            // Procesar tags si existen
+            if (isset($data['tags'])) {
+                $this->procesarTags($blog, $data['tags']);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Artículo actualizado exitosamente',
+                'data' => $blog
+            ]);
+
+        } catch (Exception $e) {
+            error_log("Error al actualizar artículo: " . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al actualizar el artículo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Eliminar artículo
+     */
+    public function deleteBlog($id)
+    {
+        csrf()->validate();
+
+        $blog = Blog::find($id);
+
+        if (!$blog) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El artículo no existe'
+            ], 404);
+        }
+
+        try {
+            $blog->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Artículo eliminado exitosamente'
+            ]);
+
+        } catch (Exception $e) {
+            error_log("Error al eliminar artículo: " . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al eliminar el artículo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Buscar artículos para el administrador
+     */
+    public function searchBlogs()
+    {
+        $termino = request()->get('q') ?? '';
+        $estado = request()->get('estado') ?? '';
+        $categoria = request()->get('categoria') ?? '';
+        $page = request()->get('page', 1);
+        $perPage = request()->get('per_page', 10);
+
+        $query = Blog::query();
+
+        // Aplicar filtros
+        if (!empty($termino)) {
+            $query->where(function($q) use ($termino) {
+                $q->where('titulo', 'LIKE', "%{$termino}%")
+                  ->orWhere('contenido', 'LIKE', "%{$termino}%")
+                  ->orWhere('autor', 'LIKE', "%{$termino}%");
+            });
+        }
+
+        if (!empty($estado)) {
+            $query->where('estado', $estado);
+        }
+
+        if (!empty($categoria)) {
+            $categoriaObj = BlogCategoria::where('nombre', $categoria)->first();
+            if ($categoriaObj) {
+                $query->where('categoria_id', $categoriaObj->id);
+            }
+        }
+
+        // Ordenar por fecha de creación descendente
+        $query->orderBy('created_at', 'desc');
+
+        // Paginación
+        $total = $query->count();
+        $offset = ($page - 1) * $perPage;
+        $blogs = $query->limit($perPage)->offset($offset)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $blogs,
+            'total' => $total,
+            'page' => $page,
+            'per_page' => $perPage,
+            'total_pages' => ceil($total / $perPage)
+        ]);
+    }
+
+    /**
+     * Cambiar estado de un artículo
+     */
+    public function cambiarEstado($id)
+    {
+        csrf()->validate();
+
+        $blog = Blog::find($id);
+
+        if (!$blog) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El artículo no existe'
+            ], 404);
+        }
+
+        $data = request()->body();
+        $nuevoEstado = $data['estado'] ?? '';
+
+        if (!in_array($nuevoEstado, ['borrador', 'publicado', 'archivado'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Estado no válido'
+            ], 400);
+        }
+
+        try {
+            $blog->estado = $nuevoEstado;
+
+            // Si se publica por primera vez, establecer fecha de publicación
+            if ($nuevoEstado === 'publicado' && !$blog->fecha_publicacion) {
+                $blog->fecha_publicacion = date('Y-m-d H:i:s');
+            }
+
+            $blog->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Estado cambiado exitosamente',
+                'data' => $blog
+            ]);
+
+        } catch (Exception $e) {
+            error_log("Error al cambiar estado: " . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al cambiar el estado: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Subir imagen para el blog
+     */
+    public function uploadImage()
+    {
+        csrf()->validate();
+
+        $file = $_FILES['image'] ?? null;
+
+        if (!$file || $file['size'] == 0) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se recibió ninguna imagen'
+            ], 400);
+        }
+
+        // Validar tipo de archivo
+        $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!in_array($file['type'], $allowedTypes)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Tipo de archivo no permitido. Solo JPEG, PNG y WebP'
+            ], 400);
+        }
+
+        // Validar tamaño (máximo 5MB)
+        $maxSize = 5 * 1024 * 1024;
+        if ($file['size'] > $maxSize) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El archivo es demasiado grande. Máximo 5MB'
+            ], 400);
+        }
+
+        try {
+            // Convertir a base64
+            $imagenData = file_get_contents($file['tmp_name']);
+            $base64 = base64_encode($imagenData);
+            $dataUrl = "data:{$file['type']};base64," . $base64;
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Imagen subida exitosamente',
+                'url' => $dataUrl
+            ]);
+
+        } catch (Exception $e) {
+            error_log("Error al procesar imagen: " . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al procesar la imagen: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Validar datos del blog
+     */
+    private function validarDatosBlog($data, $blogId = null)
+    {
+        $errores = [];
+
+        // Campos requeridos
+        if (empty($data['titulo'])) {
+            $errores[] = 'El título es obligatorio';
+        }
+
+        if (empty($data['contenido'])) {
+            $errores[] = 'El contenido es obligatorio';
+        }
+
+        if (empty($data['categoria_id'])) {
+            $errores[] = 'La categoría es obligatoria';
+        }
+
+        // Validar que la categoría existe
+        if (!empty($data['categoria_id'])) {
+            $categoria = BlogCategoria::find($data['categoria_id']);
+            if (!$categoria) {
+                $errores[] = 'La categoría seleccionada no existe';
+            }
+        }
+
+        // Validar unicidad del título
+        if (!empty($data['titulo'])) {
+            $query = Blog::where('titulo', $data['titulo']);
+            if ($blogId) {
+                $query->where('id', '!=', $blogId);
+            }
+            if ($query->exists()) {
+                $errores[] = 'Ya existe un artículo con este título';
+            }
+        }
+
+        // Validar estado
+        if (!empty($data['estado']) && !in_array($data['estado'], ['borrador', 'publicado', 'archivado'])) {
+            $errores[] = 'Estado no válido';
+        }
+
+        return $errores;
+    }
+
+    /**
+     * Procesar tags del artículo
+     */
+    private function procesarTags($blog, $tagsString)
+    {
+        if (empty($tagsString)) {
+            return;
+        }
+
+        $tagNames = array_map('trim', explode(',', $tagsString));
+        $tagIds = [];
+
+        foreach ($tagNames as $tagName) {
+            if (empty($tagName)) continue;
+
+            $tag = BlogTag::porNombre($tagName);
+            if (!$tag) {
+                // Crear nuevo tag
+                $tag = new BlogTag();
+                $tag->nombre = $tagName;
+                $tag->save();
+            } else {
+                // Incrementar uso del tag existente
+                $tag->incrementarUso();
+            }
+
+            $tagIds[] = $tag->id;
+        }
+
+        // Sincronizar tags (esto requiere implementación manual en Leaf)
+        // Por ahora, solo eliminamos relaciones anteriores y agregamos nuevas
+        db()->query("DELETE FROM blog_tags_relaciones WHERE blog_id = {$blog->id}");
+
+        foreach ($tagIds as $tagId) {
+            db()->query("INSERT INTO blog_tags_relaciones (blog_id, tag_id) VALUES ({$blog->id}, {$tagId})");
+        }
     }
 }

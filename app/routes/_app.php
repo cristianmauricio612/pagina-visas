@@ -216,3 +216,264 @@ app()->get('/admin/reclamaciones/exportar-excel', ['name' => 'admin.reclamacione
 app()->get('/admin/reclamaciones/exportar-pdf/{id}', ['name' => 'admin.reclamaciones.exportPDF', 'LibroReclamacionController@exportarPDF']);
 
 app()->put('/admin/reclamaciones/cambiar-estado/{id}', ['name' => 'admin.reclamaciones.cambiarEstado', 'LibroReclamacionController@cambiarEstado']);
+
+// RUTAS DEL BLOG EN EL ÁREA DE ADMINISTRACIÓN
+
+// VISTAS DEL BLOG
+app()->get('/admin/blog', ['name' => 'admin.blog.listView', function () {render('admin.blog.list');}]);
+app()->get('/admin/blog/agregar', ['name' => 'admin.blog.addView', function () {render('admin.blog.add');}]);
+app()->get('/admin/blog/editar/{id}', ['name' => 'admin.blog.editView', 'AdminController@editBlog']);
+app()->get('/admin/blog/categorias', ['name' => 'admin.blog.categorias.listView', function () {render('admin.blog.categorias');}]);
+app()->get('/admin/blog/tags', ['name' => 'admin.blog.tags.listView', function () {render('admin.blog.tags');}]);
+
+// ENDPOINTS DEL BLOG
+app()->post('/admin/blog/crear', ['name' => 'admin.blog.create', 'AdminController@createBlog']);
+app()->put('/admin/blog/actualizar/{id}', ['name' => 'admin.blog.update', 'AdminController@updateBlog']);
+app()->delete('/admin/blog/eliminar/{id}', ['name' => 'admin.blog.delete', 'AdminController@deleteBlog']);
+app()->get('/admin/blog/buscar', ['name' => 'admin.blog.search', 'AdminController@searchBlogs']);
+app()->put('/admin/blog/cambiar-estado/{id}', ['name' => 'admin.blog.cambiarEstado', 'AdminController@cambiarEstado']);
+app()->post('/admin/blog/upload-image', ['name' => 'admin.blog.uploadImage', 'AdminController@uploadImage']);
+
+// ENDPOINTS PARA CATEGORÍAS DEL BLOG
+app()->get('/admin/blog/categorias/listar', ['name' => 'admin.blog.categorias.listar', function() {
+    $categorias = \App\Models\BlogCategoria::withCount('blogs as articulos_count')->get();
+    return response()->json([
+        'status' => 'success',
+        'data' => $categorias
+    ]);
+}]);
+
+app()->post('/admin/blog/categorias/crear', ['name' => 'admin.blog.categorias.create', function() {
+    csrf()->validate();
+    $data = request()->body();
+
+    // Validar nombre
+    if (empty($data['nombre'])) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'El nombre es obligatorio'
+        ], 400);
+    }
+
+    // Verificar si ya existe
+    if (\App\Models\BlogCategoria::where('nombre', $data['nombre'])->exists()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Ya existe una categoría con este nombre'
+        ], 400);
+    }
+
+    $categoria = new \App\Models\BlogCategoria();
+    $categoria->nombre = $data['nombre'];
+    $categoria->descripcion = $data['descripcion'] ?? null;
+    $categoria->color = $data['color'] ?? '#667eea';
+    $categoria->icono = $data['icono'] ?? null;
+    $categoria->activa = isset($data['activa']) ? $data['activa'] : true;
+    $categoria->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Categoría creada exitosamente',
+        'data' => $categoria
+    ]);
+}]);
+
+app()->put('/admin/blog/categorias/actualizar/{id}', ['name' => 'admin.blog.categorias.update', function($id) {
+    csrf()->validate();
+    $data = request()->body();
+
+    $categoria = \App\Models\BlogCategoria::find($id);
+    if (!$categoria) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Categoría no encontrada'
+        ], 404);
+    }
+
+    // Validar nombre
+    if (empty($data['nombre'])) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'El nombre es obligatorio'
+        ], 400);
+    }
+
+    // Verificar si ya existe otro con ese nombre
+    if (\App\Models\BlogCategoria::where('nombre', $data['nombre'])->where('id', '!=', $id)->exists()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Ya existe otra categoría con este nombre'
+        ], 400);
+    }
+
+    $categoria->nombre = $data['nombre'];
+    $categoria->descripcion = $data['descripcion'] ?? $categoria->descripcion;
+    $categoria->color = $data['color'] ?? $categoria->color;
+    $categoria->icono = $data['icono'] ?? $categoria->icono;
+    $categoria->activa = isset($data['activa']) ? $data['activa'] : $categoria->activa;
+    $categoria->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Categoría actualizada exitosamente',
+        'data' => $categoria
+    ]);
+}]);
+
+app()->get('/admin/blog/categorias/obtener/{id}', ['name' => 'admin.blog.categorias.get', function($id) {
+    $categoria = \App\Models\BlogCategoria::find($id);
+
+    if (!$categoria) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Categoría no encontrada'
+        ], 404);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $categoria
+    ]);
+}]);
+
+app()->delete('/admin/blog/categorias/eliminar/{id}', ['name' => 'admin.blog.categorias.delete', function($id) {
+    csrf()->validate();
+
+    $categoria = \App\Models\BlogCategoria::find($id);
+
+    if (!$categoria) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Categoría no encontrada'
+        ], 404);
+    }
+
+    // Opcionalmente, reasignar artículos a una categoría predeterminada o dejarlos sin categoría
+
+    $categoria->delete();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Categoría eliminada exitosamente'
+    ]);
+}]);
+
+// ENDPOINTS PARA TAGS
+app()->get('/admin/blog/tags/listar', ['name' => 'admin.blog.tags.listar', function() {
+    $tags = \App\Models\BlogTag::withCount('blogs as articulos_count')->get();
+    return response()->json([
+        'status' => 'success',
+        'data' => $tags
+    ]);
+}]);
+
+app()->get('/admin/blog/tags/obtener/{id}', ['name' => 'admin.blog.tags.obtener', function($id) {
+    $tag = \App\Models\BlogTag::find($id);
+
+    if (!$tag) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Tag no encontrado'
+        ], 404);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $tag
+    ]);
+}]);
+
+app()->post('/admin/blog/tags/crear', ['name' => 'admin.blog.tags.crear', function() {
+    csrf()->validate();
+    $data = request()->body();
+
+    // Validar nombre
+    if (empty($data['nombre'])) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'El nombre es obligatorio'
+        ], 400);
+    }
+
+    // Verificar si ya existe
+    if (\App\Models\BlogTag::where('nombre', $data['nombre'])->exists()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Ya existe un tag con este nombre'
+        ], 400);
+    }
+
+    $tag = new \App\Models\BlogTag();
+    $tag->nombre = $data['nombre'];
+    $tag->descripcion = $data['descripcion'] ?? null;
+    $tag->uso_contador = 0;
+    $tag->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Tag creado exitosamente',
+        'data' => $tag
+    ]);
+}]);
+
+app()->put('/admin/blog/tags/actualizar/{id}', ['name' => 'admin.blog.tags.actualizar', function($id) {
+    csrf()->validate();
+    $data = request()->body();
+
+    $tag = \App\Models\BlogTag::find($id);
+    if (!$tag) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Tag no encontrado'
+        ], 404);
+    }
+
+    // Validar nombre
+    if (empty($data['nombre'])) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'El nombre es obligatorio'
+        ], 400);
+    }
+
+    // Verificar si ya existe otro con ese nombre
+    if (\App\Models\BlogTag::where('nombre', $data['nombre'])->where('id', '!=', $id)->exists()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Ya existe otro tag con este nombre'
+        ], 400);
+    }
+
+    $tag->nombre = $data['nombre'];
+    $tag->descripcion = $data['descripcion'] ?? $tag->descripcion;
+    $tag->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Tag actualizado exitosamente',
+        'data' => $tag
+    ]);
+}]);
+
+app()->delete('/admin/blog/tags/eliminar/{id}', ['name' => 'admin.blog.tags.eliminar', function($id) {
+    csrf()->validate();
+
+    $tag = \App\Models\BlogTag::find($id);
+
+    if (!$tag) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Tag no encontrado'
+        ], 404);
+    }
+
+    // Eliminar relaciones en la tabla pivote
+    db()->query("DELETE FROM blog_tags_relaciones WHERE tag_id = {$tag->id}");
+
+    $tag->delete();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Tag eliminado exitosamente'
+    ]);
+}]);

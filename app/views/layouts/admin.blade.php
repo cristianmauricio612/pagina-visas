@@ -24,8 +24,7 @@
 
     {{-- Sidebar --}}
     <div id="sidebar"
-        class="w-64 bg-gray-900 text-white min-h-screen p-5 flex flex-col fixed lg:relative transition-all duration-300 transform -translate-x-full lg:translate-x-0">
-
+        class="w-64 bg-gray-900 text-white min-h-screen p-5 flex flex-col fixed lg:relative transition-all duration-300 transform -translate-x-full lg:translate-x-0 gap-4 max-h-screen overflow-y-auto">
         {{-- Botón de Cerrar Sidebar (Solo visible en móviles) --}}
         <button id="closeSidebar"
             class="absolute top-4 right-4 bg-red-500 text-white w-10 h-10 flex items-center justify-center rounded-full text-xl lg:hidden">
@@ -191,6 +190,29 @@
                             <a href="{{route('admin.reclamaciones.listView')}}"
                                 class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
                                 <i class="fas fa-list mr-2"></i> Listar
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Blog --}}
+                <li class="mb-2">
+                    <button
+                        class="flex items-center w-full text-left p-3 rounded-md outline-none hover:bg-gray-800 transition"
+                        onclick="toggleMenu('blog')">
+                        <i class="fas fa-blog mr-2"></i> Blog
+                    </button>
+                    <ul id="blog" class="ml-6 mt-1 hidden transition-all">
+                        <li>
+                            <a href="/admin/blog/categorias"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-folder mr-2"></i> Categorías
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/blog/tags"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-tags mr-2"></i> Tags
                             </a>
                         </li>
                     </ul>
