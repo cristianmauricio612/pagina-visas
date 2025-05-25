@@ -16,7 +16,7 @@ columns:
     type: text
     nullable: true
   imagen:
-    type: string
+    type: longtext
     nullable: true
   autor:
     type: string
