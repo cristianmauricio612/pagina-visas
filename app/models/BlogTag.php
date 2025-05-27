@@ -50,6 +50,6 @@ class BlogTag extends Model
 
     public function url()
     {
-        return "/blog?q=" . urlencode($this->nombre);
+        return "/blog/tag/" . urlencode($this->nombre);
     }
 }

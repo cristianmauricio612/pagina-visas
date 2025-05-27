@@ -52,6 +52,14 @@ app()->post('/libro-de-reclamaciones/registrar', ['name' => 'registrar-reclamaci
 
 app()->get('/libro-de-reclamaciones/exitoso', ['name' => 'reclamacion-exitosa', function () {render('reclamaciones.exitoso');}]);
 
+// RUTAS PÚBLICAS DEL BLOG
+app()->get('/blog', ['name' => 'blog.index', 'BlogController@index']);
+app()->get('/blog/categoria/{categoria}', ['name' => 'blog.categoria', 'BlogController@categoria']);
+app()->get('/blog/buscar', ['name' => 'blog.buscar', 'BlogController@buscar']);
+app()->get('/blog/{slug}', ['name' => 'blog.show', 'BlogController@show']);
+app()->get('/api/blog/articulos', ['name' => 'blog.api.articulos', 'BlogController@obtenerArticulos']);
+app()->get('/blog/tag/{tag}', ['name' => 'blog.tag', 'BlogController@tag']);
+
 //SESSION
 
 app()->get('/iniciar-sesion', ['name' => 'iniciar-sesion', function () {render('session.login');}]);

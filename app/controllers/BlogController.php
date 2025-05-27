@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Blog;
 use App\Models\BlogCategoria;
 use App\Models\BlogTag;
+use App\Models\BlogTagRelacion;
 
 class BlogController extends Controller
 {
@@ -25,10 +26,12 @@ class BlogController extends Controller
         $categorias = BlogCategoria::activas()->get();
 
         // Obtener artículos populares (por vistas)
-        $articulosPopulares = Blog::publicados()
-                                 ->orderBy('vistas', 'desc')
-                                 ->limit(5)
-                                 ->get();
+        $articulosPopulares = Blog::where('estado', 'publicado')
+            ->whereNotNull('fecha_publicacion')
+            ->where('fecha_publicacion', '<=', date('Y-m-d H:i:s'))
+            ->orderBy('vistas', 'desc')
+            ->limit(5)
+            ->get();
 
         // Query base para artículos
         $query = Blog::publicados();
@@ -83,26 +86,46 @@ class BlogController extends Controller
 
         // Obtener artículos relacionados de la misma categoría
         $articulosRelacionados = Blog::porCategoria($articulo->categoria_id)
-                                    ->where('id', '!=', $articulo->id)
-                                    ->limit(3)
-                                    ->get();
+            ->where('id', '!=', $articulo->id)
+            ->limit(3)
+            ->get();
 
         // Obtener artículo anterior y siguiente
         $articuloAnterior = Blog::publicados()
-                               ->where('fecha_publicacion', '<', $articulo->fecha_publicacion)
-                               ->orderBy('fecha_publicacion', 'desc')
-                               ->first();
+            ->where('fecha_publicacion', '<', $articulo->fecha_publicacion)
+            ->orderBy('fecha_publicacion', 'desc')
+            ->first();
+
+        // Obtener artículos populares (por vistas)
+        $articulosPopulares = Blog::where('estado', 'publicado')
+            ->whereNotNull('fecha_publicacion')
+            ->where('fecha_publicacion', '<=', date('Y-m-d H:i:s'))
+            ->orderBy('vistas', 'desc')
+            ->limit(5)
+            ->get();
 
         $articuloSiguiente = Blog::publicados()
-                                ->where('fecha_publicacion', '>', $articulo->fecha_publicacion)
-                                ->orderBy('fecha_publicacion', 'asc')
-                                ->first();
+            ->where('fecha_publicacion', '>', $articulo->fecha_publicacion)
+            ->orderBy('fecha_publicacion', 'asc')
+            ->first();
+
+        // Obtener categorías para el sidebar
+        $categorias = BlogCategoria::activas()->get();
+
+        // Obtener todas las etiquetas para la barra lateral
+        $tags = BlogTag::orderBy('uso_contador', 'desc')->get();
+
+        // Cargar la relación de tags del artículo
+        $articulo->load('tags');
 
         return render('blog.show', compact(
             'articulo',
             'articulosRelacionados',
             'articuloAnterior',
-            'articuloSiguiente'
+            'articuloSiguiente',
+            'articulosPopulares',
+            'categorias',
+            'tags'
         ));
     }
 
@@ -111,6 +134,9 @@ class BlogController extends Controller
      */
     public function categoria($categoria)
     {
+        // Decodificar el nombre de la categoría de la URL
+        $categoria = urldecode(str_replace('+', ' ', $categoria));
+
         $page = request()->get('page', 1);
         $perPage = 9;
 
@@ -128,8 +154,14 @@ class BlogController extends Controller
         $offset = ($page - 1) * $perPage;
         $articulos = $query->limit($perPage)->offset($offset)->get();
 
-        // Obtener todas las categorías para el sidebar
+        // Obtener todas las categorías para la barra lateral
         $categorias = BlogCategoria::activas()->get();
+
+        // Obtener artículos populares para la barra lateral
+        $articulosPopulares = Blog::publicados()
+            ->orderBy('vistas', 'desc')
+            ->limit(5)
+            ->get();
 
         return render('blog.categoria', compact(
             'articulos',
@@ -138,7 +170,8 @@ class BlogController extends Controller
             'categoriaObj',
             'page',
             'totalPages',
-            'total'
+            'total',
+            'articulosPopulares'
         ));
     }
 
@@ -207,5 +240,52 @@ class BlogController extends Controller
             'hasMore' => $hasMore,
             'page' => $page + 1
         ]);
+    }
+
+    /**
+     * Filtrar artículos por etiqueta
+     */
+    public function tag($tag)
+    {
+        // Decodificar el nombre de la categoría de la URL
+        $tag = urldecode(str_replace('+', ' ', $tag));
+
+        $page = request()->get('page', 1);
+        $perPage = 9;
+
+        $tagObj = BlogTag::where('nombre', $tag)->first();
+
+        if (!$tagObj) {
+            return render('errors.404');
+        }
+
+        // Obtener los IDs de artículos relacionados con este tag
+        $blogIds = BlogTagRelacion::where('tag_id', $tagObj->id)->pluck('blog_id')->toArray();
+
+        // Consultar artículos publicados con esos IDs
+        $query = Blog::publicados()->whereIn('id', $blogIds);
+
+        $total = $query->count();
+        $totalPages = ceil($total / $perPage);
+
+        $offset = ($page - 1) * $perPage;
+        $articulos = $query->limit($perPage)->offset($offset)->get();
+
+        // Obtener todas las categorías para la barra lateral
+        $categorias = BlogCategoria::activas()->get();
+
+        // Obtener todos los tags para la barra lateral
+        $tags = BlogTag::orderBy('uso_contador', 'desc')->get();
+
+        return render('blog.tag', compact(
+            'articulos',
+            'tag',
+            'tagObj',
+            'tags',
+            'categorias',
+            'page',
+            'totalPages',
+            'total'
+        ));
     }
 }
