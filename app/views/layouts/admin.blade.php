@@ -204,6 +204,12 @@
                     </button>
                     <ul id="blog" class="ml-6 mt-1 hidden transition-all">
                         <li>
+                            <a href="{{ route('admin.blog.listView') }}" class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-newspaper mr-2"></i>
+                                Artículos
+                            </a>
+                        </li>
+                        <li>
                             <a href="/admin/blog/categorias"
                                 class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
                                 <i class="fas fa-folder mr-2"></i> Categorías

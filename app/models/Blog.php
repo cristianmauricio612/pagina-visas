@@ -41,8 +41,6 @@ class Blog extends Model
         $fechaPublicacion = null;
         if (isset($datos['estado']) && $datos['estado'] === 'publicado') {
             $fechaPublicacion = $datos['fecha_publicacion'] ?? date('Y-m-d H:i:s');
-        } elseif (isset($datos['fecha_publicacion']) && !empty($datos['fecha_publicacion'])) {
-            $fechaPublicacion = $datos['fecha_publicacion'];
         }
 
         // Calcular tiempo de lectura si no se proporciona
@@ -96,9 +94,9 @@ class Blog extends Model
     public static function publicados()
     {
         return self::where('estado', 'publicado')
-                   ->whereNotNull('fecha_publicacion')
-                   ->where('fecha_publicacion', '<=', date('Y-m-d H:i:s'))
-                   ->orderBy('fecha_publicacion', 'desc');
+            ->whereNotNull('fecha_publicacion')
+            ->where('fecha_publicacion', '<=', date('Y-m-d H:i:s'))
+            ->orderBy('fecha_publicacion', 'desc');
     }
 
     public static function porCategoria($categoriaId)
@@ -109,10 +107,10 @@ class Blog extends Model
     public static function buscar($termino)
     {
         return self::publicados()
-                   ->where(function($query) use ($termino) {
-                       $query->where('titulo', 'LIKE', "%{$termino}%")
-                             ->orWhere('contenido', 'LIKE', "%{$termino}%");
-                   });
+            ->where(function ($query) use ($termino) {
+                $query->where('titulo', 'LIKE', "%{$termino}%")
+                    ->orWhere('contenido', 'LIKE', "%{$termino}%");
+            });
     }
 
     // MÉTODOS PERSONALIZADOS (como en tu LibroReclamacion)
@@ -125,8 +123,8 @@ class Blog extends Model
     public function estaPublicado()
     {
         return $this->estado === 'publicado' &&
-               $this->fecha_publicacion &&
-               $this->fecha_publicacion <= Carbon::now();
+            $this->fecha_publicacion &&
+            $this->fecha_publicacion <= Carbon::now();
     }
 
     public function url()
@@ -173,10 +171,90 @@ class Blog extends Model
     // MÉTODO PARA GENERAR SLUG ÚNICO
     public static function generarSlug($titulo)
     {
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $titulo)));
+        // PASO 1: Convertir caracteres acentuados a sus equivalentes sin acento
+        $caracteres = [
+            'á' => 'a',
+            'à' => 'a',
+            'ä' => 'a',
+            'â' => 'a',
+            'ā' => 'a',
+            'ã' => 'a',
+            'é' => 'e',
+            'è' => 'e',
+            'ë' => 'e',
+            'ê' => 'e',
+            'ē' => 'e',
+            'í' => 'i',
+            'ì' => 'i',
+            'ï' => 'i',
+            'î' => 'i',
+            'ī' => 'i',
+            'ó' => 'o',
+            'ò' => 'o',
+            'ö' => 'o',
+            'ô' => 'o',
+            'ō' => 'o',
+            'õ' => 'o',
+            'ú' => 'u',
+            'ù' => 'u',
+            'ü' => 'u',
+            'û' => 'u',
+            'ū' => 'u',
+            'ñ' => 'n',
+            'ç' => 'c',
+            // Mayúsculas
+            'Á' => 'A',
+            'À' => 'A',
+            'Ä' => 'A',
+            'Â' => 'A',
+            'Ā' => 'A',
+            'Ã' => 'A',
+            'É' => 'E',
+            'È' => 'E',
+            'Ë' => 'E',
+            'Ê' => 'E',
+            'Ē' => 'E',
+            'Í' => 'I',
+            'Ì' => 'I',
+            'Ï' => 'I',
+            'Î' => 'I',
+            'Ī' => 'I',
+            'Ó' => 'O',
+            'Ò' => 'O',
+            'Ö' => 'O',
+            'Ô' => 'O',
+            'Ō' => 'O',
+            'Õ' => 'O',
+            'Ú' => 'U',
+            'Ù' => 'U',
+            'Ü' => 'U',
+            'Û' => 'U',
+            'Ū' => 'U',
+            'Ñ' => 'N',
+            'Ç' => 'C'
+        ];
+
+        // Reemplazar caracteres acentuados
+        $titulo = strtr($titulo, $caracteres);
+
+        // PASO 2: Convertir a minúsculas
+        $slug = strtolower($titulo);
+
+        // PASO 3: Reemplazar espacios y caracteres especiales con guiones
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+
+        // PASO 4: Eliminar guiones múltiples
         $slug = preg_replace('/-+/', '-', $slug);
+
+        // PASO 5: Eliminar guiones al inicio y final
         $slug = trim($slug, '-');
 
+        // PASO 6: Asegurar que el slug no esté vacío
+        if (empty($slug)) {
+            $slug = 'articulo';
+        }
+
+        // PASO 7: Verificar unicidad y agregar número si es necesario
         $contador = 1;
         $slugOriginal = $slug;
         while (self::where('slug', $slug)->exists()) {

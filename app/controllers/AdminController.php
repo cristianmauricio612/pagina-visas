@@ -14,6 +14,7 @@ use App\Models\FormularioVariable;
 use App\Models\Blog;
 use App\Models\BlogCategoria;
 use App\Models\BlogTag;
+use App\Models\BlogTagRelacion;
 use Exception;
 
 class AdminController extends Controller
@@ -76,7 +77,7 @@ class AdminController extends Controller
         // Verificar si el usuario admin ya está registrado
         if (strtolower($data['nombre']) === 'admin') {
             if (User::whereRaw('LOWER(nombre) = ?', [strtolower($data['nombre'])])->exists()) {
-                if($user->nombre!=$data['nombre']){
+                if ($user->nombre != $data['nombre']) {
                     return response()->json(['status' => 'error', 'message' => 'El nombre "admin" no está permitido'], 402);
                 }
             }
@@ -976,6 +977,14 @@ class AdminController extends Controller
             return render('errors.404');
         }
 
+        // 🔥 CARGAR TAGS EXISTENTES usando BlogTagRelacion
+        $tagsExistentes = BlogTagRelacion::where('blog_id', $blog->id)
+            ->join('blog_tags', 'blog_tags_relaciones.tag_id', '=', 'blog_tags.id')
+            ->pluck('blog_tags.id')
+            ->toArray();
+
+        $blog->tags_existentes = $tagsExistentes;
+
         return render('admin.blog.edit', compact('blog'));
     }
 
@@ -1066,19 +1075,60 @@ class AdminController extends Controller
                 $data['fecha_publicacion'] = date('Y-m-d H:i:s');
             }
 
-            // Procesar nueva imagen si existe
+            // SOLUCIÓN: Manejar imagen por separado
+            $nuevaImagen = null;
             $archivoImagen = $_FILES['imagen'] ?? null;
+
             if ($archivoImagen && $archivoImagen['size'] > 0) {
-                $imagenData = file_get_contents($archivoImagen['tmp_name']);
-                $base64 = base64_encode($imagenData);
-                $data['imagen'] = "data:image/jpeg;base64," . $base64;
+                // Se subió una nueva imagen
+                $tipoImagen = $archivoImagen['type'];
+
+                $tiposPermitidos = [
+                    'image/jpeg' => 'jpeg',
+                    'image/jpg' => 'jpeg',
+                    'image/png' => 'png',
+                    'image/webp' => 'webp'
+                ];
+
+                if (isset($tiposPermitidos[$tipoImagen])) {
+                    $extensionImagen = $tiposPermitidos[$tipoImagen];
+                    $imagenData = file_get_contents($archivoImagen['tmp_name']);
+                    $base64 = base64_encode($imagenData);
+                    $nuevaImagen = "data:image/{$extensionImagen};base64," . $base64;
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Tipo de imagen no permitido. Solo JPEG, PNG y WebP son aceptados.'
+                    ], 400);
+                }
             }
 
-            // Actualizar campos
+            // Lista de campos permitidos (SIN incluir 'imagen')
+            $camposPermitidos = [
+                'titulo',
+                'slug',
+                'categoria_id',
+                'contenido',
+                'resumen',
+                'autor',
+                'tiempo_lectura',
+                'estado',
+                'vistas',
+                'fecha_publicacion',
+                'meta_description',
+                'meta_keywords'
+            ];
+
+            // Actualizar campos normales (sin imagen)
             foreach ($data as $key => $value) {
-                if (in_array($key, $blog->fillable)) {
+                if (in_array($key, $camposPermitidos)) {
                     $blog->$key = $value;
                 }
+            }
+
+            // SOLO actualizar imagen si se subió una nueva
+            if ($nuevaImagen !== null) {
+                $blog->imagen = $nuevaImagen;
             }
 
             $blog->save();
@@ -1147,14 +1197,14 @@ class AdminController extends Controller
         $page = request()->get('page', 1);
         $perPage = request()->get('per_page', 10);
 
-        $query = Blog::query();
+        $query = Blog::with('categoria');
 
         // Aplicar filtros
         if (!empty($termino)) {
-            $query->where(function($q) use ($termino) {
+            $query->where(function ($q) use ($termino) {
                 $q->where('titulo', 'LIKE', "%{$termino}%")
-                  ->orWhere('contenido', 'LIKE', "%{$termino}%")
-                  ->orWhere('autor', 'LIKE', "%{$termino}%");
+                    ->orWhere('contenido', 'LIKE', "%{$termino}%")
+                    ->orWhere('autor', 'LIKE', "%{$termino}%");
             });
         }
 
@@ -1349,32 +1399,31 @@ class AdminController extends Controller
             return;
         }
 
-        $tagNames = array_map('trim', explode(',', $tagsString));
-        $tagIds = [];
+        // Los tags vienen como IDs separados por comas desde el formulario
+        $tagIds = array_filter(array_map('trim', explode(',', $tagsString)));
 
-        foreach ($tagNames as $tagName) {
-            if (empty($tagName)) continue;
-
-            $tag = BlogTag::porNombre($tagName);
-            if (!$tag) {
-                // Crear nuevo tag
-                $tag = new BlogTag();
-                $tag->nombre = $tagName;
-                $tag->save();
-            } else {
-                // Incrementar uso del tag existente
-                $tag->incrementarUso();
-            }
-
-            $tagIds[] = $tag->id;
+        if (empty($tagIds)) {
+            return;
         }
 
-        // Sincronizar tags (esto requiere implementación manual en Leaf)
-        // Por ahora, solo eliminamos relaciones anteriores y agregamos nuevas
-        db()->query("DELETE FROM blog_tags_relaciones WHERE blog_id = {$blog->id}");
+        // Eliminar relaciones anteriores usando el modelo BlogTagRelacion
+        BlogTagRelacion::where('blog_id', $blog->id)->delete();
 
+        // Agregar nuevas relaciones e incrementar contador de uso
         foreach ($tagIds as $tagId) {
-            db()->query("INSERT INTO blog_tags_relaciones (blog_id, tag_id) VALUES ({$blog->id}, {$tagId})");
+            if (!empty($tagId) && is_numeric($tagId)) {
+                // Crear la relación
+                BlogTagRelacion::create([
+                    'blog_id' => $blog->id,
+                    'tag_id' => $tagId
+                ]);
+
+                // Incrementar uso del tag
+                $tag = BlogTag::find($tagId);
+                if ($tag) {
+                    $tag->incrementarUso();
+                }
+            }
         }
     }
 }
