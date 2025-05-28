@@ -59,7 +59,7 @@ app()->get('/blog/categoria/{categoria}', ['name' => 'blog.categoria', 'BlogCont
 
 app()->get('/blog/buscar', ['name' => 'blog.buscar', 'BlogController@buscar']);
 
-app()->get('/blog/{slug}', ['name' => 'blog.show', 'BlogController@show']);
+app()->get('/{slug}', ['name' => 'blog.show', 'BlogController@show']);
 
 app()->get('/api/blog/articulos', ['name' => 'blog.api.articulos', 'BlogController@obtenerArticulos']);
 

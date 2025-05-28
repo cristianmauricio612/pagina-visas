@@ -220,7 +220,7 @@
                                             class="text-red-500 hover:text-red-700" title="Eliminar">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                        <a href="/blog/${articulo.slug}" target="_blank"
+                                        <a href="/${articulo.slug}" target="_blank"
                                             class="text-gray-500 hover:text-gray-700" title="Ver en sitio">
                                             <i class="fas fa-external-link-alt"></i>
                                         </a>

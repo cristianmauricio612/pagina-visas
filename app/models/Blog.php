@@ -129,7 +129,7 @@ class Blog extends Model
 
     public function url()
     {
-        return "/blog/{$this->slug}";
+        return "/{$this->slug}";
     }
 
     public function extracto($longitud = 150)
