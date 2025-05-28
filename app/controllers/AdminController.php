@@ -1464,22 +1464,155 @@ class AdminController extends Controller
     }
 
     /**
-     * Exportar correos de publicidad a CSV
+     * Exportar correos de publicidad a Excel con diseño mejorado
      */
     public function exportarCorreosPublicidad()
     {
         $correos = \App\Models\CorreoPublicidad::orderBy('fecha_registro', 'desc')->get();
 
-        $csvContent = "ID,Correo,Fecha de Registro,Página de Origen,IP,Convertido\n";
+        // Crear nuevo libro de Excel
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
+        // Establecer título de la hoja
+        $sheet->setTitle('Correos Marketing');
+
+        // Establecer un título principal
+        $sheet->setCellValue('A1', 'REGISTRO DE CORREOS DE MARKETING');
+        $sheet->mergeCells('A1:G1');
+
+        // Estilo para el título principal
+        $titleStyle = $sheet->getStyle('A1');
+        $titleStyle->getFont()->setBold(true);
+        $titleStyle->getFont()->setSize(16);
+        $titleStyle->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $titleStyle->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('FF4F81BD');
+        $titleStyle->getFont()->getColor()->setARGB('FFFFFFFF');
+
+        // Fecha de generación
+        $sheet->setCellValue('A2', 'Fecha de generación: ' . date('d/m/Y H:i:s'));
+        $sheet->mergeCells('A2:G2');
+        $sheet->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+        $sheet->getStyle('A2')->getFont()->setItalic(true);
+
+        // Establecer encabezados con estilo
+        $sheet->setCellValue('A4', 'ID');
+        $sheet->setCellValue('B4', 'CORREO');
+        $sheet->setCellValue('C4', 'FECHA DE REGISTRO');
+        $sheet->setCellValue('D4', 'PÁGINA DE ORIGEN');
+        $sheet->setCellValue('E4', 'IP');
+        $sheet->setCellValue('F4', 'CONVERTIDO');
+        $sheet->setCellValue('G4', 'FECHA DE CONVERSIÓN');
+
+        // Estilo para encabezados
+        $headerStyle = $sheet->getStyle('A4:G4');
+        $headerStyle->getFont()->setBold(true);
+        $headerStyle->getFont()->setSize(12);
+        $headerStyle->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $headerStyle->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('FF4F81BD');
+        $headerStyle->getFont()->getColor()->setARGB('FFFFFFFF');
+        $headerStyle->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+        // Llenar datos
+        $row = 5;
         foreach ($correos as $correo) {
-            $csvContent .= "{$correo->id},{$correo->correo},{$correo->fecha_registro},{$correo->pagina_origen},{$correo->ip_usuario},{$correo->convertido}\n";
+            $sheet->setCellValue('A' . $row, $correo->id);
+            $sheet->setCellValue('B' . $row, $correo->correo);
+            $sheet->setCellValue('C' . $row, $correo->fecha_registro);
+            $sheet->setCellValue('D' . $row, $correo->pagina_origen ?: 'N/A');
+            $sheet->setCellValue('E' . $row, $correo->ip_usuario ?: 'N/A');
+            $sheet->setCellValue('F' . $row, $correo->convertido ? 'Sí' : 'No');
+            $sheet->setCellValue('G' . $row, $correo->fecha_conversion ?: 'N/A');
+
+            // Establecer alineación para cada celda
+            $sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('C' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('F' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('G' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+            // Estilo alternado para filas
+            if ($row % 2 == 0) {
+                $sheet->getStyle('A' . $row . ':G' . $row)->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('FFF2F2F2');
+            }
+
+            // Añadir bordes a las celdas
+            $sheet->getStyle('A' . $row . ':G' . $row)->getBorders()->getAllBorders()
+                ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+            // Establecer color para los correos convertidos
+            if ($correo->convertido) {
+                $sheet->getStyle('F' . $row)->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('FFD8E4BC');
+                $sheet->getStyle('F' . $row)->getFont()->setBold(true);
+            }
+
+            $row++;
         }
 
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename="correos_publicidad.csv"');
+        // Aplicar fuente global
+        $sheet->getStyle('A1:G' . $row)->getFont()->setName('Arial');
 
-        echo $csvContent;
+        // Fijar el tamaño de las celdas
+        $sheet->getColumnDimension('A')->setWidth(25);
+        $sheet->getColumnDimension('B')->setWidth(40);
+        $sheet->getColumnDimension('C')->setWidth(40);
+        $sheet->getColumnDimension('D')->setWidth(40);
+        $sheet->getColumnDimension('E')->setWidth(25);
+        $sheet->getColumnDimension('F')->setWidth(35);
+        $sheet->getColumnDimension('G')->setWidth(40);
+
+        // Añadir resumen estadístico
+        $row += 2;
+        $sheet->setCellValue('A' . $row, 'RESUMEN ESTADÍSTICO');
+        $sheet->mergeCells('A' . $row . ':G' . $row);
+        $sheet->getStyle('A' . $row)->getFont()->setBold(true);
+        $sheet->getStyle('A' . $row)->getFont()->setSize(14);
+        $sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('A' . $row)->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('FFDBE5F1');
+
+        $row++;
+        $totalEmails = count($correos);
+        $convertidosEmails = $correos->where('convertido', 1)->count();
+        $tasaConversion = $totalEmails > 0 ? round(($convertidosEmails / $totalEmails) * 100, 2) : 0;
+
+        $sheet->setCellValue('A' . $row, 'Total de correos:');
+        $sheet->setCellValue('B' . $row, $totalEmails);
+        $sheet->getStyle('A' . $row)->getFont()->setBold(true);
+        $sheet->getStyle('B' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+
+        $row++;
+        $sheet->setCellValue('A' . $row, 'Correos convertidos:');
+        $sheet->setCellValue('B' . $row, $convertidosEmails);
+        $sheet->getStyle('A' . $row)->getFont()->setBold(true);
+        $sheet->getStyle('B' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+
+        $row++;
+        $sheet->setCellValue('A' . $row, 'Tasa de conversión:');
+        $sheet->setCellValue('B' . $row, $tasaConversion . '%');
+        $sheet->getStyle('A' . $row)->getFont()->setBold(true);
+        $sheet->getStyle('B' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+
+        // CRÍTICO: Limpiar completamente cualquier salida anterior
+        if (ob_get_contents())
+            ob_end_clean();
+
+        // Configurar headers para descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="correos_publicidad.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        // Guardar en salida PHP
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $writer->save('php://output');
         exit;
     }
 }

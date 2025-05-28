@@ -48,4 +48,29 @@ class CorreoPublicidadController extends Controller
             ]);
         }
     }
+
+    /**
+     * Marcar un correo como convertido (cuando completa una acción)
+     */
+    public function marcarComoConvertido($id)
+    {
+        csrf()->validate();
+
+        $correo = \App\Models\CorreoPublicidad::find($id);
+        if (!$correo) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Correo no encontrado'
+            ], 404);
+        }
+
+        $correo->convertido = 1;
+        $correo->fecha_conversion = \Carbon\Carbon::now();
+        $correo->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Correo marcado como convertido correctamente'
+        ]);
+    }
 }

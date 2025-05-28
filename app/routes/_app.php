@@ -512,3 +512,5 @@ app()->get('/admin/correos-publicidad/listar', ['name' => 'admin.correos.listar'
 app()->delete('/admin/correos-publicidad/eliminar/{id}', ['name' => 'admin.correos.eliminar', 'AdminController@eliminarCorreoPublicidad']);
 
 app()->get('/admin/correos-publicidad/exportar', ['name' => 'admin.correos.exportar', 'AdminController@exportarCorreosPublicidad']);
+
+app()->put('/admin/correos-publicidad/marcar-convertido/{id}', ['name' => 'admin.correos.marcarConvertido', 'CorreoPublicidadController@marcarComoConvertido']);
