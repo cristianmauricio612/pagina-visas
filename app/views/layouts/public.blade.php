@@ -8,6 +8,7 @@
     <meta name="description" content="@yield('description')">
     <meta name="keywords" content="@yield('keyword')">
     <meta name="robots" content="index, follow">
+    <meta name="csrf-token" content="{{ csrf()->token() }}">
     <link href="{{assets('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{assets('fontawesome/css/all.css')}}" rel="stylesheet">
     <link href="{{assets('css/styles.css') }}" rel="stylesheet">
@@ -289,7 +290,7 @@
 
                 <!-- Columna 4: Mapa -->
                 <div>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.8356217684604!2d-77.00781908509946!3d-12.126869891407335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c7e2b04d70b7%3A0x60c9d537af0c98e6!2sVisas%20Travel%20-%20Tr%C3%A1mites%20de%20Visas!5e0!3m2!1ses-419!2spe!4v1653332342217!5m2!1ses-419!2spe" class="w-full h-40 rounded" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d499268.15129639494!2d-77.006727!3d-12.144111!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c7a3dfd1a6bd%3A0xa1498c961df2d7fd!2sVisas%20Travel%20-%20Tr%C3%A1mites%20de%20Visas!5e0!3m2!1ses-419!2sus!4v1748402285423!5m2!1ses-419!2sus" class="w-full h-40 rounded" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
 
@@ -312,6 +313,23 @@
         </div>
     </footer>
 
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-4 px-6 flex flex-col md:flex-row justify-between items-center z-50 shadow-lg">
+        <div class="mb-4 md:mb-0 pr-4">
+            <p class="text-sm">
+                Este sitio web utiliza cookies para mejorar tu experiencia de navegación. Al hacer clic en "Aceptar", consientes el uso de TODAS las cookies. Puedes visitar nuestra <a href="#" class="text-red-400 hover:underline">Política de Privacidad</a> para más información.
+            </p>
+        </div>
+        <div class="flex space-x-2">
+            <button id="accept-cookies" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium border-0">
+                Aceptar
+            </button>
+            <button id="reject-cookies" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm font-medium border-0">
+                Solo necesarias
+            </button>
+        </div>
+    </div>
+
     @stack('js')
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -319,6 +337,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
+    <script src="{{ assets('js/email-capture.js') }}"></script>
+
     <script>
         function logout() {
             fetch("/logout", {
@@ -467,6 +487,7 @@
             });
         });
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const openLanguageModal = document.getElementById("openLanguageModal");
@@ -491,6 +512,7 @@
             }
         });
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const openCurrencyModal = document.getElementById("openCurrencyModal");
@@ -513,6 +535,59 @@
                     }
                 });
             }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const cookieBanner = document.getElementById('cookie-consent-banner');
+            const acceptButton = document.getElementById('accept-cookies');
+            const rejectButton = document.getElementById('reject-cookies');
+
+            // Función para establecer una cookie
+            function setCookie(name, value, days) {
+                let expires = "";
+                if (days) {
+                    const date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            // Función para obtener una cookie
+            function getCookie(name) {
+                const nameEQ = name + "=";
+                const ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
+            // Verificar si el usuario ya ha aceptado las cookies
+            if (getCookie('cookie-consent')) {
+                cookieBanner.style.display = 'none';
+            } else {
+                cookieBanner.style.display = 'flex';
+            }
+
+            // Manejar clic en el botón "Aceptar"
+            acceptButton.addEventListener('click', function() {
+                setCookie('cookie-consent', 'accepted', 365); // Válido por un año
+                cookieBanner.style.display = 'none';
+            });
+
+            // Manejar clic en el botón "Solo necesarias"
+            rejectButton.addEventListener('click', function() {
+                setCookie('cookie-consent', 'minimal', 365); // Sólo cookies necesarias
+                cookieBanner.style.display = 'none';
+
+                // Aquí podrías añadir código para deshabilitar cookies no esenciales
+                // Por ejemplo, desactivar el código de Google Analytics
+            });
         });
     </script>
 </body>

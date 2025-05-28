@@ -1426,4 +1426,60 @@ class AdminController extends Controller
             }
         }
     }
+
+    /**
+     * Listar correos de publicidad
+     */
+    public function listarCorreosPublicidad()
+    {
+        $correos = \App\Models\CorreoPublicidad::orderBy('fecha_registro', 'desc')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $correos
+        ]);
+    }
+
+    /**
+     * Eliminar correo de publicidad
+     */
+    public function eliminarCorreoPublicidad($id)
+    {
+        csrf()->validate();
+
+        $correo = \App\Models\CorreoPublicidad::find($id);
+        if (!$correo) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Correo no encontrado'
+            ], 404);
+        }
+
+        $correo->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Correo eliminado correctamente'
+        ]);
+    }
+
+    /**
+     * Exportar correos de publicidad a CSV
+     */
+    public function exportarCorreosPublicidad()
+    {
+        $correos = \App\Models\CorreoPublicidad::orderBy('fecha_registro', 'desc')->get();
+
+        $csvContent = "ID,Correo,Fecha de Registro,Página de Origen,IP,Convertido\n";
+
+        foreach ($correos as $correo) {
+            $csvContent .= "{$correo->id},{$correo->correo},{$correo->fecha_registro},{$correo->pagina_origen},{$correo->ip_usuario},{$correo->convertido}\n";
+        }
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="correos_publicidad.csv"');
+
+        echo $csvContent;
+        exit;
+    }
 }

@@ -1,0 +1,25 @@
+columns:
+  correo:
+    type: string
+    nullable: false
+    unique: true
+  fecha_registro:
+    type: timestamp
+    nullable: true
+  pagina_origen:
+    type: string
+    nullable: true
+  ip_usuario:
+    type: string
+    length: 45
+    nullable: true
+  user_agent:
+    type: text
+    nullable: true
+  convertido:
+    type: boolean
+    default: 0
+    nullable: false
+  fecha_conversion:
+    type: timestamp
+    nullable: true

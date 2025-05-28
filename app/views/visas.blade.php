@@ -13,7 +13,7 @@
 
         $visa_temp = "";
 
-        if($visas->isNotEmpty()){
+        if ($visas->isNotEmpty()) {
             $visa_temp = $visas[intval($posicion)];
         }
 
@@ -41,13 +41,15 @@
                 @else
                     <div class="visa-verification">
                         <div class="visa-verification-label">Se requiere una visa</div>
-                        <div class="visa-verification-text">Se requiere un documento de viaje. Podemos ayudarte a tramitar este documento.</div>
+                        <div class="visa-verification-text">Se requiere un documento de viaje. Podemos ayudarte a tramitar este
+                            documento.</div>
                     </div>
                 @endif
             @else
                 <div class="visa-verification">
                     <div class="visa-verification-label">Se requiere una visa</div>
-                    <div class="visa-verification-text">Actualmente, no podemos ayudarte a tramitar este documento de viaje.</div>
+                    <div class="visa-verification-text">Actualmente, no podemos ayudarte a tramitar este documento de viaje.
+                    </div>
                 </div>
             @endif
 
@@ -68,7 +70,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="origen-warning">Asegúrate de seleccionar la nacionalidad del pasaporte con el que viajarás.</div>
+                <div class="origen-warning">Asegúrate de seleccionar la nacionalidad del pasaporte con el que viajarás.
+                </div>
             </div>
 
             <div class="visa-select" style="margin-bottom: 32px;">
@@ -198,23 +201,33 @@
             window.location.href = nuevaURL;
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("solicitarVisa").addEventListener("click", function() {
-                if (visas && visas.length > 0) {
-
-                    if(visa_temp && visa_temp.necesita_visa){
-                        // Obtener los valores seleccionados de los selects
-                        let id = document.getElementById("visa").getAttribute("data-value");
-                        // Construir la URL de la ruta y redirigir
-                        let url = `/visa-inscripcion/${id}/${posicion}`;
-                        window.location.href = url;
+        document.addEventListener("DOMContentLoaded", function () {
+            // Verificar que el botón existe antes de agregar el event listener
+            const solicitarVisaBtn = document.getElementById("solicitarVisa");
+            if (solicitarVisaBtn) {
+                solicitarVisaBtn.addEventListener("click", function () {
+                    if (visas && visas.length > 0) {
+                        if (visa_temp && visa_temp.necesita_visa) {
+                            const visaElement = document.getElementById("visa");
+                            if (visaElement) {
+                                let id = visaElement.getAttribute("data-value");
+                                let url = `/visa-inscripcion/${id}/${posicion}`;
+                                window.location.href = url;
+                            } else {
+                                console.error("Elemento 'visa' no encontrado en el DOM");
+                                // Fallback: redirigir al inicio
+                                window.location.href = '/';
+                            }
+                        } else {
+                            // Caso "Iniciar otra vez"
+                            window.location.href = '/';
+                        }
                     } else {
-                        window.location.href = '/';
+                        // Caso "Contactanos"
+                        window.location.href = '/contact';
                     }
-                } else {
-                    window.location.href = '/contact';
-                }
-            });
+                });
+            }
 
             const customSelects = document.querySelectorAll(".custom-select");
 
@@ -261,8 +274,8 @@
                                 console.log("País 1 actualizado:", pais1);
                                 actualizarPagina(); // 🔹 Redirigir a la nueva URL
                             }
-                        }else{
-                            if(selectedId != "No hay visas"){
+                        } else {
+                            if (selectedId != "No hay visas") {
                                 // Buscar la posición del elemento en la lista de visas
                                 const selectedVisaIndex = visas.findIndex(visa => visa.id == selectedId);
                                 if (selectedVisaIndex != null) {

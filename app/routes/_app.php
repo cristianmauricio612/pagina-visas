@@ -54,11 +54,19 @@ app()->get('/libro-de-reclamaciones/exitoso', ['name' => 'reclamacion-exitosa', 
 
 // RUTAS PÚBLICAS DEL BLOG
 app()->get('/blog', ['name' => 'blog.index', 'BlogController@index']);
+
 app()->get('/blog/categoria/{categoria}', ['name' => 'blog.categoria', 'BlogController@categoria']);
+
 app()->get('/blog/buscar', ['name' => 'blog.buscar', 'BlogController@buscar']);
+
 app()->get('/blog/{slug}', ['name' => 'blog.show', 'BlogController@show']);
+
 app()->get('/api/blog/articulos', ['name' => 'blog.api.articulos', 'BlogController@obtenerArticulos']);
+
 app()->get('/blog/tag/{tag}', ['name' => 'blog.tag', 'BlogController@tag']);
+
+// RUTA PARA CORREOS DE PUBLICIDAD
+app()->post('/api/guardar-correo-marketing', ['name' => 'guardar-correo-marketing', 'CorreoPublicidadController@guardarCorreo']);
 
 //SESSION
 
@@ -229,17 +237,26 @@ app()->put('/admin/reclamaciones/cambiar-estado/{id}', ['name' => 'admin.reclama
 
 // VISTAS DEL BLOG
 app()->get('/admin/blog', ['name' => 'admin.blog.listView', function () {render('admin.blog.list');}]);
+
 app()->get('/admin/blog/agregar', ['name' => 'admin.blog.addView', function () {render('admin.blog.add');}]);
+
 app()->get('/admin/blog/editar/{id}', ['name' => 'admin.blog.editView', 'AdminController@editBlog']);
+
 app()->get('/admin/blog/categorias', ['name' => 'admin.blog.categorias.listView', function () {render('admin.blog.categorias');}]);
+
 app()->get('/admin/blog/tags', ['name' => 'admin.blog.tags.listView', function () {render('admin.blog.tags');}]);
 
 // ENDPOINTS DEL BLOG
 app()->post('/admin/blog/crear', ['name' => 'admin.blog.create', 'AdminController@createBlog']);
+
 app()->put('/admin/blog/actualizar/{id}', ['name' => 'admin.blog.update', 'AdminController@updateBlog']);
+
 app()->delete('/admin/blog/eliminar/{id}', ['name' => 'admin.blog.delete', 'AdminController@deleteBlog']);
+
 app()->get('/admin/blog/buscar', ['name' => 'admin.blog.search', 'AdminController@searchBlogs']);
+
 app()->put('/admin/blog/cambiar-estado/{id}', ['name' => 'admin.blog.cambiarEstado', 'AdminController@cambiarEstado']);
+
 app()->post('/admin/blog/upload-image', ['name' => 'admin.blog.uploadImage', 'AdminController@uploadImage']);
 
 // ENDPOINTS PARA CATEGORÍAS DEL BLOG
@@ -485,3 +502,13 @@ app()->delete('/admin/blog/tags/eliminar/{id}', ['name' => 'admin.blog.tags.elim
         'message' => 'Tag eliminado exitosamente'
     ]);
 }]);
+
+// CORREOS DE PUBLICIDAD
+app()->get('/admin/correos-publicidad', ['name' => 'admin.correos.listView', function () {render('admin.correos.list');}]);
+
+// ENDPOINTS PARA CORREOS DE PUBLICIDAD
+app()->get('/admin/correos-publicidad/listar', ['name' => 'admin.correos.listar', 'AdminController@listarCorreosPublicidad']);
+
+app()->delete('/admin/correos-publicidad/eliminar/{id}', ['name' => 'admin.correos.eliminar', 'AdminController@eliminarCorreoPublicidad']);
+
+app()->get('/admin/correos-publicidad/exportar', ['name' => 'admin.correos.exportar', 'AdminController@exportarCorreosPublicidad']);
