@@ -210,6 +210,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="/admin/blog/autores"
+                                class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
+                                <i class="fas fa-users mr-2"></i> Autores
+                            </a>
+                        </li>
+                        <li>
                             <a href="/admin/blog/categorias"
                                 class="flex items-center p-2 text-gray-300 hover:text-white hover:border-l-4 hover:border-white">
                                 <i class="fas fa-folder mr-2"></i> Categorías

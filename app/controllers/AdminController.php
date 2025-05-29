@@ -1110,7 +1110,7 @@ class AdminController extends Controller
                 'categoria_id',
                 'contenido',
                 'resumen',
-                'autor',
+                'autor_id',
                 'tiempo_lectura',
                 'estado',
                 'vistas',
@@ -1197,14 +1197,13 @@ class AdminController extends Controller
         $page = request()->get('page', 1);
         $perPage = request()->get('per_page', 10);
 
-        $query = Blog::with('categoria');
+        $query = Blog::with(['categoria', 'autorObj']);
 
         // Aplicar filtros
         if (!empty($termino)) {
             $query->where(function ($q) use ($termino) {
                 $q->where('titulo', 'LIKE', "%{$termino}%")
-                    ->orWhere('contenido', 'LIKE', "%{$termino}%")
-                    ->orWhere('autor', 'LIKE', "%{$termino}%");
+                    ->orWhere('contenido', 'LIKE', "%{$termino}%");
             });
         }
 
@@ -1226,6 +1225,13 @@ class AdminController extends Controller
         $total = $query->count();
         $offset = ($page - 1) * $perPage;
         $blogs = $query->limit($perPage)->offset($offset)->get();
+
+        $blogs->transform(function ($blog) {
+            if ($blog->autorObj) {
+                $blog->autor_nombre_completo = $blog->autorObj->nombreCompleto();
+            }
+            return $blog;
+        });
 
         return response()->json([
             'status' => 'success',

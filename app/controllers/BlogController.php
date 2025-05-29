@@ -20,13 +20,13 @@ class BlogController extends Controller
         $perPage = 9;
 
         // Obtener artículo destacado (el más reciente)
-        $articuloDestacado = Blog::publicados()->first();
+        $articuloDestacado = Blog::publicados()->with('autorObj')->first();
 
         // Obtener categorías disponibles
         $categorias = BlogCategoria::activas()->get();
 
         // Obtener artículos populares (por vistas)
-        $articulosPopulares = Blog::where('estado', 'publicado')
+        $articulosPopulares = Blog::with('autorObj')->where('estado', 'publicado')
             ->whereNotNull('fecha_publicacion')
             ->where('fecha_publicacion', '<=', date('Y-m-d H:i:s'))
             ->orderBy('vistas', 'desc')
@@ -75,7 +75,7 @@ class BlogController extends Controller
      */
     public function show($slug)
     {
-        $articulo = Blog::publicados()->where('slug', $slug)->first();
+        $articulo = Blog::publicados()->with('autorObj')->where('slug', $slug)->first();
 
         if (!$articulo) {
             return render('errors.404');
@@ -85,7 +85,7 @@ class BlogController extends Controller
         $articulo->incrementarVistas();
 
         // Obtener artículos relacionados de la misma categoría
-        $articulosRelacionados = Blog::porCategoria($articulo->categoria_id)
+        $articulosRelacionados = Blog::porCategoria($articulo->categoria_id)->with('autorObj')
             ->where('id', '!=', $articulo->id)
             ->limit(3)
             ->get();
@@ -97,7 +97,7 @@ class BlogController extends Controller
             ->first();
 
         // Obtener artículos populares (por vistas)
-        $articulosPopulares = Blog::where('estado', 'publicado')
+        $articulosPopulares = Blog::with('autorObj')->where('estado', 'publicado')
             ->whereNotNull('fecha_publicacion')
             ->where('fecha_publicacion', '<=', date('Y-m-d H:i:s'))
             ->orderBy('vistas', 'desc')
@@ -152,13 +152,13 @@ class BlogController extends Controller
         $totalPages = ceil($total / $perPage);
 
         $offset = ($page - 1) * $perPage;
-        $articulos = $query->limit($perPage)->offset($offset)->get();
+        $articulos = $query->with('autorObj')->limit($perPage)->offset($offset)->get();
 
         // Obtener todas las categorías para la barra lateral
         $categorias = BlogCategoria::activas()->get();
 
         // Obtener artículos populares para la barra lateral
-        $articulosPopulares = Blog::publicados()
+        $articulosPopulares = Blog::publicados()->with('autorObj')
             ->orderBy('vistas', 'desc')
             ->limit(5)
             ->get();
@@ -229,7 +229,7 @@ class BlogController extends Controller
         }
 
         $offset = ($page - 1) * $perPage;
-        $articulos = $query->limit($perPage)->offset($offset)->get();
+        $articulos = $query->with('autorObj')->limit($perPage)->offset($offset)->get();
 
         $total = $query->count();
         $hasMore = ($page * $perPage) < $total;
@@ -269,7 +269,7 @@ class BlogController extends Controller
         $totalPages = ceil($total / $perPage);
 
         $offset = ($page - 1) * $perPage;
-        $articulos = $query->limit($perPage)->offset($offset)->get();
+        $articulos = $query->with('autorObj')->limit($perPage)->offset($offset)->get();
 
         // Obtener todas las categorías para la barra lateral
         $categorias = BlogCategoria::activas()->get();

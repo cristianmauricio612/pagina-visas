@@ -509,3 +509,132 @@ app()->delete('/admin/correos-publicidad/eliminar/{id}', ['name' => 'admin.corre
 app()->get('/admin/correos-publicidad/exportar', ['name' => 'admin.correos.exportar', 'AdminController@exportarCorreosPublicidad']);
 
 app()->put('/admin/correos-publicidad/marcar-convertido/{id}', ['name' => 'admin.correos.marcarConvertido', 'CorreoPublicidadController@marcarComoConvertido']);
+
+// VISTA PARA GESTIÓN DE AUTORES
+app()->get('/admin/blog/autores', ['name' => 'admin.blog.autores.listView', function () {render('admin.blog.autores');}]);
+
+// ENDPOINTS PARA AUTORES DEL BLOG
+app()->get('/admin/blog/autores/listar', ['name' => 'admin.blog.autores.listar', function() {
+    $autores = \App\Models\BlogAutor::withCount('blogs as articulos_count')->get();
+    return response()->json([
+        'status' => 'success',
+        'data' => $autores
+    ]);
+}]);
+
+app()->post('/admin/blog/autores/crear', ['name' => 'admin.blog.autores.crear', function() {
+    csrf()->validate();
+    $data = request()->body();
+    $files = request()->files();
+
+    // Validar nombre
+    if (empty($data['nombre'])) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'El nombre es obligatorio'
+        ], 400);
+    }
+
+    $autor = new \App\Models\BlogAutor();
+    $autor->nombre = $data['nombre'];
+    $autor->apellido = $data['apellido'] ?? null;
+    $autor->correo = $data['correo'] ?? null;
+    $autor->bio = $data['bio'] ?? null;
+    $autor->puesto = $data['puesto'] ?? null;
+    $autor->activo = isset($data['activo']) ? filter_var($data['activo'], FILTER_VALIDATE_BOOLEAN) : true;
+    $autor->save();
+
+    // Procesar imagen si existe
+    if (isset($files['imagen']) && $files['imagen']['size'] > 0) {
+        $autor->subirImagen($files['imagen']);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Autor creado exitosamente',
+        'data' => $autor
+    ]);
+}]);
+
+app()->post('/admin/blog/autores/actualizar/{id}', ['name' => 'admin.blog.autores.actualizar', function($id) {
+    csrf()->validate();
+    $data = request()->body();
+    $files = request()->files();
+
+    $autor = \App\Models\BlogAutor::find($id);
+    if (!$autor) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Autor no encontrado'
+        ], 404);
+    }
+
+    // Validar nombre
+    if (empty($data['nombre'])) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'El nombre es obligatorio'
+        ], 400);
+    }
+
+    $autor->nombre = $data['nombre'];
+    $autor->apellido = $data['apellido'] ?? $autor->apellido;
+    $autor->correo = $data['correo'] ?? $autor->correo;
+    $autor->bio = $data['bio'] ?? $autor->bio;
+    $autor->puesto = $data['puesto'] ?? $autor->puesto;
+    $autor->activo = isset($data['activo']) ? filter_var($data['activo'], FILTER_VALIDATE_BOOLEAN) : $autor->activo;
+    $autor->save();
+
+    // Procesar imagen si existe
+    if (isset($files['imagen']) && $files['imagen']['size'] > 0) {
+        $autor->subirImagen($files['imagen']);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Autor actualizado exitosamente',
+        'data' => $autor
+    ]);
+}]);
+
+app()->get('/admin/blog/autores/obtener/{id}', ['name' => 'admin.blog.autores.obtener', function($id) {
+    $autor = \App\Models\BlogAutor::find($id);
+
+    if (!$autor) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Autor no encontrado'
+        ], 404);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $autor
+    ]);
+}]);
+
+app()->delete('/admin/blog/autores/eliminar/{id}', ['name' => 'admin.blog.autores.eliminar', function($id) {
+    csrf()->validate();
+
+    $autor = \App\Models\BlogAutor::find($id);
+    if (!$autor) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Autor no encontrado'
+        ], 404);
+    }
+
+    // Actualizar artículos de este autor para eliminar la referencia
+    $articulos = \App\Models\Blog::where('autor_id', $id)->get();
+    foreach ($articulos as $articulo) {
+        $articulo->autor_id = null;
+        $articulo->save();
+    }
+
+    $autor->delete();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Autor eliminado exitosamente'
+    ]);
+}]);

@@ -61,10 +61,14 @@
 
                                 <div class="flex items-center mt-2">
                                     <div class="flex-shrink-0">
-                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
+                                        @if($articulo->autorObj && $articulo->autorObj->tieneImagen())
+                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ $articulo->autorObj->avatarUrl() }}" alt="{{ $articulo->autorObj->nombreCompleto() }}">
+                                        @else
+                                            <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="Autor">
+                                        @endif
                                     </div>
                                     <div class="ml-2">
-                                        <p class="text-sm text-gray-600">{{ $articulo->autor }}</p>
+                                        <p class="text-sm text-gray-600">{{ $articulo->autorObj ? $articulo->autorObj->nombreCompleto() : 'Anónimo' }}</p>
                                         <p class="text-xs text-gray-500">{{ $articulo->fechaFormateada() }}</p>
                                     </div>
                                 </div>

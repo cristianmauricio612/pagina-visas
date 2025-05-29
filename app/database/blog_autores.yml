@@ -1,0 +1,22 @@
+columns:
+  nombre:
+    type: string
+    nullable: false
+  apellido:
+    type: string
+    nullable: true
+  correo:
+    type: string
+    nullable: true
+  bio:
+    type: text
+    nullable: true
+  imagen:
+    type: longtext
+    nullable: true
+  puesto:
+    type: string
+    nullable: true
+  activo:
+    type: boolean
+    default: true

@@ -197,7 +197,7 @@
                                 <td class="py-2 px-4">${articulo.id}</td>
                                 <td class="py-2 px-4 font-medium">${articulo.titulo}</td>
                                 <td class="py-2 px-4">${articulo.categoria ? articulo.categoria.nombre : 'Sin categoría'}</td>
-                                <td class="py-2 px-4">${articulo.autor}</td>
+                                <td class="py-2 px-4">${articulo.autor_id ? articulo.autor_nombre_completo || 'Sin autor' : 'Sin autor'}</td>
                                 <td class="py-2 px-4">
                                     <span class="px-2 py-1 rounded-full text-xs ${estadoClass}">
                                         ${articulo.estado.charAt(0).toUpperCase() + articulo.estado.slice(1)}

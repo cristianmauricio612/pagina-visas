@@ -16,7 +16,8 @@ class PaisController extends Controller
         $paises = Pais::all();
 
         // Obtener artículos populares (por vistas)
-        $articulosPopulares = Blog::where('estado', 'publicado')
+        $articulosPopulares = Blog::with('autorObj')
+            ->where('estado', 'publicado')
             ->whereNotNull('fecha_publicacion')
             ->where('fecha_publicacion', '<=', date('Y-m-d H:i:s'))
             ->orderBy('vistas', 'desc')

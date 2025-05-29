@@ -88,10 +88,14 @@
 
                                 <div class="flex items-center mt-4">
                                     <div class="flex-shrink-0">
-                                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="{{ $articuloDestacado->autor }}">
+                                        @if($articuloDestacado->autorObj && $articuloDestacado->autorObj->tieneImagen())
+                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ $articuloDestacado->autorObj->avatarUrl() }}" alt="{{ $articuloDestacado->autorObj->nombreCompleto() }}">
+                                        @else
+                                            <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Autor">
+                                        @endif
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm font-medium">{{ $articuloDestacado->autor }}</p>
+                                        <p class="text-sm font-medium">{{ $articuloDestacado->autorObj ? $articuloDestacado->autorObj->nombreCompleto() : 'Anónimo' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -204,10 +208,14 @@
 
                                         <div class="flex items-center mt-4">
                                             <div class="flex-shrink-0">
-                                                <img class="h-7 w-7 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
+                                                @if($articulo->autorObj && $articulo->autorObj->tieneImagen())
+                                                    <img class="h-7 w-7 rounded-full object-cover" src="{{ $articulo->autorObj->avatarUrl() }}" alt="{{ $articulo->autorObj->nombreCompleto() }}">
+                                                @else
+                                                    <img class="h-7 w-7 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="Autor">
+                                                @endif
                                             </div>
                                             <div class="ml-3">
-                                                <p class="text-sm font-medium">{{ $articulo->autor }}</p>
+                                                <p class="text-sm font-medium">{{ $articulo->autorObj ? $articulo->autorObj->nombreCompleto() : 'Anónimo' }}</p>
                                             </div>
                                         </div>
                                     </div>

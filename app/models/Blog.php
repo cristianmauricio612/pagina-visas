@@ -14,7 +14,7 @@ class Blog extends Model
         'contenido',
         'resumen',
         'imagen',
-        'autor',
+        'autor_id',
         'tiempo_lectura',
         'estado',
         'vistas',
@@ -27,10 +27,16 @@ class Blog extends Model
         'fecha_publicacion' => 'datetime',
         'tiempo_lectura' => 'integer',
         'vistas' => 'integer',
-        'categoria_id' => 'integer'
+        'categoria_id' => 'integer',
+        'autor_id' => 'integer'
     ];
 
     public $timestamps = true;
+
+    public function autorObj()
+    {
+        return $this->belongsTo(BlogAutor::class, 'autor_id');
+    }
 
     public static function crearBlog($datos, $archivoImagen = null)
     {
@@ -60,7 +66,7 @@ class Blog extends Model
             'contenido' => $datos['contenido'],
             'resumen' => !empty($datos['resumen']) ? $datos['resumen'] : null,
             'imagen' => $imagenBase64,
-            'autor' => $datos['autor'] ?? 'Visas Travel',
+            'autor_id' => $datos['autor_id'] ?? null,
             'tiempo_lectura' => $tiempoLectura,
             'estado' => $datos['estado'] ?? 'borrador',
             'vistas' => 0,
@@ -113,7 +119,7 @@ class Blog extends Model
             });
     }
 
-    // MÉTODOS PERSONALIZADOS (como en tu LibroReclamacion)
+    // MÉTODOS PERSONALIZADOS
     public function incrementarVistas()
     {
         $this->vistas = ($this->vistas ?? 0) + 1;
@@ -166,6 +172,14 @@ class Blog extends Model
     public function tieneImagen()
     {
         return !empty($this->imagen);
+    }
+
+    public function nombreAutor()
+    {
+        if ($this->autorObj) {
+            return $this->autorObj->nombreCompleto();
+        }
+        return 'Anónimo'; // O cualquier valor predeterminado
     }
 
     // MÉTODO PARA GENERAR SLUG ÚNICO

@@ -18,10 +18,9 @@ columns:
   imagen:
     type: longtext
     nullable: true
-  autor:
-    type: string
-    nullable: false
-    default: 'Visas Travel'
+  autor_id:
+    type: integer
+    nullable: true
   tiempo_lectura:
     type: integer
     nullable: true

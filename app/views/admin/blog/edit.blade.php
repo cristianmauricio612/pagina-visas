@@ -47,10 +47,16 @@
 
                 {{-- Autor --}}
                 <div>
-                    <label for="autor" class="block text-gray-700 font-medium mb-2">Autor</label>
-                    <input type="text" id="autor" name="autor"
-                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        value="{{ $blog->autor }}">
+                    <label for="autor_id" class="block text-gray-700 font-medium mb-2">Autor <span class="text-red-500">*</span></label>
+                    <select id="autor_id" name="autor_id"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <option value="">Seleccionar autor...</option>
+                        @foreach(\App\Models\BlogAutor::activos()->get() as $autor)
+                            <option value="{{ $autor->id }}" {{ $blog->autor_id == $autor->id ? 'selected' : '' }}>
+                                {{ $autor->nombre }} {{ $autor->apellido }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 {{-- Resumen --}}
@@ -436,6 +442,7 @@
             // Validar campos obligatorios
             const titulo = document.getElementById('titulo').value.trim();
             const categoria = document.getElementById('categoria_id').value;
+            const autor = document.getElementById('autor_id').value;
             const contenido = document.getElementById('contenido').value.trim();
 
             if (!titulo) {
@@ -445,6 +452,11 @@
 
             if (!categoria) {
                 alert('Debe seleccionar una categoría');
+                return;
+            }
+
+            if (!autor) {
+                alert('Debe seleccionar un autor');
                 return;
             }
 

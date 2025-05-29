@@ -206,10 +206,14 @@
                 <div class="px-6 pb-6 pt-2 flex justify-between items-center">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
+                            @if($articulo->autorObj && $articulo->autorObj->tieneImagen())
+                                <img class="h-8 w-8 rounded-full object-cover" src="{{ $articulo->autorObj->avatarUrl() }}" alt="{{ $articulo->autorObj->nombreCompleto() }}">
+                            @else
+                                <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="Autor">
+                            @endif
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm font-medium text-gray-700">{{ $articulo->autor }}</p>
+                            <p class="text-sm font-medium text-gray-700">{{ $articulo->autorObj ? $articulo->autorObj->nombreCompleto() : 'Anónimo' }}</p>
                         </div>
                     </div>
                     <a href="{{ $articulo->url() }}" class="button-apply-now inline-flex items-center w-auto">
