@@ -2,12 +2,7 @@
 
 use App\Models\VisaInscripcion;
 
-app()->get('/', function () {
-    /**
-     * `render(view, [])` is the same as `echo view(view, [])`
-     */
-    render('index');
-});
+app()->get('/', ['name' => 'home', 'PaisController@index']);
 
 app()->get('/que-es-una-visa', ['name' => 'about-visa', function () {render('articles.what-is-avisa');}]);
 

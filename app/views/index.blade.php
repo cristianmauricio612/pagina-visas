@@ -8,9 +8,6 @@
 
 @section('content')
     <div class="hero">
-        @php
-            $paises = \App\Models\Pais::all();
-        @endphp
         <div class="hero-form-container">
             <h1 class="hero-title">
                 Obtén tu visa para cualquier destino
@@ -28,7 +25,7 @@
                                         </div>
                                     @endif
                                 @endforeach
-                                
+
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">
@@ -119,7 +116,7 @@
     <!-- NUESTRO PROCESO DE APLICACION -->
     <div class="container mt-5">
         <h2 class="text-center fw-bold" style="font-size: 3rem">Nuestro proceso de aplicación</h2>
-        <p class="text-center">Te explicamos cómo solicitar los diferentes documentos de viaje con nosotros.</p>
+        <p class="text-center mb-6 sm:mb-8">Te explicamos cómo solicitar los diferentes documentos de viaje con nosotros.</p>
         <div class="row row-cols-1 row-cols-md-2">
             <div class="col d-flex justify-content-center">
                 <div>
@@ -160,41 +157,78 @@
     </div>
     <!-- NUESTRO PROCESO DE APLICACION END-->
 
-    <div class="container my-5 ">
-        <h2 class="text-center fw-bold pt-5" style="font-size: 3rem">Destinos más populares</h2>
-        <p class="text-center pb-5">Descubre qué necesitas para viajar a nuestros destinos más populares.</p>
-        <div class="most-visited-container">
+    <!-- ARTÍCULOS EN TENDENCIA -->
+    <div class="container mx-auto px-4 py-12 mt-8">
+        <h2 class="text-center font-bold text-5xl mb-4" style="font-size: 3rem">Artículos en tendencia</h2>
+        <p class="text-center text-gray-600 mb-10">Descubre nuestros artículos más populares sobre visas y trámites</p>
 
-                <a href="{{route('canada-p-eta')}}" class="card border-0 rounded-4 overflow-hidden">
-                    <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Australia">
-                    <div class="card-body text-white text-center">
-                        <h5 class="card-title">Canada</h5>
-                        <p class="card-text">
-                            <span><i class="fa-solid fa-user-group"></i> +126,697 Visas procesadas</span>
-                        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach($articulosPopulares as $articulo)
+            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+                <div class="relative">
+                    @if($articulo->tieneImagen())
+                        <img src="{{ $articulo->imagen }}" alt="{{ $articulo->titulo }}" class="w-full h-56 object-cover">
+                    @else
+                        <div class="w-full h-56 flex items-center justify-center bg-gradient-to-r from-red-500 to-blue-900">
+                            <i class="fa-solid fa-newspaper text-white text-5xl"></i>
+                        </div>
+                    @endif
+
+                    <!-- Badge de vistas -->
+                    <div class="absolute bottom-3 right-3">
+                        <span class="bg-white text-gray-800 text-xs px-3 py-1 rounded-full shadow-md flex items-center">
+                            <i class="fa-solid fa-eye mr-1"></i> {{ number_format($articulo->vistas) }} vistas
+                        </span>
                     </div>
-                </a>
-                <a href="{{route('estados-unidos-p-esta')}}" class="card border-0 rounded-4 overflow-hidden">
-                    <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="India">
-                    <div class="card-body text-white text-center">
-                        <h5 class="card-title">Estados Unidos</h5>
-                        <p class="card-text">
-                            <span><i class="fa-solid fa-user-group"></i> +149,245 Visas procesadas</span>
-                        </p>
+
+                    <!-- Badge de categoría si existe -->
+                    @if($articulo->categoria)
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-white text-xs px-3 py-1 rounded-full shadow-md">
+                            @if($articulo->categoria->icono)
+                                <i class="{{ $articulo->categoria->icono }} mr-1"></i>
+                            @endif
+                            {{ $articulo->categoria->nombre }}
+                        </span>
                     </div>
-                </a>
-                <a href="{{route('india-p-tourist-e-visa')}}" class="card border-0 rounded-4 overflow-hidden">
-                    <img src="{{assets('img/elegirnos.jpg')}}" class="card-img-top" alt="Colombia">
-                    <div class="card-body text-white text-center">
-                        <h5 class="card-title">India</h5>
-                        <p class="card-text">
-                            <span><i class="fa-solid fa-user-group"></i> +31,546 Visas procesadas</span>
-                        </p>
+                    @endif
+                </div>
+
+                <div class="p-6 flex-grow">
+                    <h3 class="text-xl font-bold mb-3 text-slate-800">
+                        {{ $articulo->titulo }}
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        {{ $articulo->extracto(100) }}
+                    </p>
+                </div>
+
+                <div class="px-6 pb-6 pt-2 flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-700">{{ $articulo->autor }}</p>
+                        </div>
                     </div>
-                </a>
+                    <a href="{{ $articulo->url() }}" class="button-apply-now inline-flex items-center w-auto">
+                        Leer más
+                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            @endforeach
         </div>
 
+        <div class="text-center mt-10">
+            <a href="{{ route('blog.index') }}" class="button-apply-now">
+                Ver todos los artículos
+                <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
     </div>
+    <!-- ARTÍCULOS EN TENDENCIA END -->
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

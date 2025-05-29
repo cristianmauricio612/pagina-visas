@@ -7,7 +7,7 @@
 <div class="container mx-auto px-4 py-8">
     <!-- Enlace "Atrás" -->
     <div class="mb-6">
-        <a href="{{ route('blog.index') }}" class="inline-flex items-center text-slate-700 hover:text-blue-600 text-xl">
+        <a href="{{ route('blog.index') }}" class="inline-flex items-center hover:text-blue-600 text-xl">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>

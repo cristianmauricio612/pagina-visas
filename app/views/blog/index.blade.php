@@ -38,7 +38,7 @@
         <!-- Contenido Principal -->
         <div class="w-full md:w-3/4 lg:w-4/5">
             <!-- Título Principal -->
-            <h1 class="text-5xl font-serif font-bold text-slate-800 mb-10">Todos los artículos</h1>
+            <h1 class="text-5xl font-bold mb-10">Todos los artículos</h1>
 
             <!-- Estructura de filas de contenido -->
             <div class="mb-16">
@@ -47,7 +47,7 @@
                     <!-- Columna Izquierda: Destacar -->
                     <div class="w-full lg:w-1/2">
                         <div class="flex items-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                             </svg>
                             <h2 class="text-xl font-medium">Destacado</h2>
@@ -91,7 +91,7 @@
                                         <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="{{ $articuloDestacado->autor }}">
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm font-medium text-gray-700">{{ $articuloDestacado->autor }}</p>
+                                        <p class="text-sm font-medium">{{ $articuloDestacado->autor }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                     <!-- Columna Derecha: Tendencias -->
                     <div class="w-full lg:w-1/2">
                         <div class="flex items-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                             </svg>
                             <h2 class="text-xl font-medium">Tendencias</h2>
@@ -125,7 +125,7 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <h3 class="font-medium text-slate-800">
+                                    <h3 class="font-medium">
                                         <a href="{{ $popular->url() }}" class="hover:text-blue-600">
                                             {{ $popular->titulo }}
                                         </a>
@@ -150,16 +150,16 @@
                                 <div class="flex items-center">
                                     <span class="inline-flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full mr-3">
                                         @if($categoria->icono)
-                                            <i class="{{ $categoria->icono }} text-slate-700"></i>
+                                            <i class="{{ $categoria->icono }}"></i>
                                         @else
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                                             </svg>
                                         @endif
                                     </span>
                                     <h2 class="text-xl font-medium">{{ $categoria->nombre }}</h2>
                                 </div>
-                                <a href="{{ $categoria->url() }}" class="flex items-center text-sm font-medium text-slate-700 hover:text-blue-600">
+                                <a href="{{ $categoria->url() }}" class="flex items-center text-sm font-medium hover:text-blue-600">
                                     Leer más
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -207,7 +207,7 @@
                                                 <img class="h-7 w-7 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
                                             </div>
                                             <div class="ml-3">
-                                                <p class="text-sm font-medium text-gray-700">{{ $articulo->autor }}</p>
+                                                <p class="text-sm font-medium">{{ $articulo->autor }}</p>
                                             </div>
                                         </div>
                                     </div>

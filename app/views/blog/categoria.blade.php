@@ -39,12 +39,12 @@
         <!-- Contenido Principal -->
         <div class="w-full md:w-3/4 lg:w-4/5">
             <!-- Título de la Categoría -->
-            <h1 class="text-5xl font-serif font-bold text-slate-800 mb-10">{{ $categoriaObj->nombre }}</h1>
+            <h1 class="text-5xl font-bold mb-10">{{ $categoriaObj->nombre }}</h1>
 
             <div class="mb-16">
                 <!-- Título "Destacar" -->
                 <div class="flex items-center mb-8">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                     </svg>
                     <h2 class="text-xl font-medium">Destacados</h2>
@@ -89,7 +89,7 @@
                                     <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
                                 </div>
                                 <div class="ml-3">
-                                    <p class="text-sm font-medium text-gray-700">{{ $articulo->autor }}</p>
+                                    <p class="text-sm font-medium">{{ $articulo->autor }}</p>
                                 </div>
                             </div>
                         </div>
@@ -103,9 +103,9 @@
                     <div class="flex items-center mb-6">
                         <span class="inline-flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full mr-3">
                             @if($categoriaObj->icono)
-                                <i class="{{ $categoriaObj->icono }} text-slate-700"></i>
+                                <i class="{{ $categoriaObj->icono }}"></i>
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                                 </svg>
                             @endif
@@ -153,7 +153,7 @@
                                         <img class="h-7 w-7 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm font-medium text-gray-700">{{ $articulo->autor }}</p>
+                                        <p class="text-sm font-medium">{{ $articulo->autor }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                 <div class="flex justify-center mt-10">
                     <div class="inline-flex shadow-sm">
                         @if($page > 1)
-                            <a href="?page={{ $page - 1 }}" class="py-2 px-4 border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 rounded-l-md">
+                            <a href="?page={{ $page - 1 }}" class="py-2 px-4 border border-gray-300 bg-white hover:bg-gray-50 rounded-l-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                 </svg>
@@ -176,13 +176,13 @@
                         @endif
 
                         @for($i = 1; $i <= $totalPages; $i++)
-                            <a href="?page={{ $i }}" class="py-2 px-4 border border-gray-300 {{ $i == $page ? 'bg-blue-50 text-blue-600 font-medium' : 'bg-white text-gray-500 hover:bg-gray-50' }}">
+                            <a href="?page={{ $i }}" class="py-2 px-4 border border-gray-300 {{ $i == $page ? 'bg-blue-50 text-blue-600 font-medium' : 'bg-white hover:bg-gray-50' }}">
                                 {{ $i }}
                             </a>
                         @endfor
 
                         @if($page < $totalPages)
-                            <a href="?page={{ $page + 1 }}" class="py-2 px-4 border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 rounded-r-md">
+                            <a href="?page={{ $page + 1 }}" class="py-2 px-4 border border-gray-300 bg-white hover:bg-gray-50 rounded-r-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>

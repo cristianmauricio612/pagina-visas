@@ -8,7 +8,7 @@
 <div class="container mx-auto px-4 py-8">
     <!-- Enlace para regresar -->
     <div class="mb-6">
-        <a href="{{ route('blog.index') }}" class="inline-flex items-center text-slate-700 hover:text-blue-600 text-xl">
+        <a href="{{ route('blog.index') }}" class="inline-flex items-center hover:text-blue-600 text-xl">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -36,7 +36,7 @@
                 <!-- Badge de categoría en la imagen -->
                 @if($articulo->categoria)
                 <div class="absolute bottom-3 right-3">
-                    <span class="inline-block px-2 py-1 text-xs font-medium bg-white text-gray-800 rounded shadow-sm">
+                    <span class="inline-block px-2 py-1 text-xs font-medium bg-white rounded shadow-sm">
                         {{ $articulo->categoria->nombre }}
                     </span>
                 </div>
@@ -47,7 +47,7 @@
         <!-- Título y metadata del artículo -->
         <div class="w-full lg:w-1/2 flex flex-col justify-center">
             <!-- Badge de tiempo de lectura CORREGIDO para ajustarse al contenido -->
-            <div class="w-fit inline-block px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 mb-4">
+            <div class="w-fit inline-block px-3 py-1 rounded-full text-sm font-medium bg-gray-100 mb-4">
                 <div class="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -57,7 +57,7 @@
             </div>
 
             <!-- Título del artículo -->
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold mb-6">
                 {{ $articulo->titulo }}
             </h1>
 
@@ -67,7 +67,7 @@
                     <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium text-gray-900">{{ $articulo->autor }}</p>
+                    <p class="text-sm font-medium">{{ $articulo->autor }}</p>
                 </div>
             </div>
         </div>
@@ -114,9 +114,9 @@
                             <img class="h-16 w-16 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $articulo->id % 80 }}.jpg" alt="{{ $articulo->autor }}">
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-lg font-bold text-gray-900">{{ $articulo->autor }}</h3>
+                            <h3 class="text-lg font-bold">{{ $articulo->autor }}</h3>
                             @if(isset($articulo->autor_puesto) && !empty($articulo->autor_puesto))
-                                <p class="text-sm text-gray-600">{{ $articulo->autor_puesto }}</p>
+                                <p class="text-sm">{{ $articulo->autor_puesto }}</p>
                             @endif
                         </div>
                     </div>
@@ -126,14 +126,14 @@
                 @if(isset($articulo->tags) && count($articulo->tags) > 0)
                 <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
                     <h3 class="flex items-center text-lg font-medium mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                         </svg>
                         Etiquetas
                     </h3>
                     <div class="flex flex-wrap gap-2">
                         @foreach($articulo->tags as $tag)
-                        <a href="{{ $tag->url() }}" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 text-sm">
+                        <a href="{{ $tag->url() }}" class="px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 text-sm">
                             {{ $tag->nombre }}
                         </a>
                         @endforeach
@@ -144,7 +144,7 @@
                 <!-- Artículos destacados -->
                 <div class="bg-white rounded-lg shadow-sm p-6">
                     <h3 class="flex items-center text-lg font-medium mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                         </svg>
                         Destacar
@@ -170,7 +170,7 @@
                                                 </div>
                                             @endif
                                         </div>
-                                        <h4 class="font-bold text-slate-800 group-hover:text-slate-600">
+                                        <h4 class="font-bold group-hover:text-slate-600">
                                             {{ $popular->titulo }}
                                         </h4>
                                     </a>
@@ -180,7 +180,7 @@
                                             <img class="h-6 w-6 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $popular->id % 80 }}.jpg" alt="{{ $popular->autor }}">
                                         </div>
                                         <div class="ml-2">
-                                            <p class="text-sm font-medium text-gray-700">{{ $popular->autor }}</p>
+                                            <p class="text-sm font-medium">{{ $popular->autor }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -196,7 +196,7 @@
     @if(isset($articulosRelacionados) && count($articulosRelacionados) > 0)
     <div class="mt-16 mb-10">
         <h2 class="flex items-center text-xl font-medium mb-8">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
             </svg>
             Más artículos como este
@@ -223,7 +223,7 @@
                         <!-- Badge de categoría -->
                         @if($relacionado->categoria)
                         <div class="absolute top-2 right-2">
-                            <span class="inline-block px-2 py-1 text-xs font-medium bg-white text-gray-800 rounded-md shadow-sm">
+                            <span class="inline-block px-2 py-1 text-xs font-medium bg-white rounded-md shadow-sm">
                                 {{ $relacionado->categoria->nombre }}
                             </span>
                         </div>
@@ -231,7 +231,7 @@
                     </div>
 
                     <div class="p-4">
-                        <h3 class="font-bold text-slate-800 mb-2">
+                        <h3 class="font-bold mb-2">
                             {{ $relacionado->titulo }}
                         </h3>
 
@@ -240,7 +240,7 @@
                                 <img class="h-6 w-6 rounded-full" src="https://randomuser.me/api/portraits/men/{{ $relacionado->id % 80 }}.jpg" alt="{{ $relacionado->autor }}">
                             </div>
                             <div class="ml-2">
-                                <p class="text-sm font-medium text-gray-700">{{ $relacionado->autor }}</p>
+                                <p class="text-sm font-medium">{{ $relacionado->autor }}</p>
                             </div>
                         </div>
                     </div>
