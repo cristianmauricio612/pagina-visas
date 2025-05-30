@@ -206,23 +206,51 @@
             }
         });
 
-        document.getElementById("variableForm").addEventListener("submit", function (event) {
+        document.getElementById("variableForm").addEventListener("submit", async function (event) {
             event.preventDefault();
 
             const form = event.target;
             const formData = new FormData(form);
 
-            // Ajustar campo de obligatoriedad (checkbox)
             formData.set('obligatoriedad', form.querySelector('[name="obligatoriedad"]').checked ? '1' : '0');
 
-            // Ajustar bloqueos[] si existen
             const bloqueos = Array.from(form.querySelectorAll('[name="bloqueos[]"]:checked')).map(el => el.value);
             formData.delete('bloqueos[]');
             bloqueos.forEach(id => formData.append('bloqueos[]', id));
 
+            // Procesar opciones y convertir imágenes a base64
+            const opciones = Array.from(document.querySelectorAll('.opcion-item'));
+            const opcionesProcesadas = [];
+
+            for (let i = 0; i < opciones.length; i++) {
+                const contenedor = opciones[i];
+                const valor = contenedor.querySelector(`[name="opciones[${i}][valor]"]`)?.value || '';
+                const contenido = contenedor.querySelector(`[name="opciones[${i}][contenido]"]`)?.value || '';
+                const imagenInput = contenedor.querySelector(`[name="opciones[${i}][imagen]"]`);
+
+                let imagenBase64 = '';
+
+                if (imagenInput?.files[0]) {
+                    const file = imagenInput.files[0];
+                    imagenBase64 = await toBase64(file);
+                }
+
+                // Añadir la opción como string JSON
+                opcionesProcesadas.push({
+                    valor,
+                    contenido,
+                    imagen: imagenBase64,
+                });
+            }
+
+            formData.append('opciones_json', JSON.stringify(opcionesProcesadas));
+
+            console.log(JSON.stringify(opcionesProcesadas));
+
+            // Ahora envía el FormData
             fetch("/admin/variables/crear", {
                 method: "POST",
-                body: formData // No colocamos headers, el navegador lo hace automáticamente
+                body: formData
             })
                 .then(response => response.json().then(json => ({ status: response.status, body: json })))
                 .then(result => {
@@ -239,6 +267,14 @@
                 });
         });
 
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result); // Esto incluye 'data:image/...;base64,'
+                reader.onerror = reject;
+            });
+        }
 
         //LOGICA PARA AGREGAR LAS OPCIONES
         const contenedorOpciones = document.getElementById('contenedorOpciones');
@@ -250,22 +286,22 @@
             const div = document.createElement('div');
             div.classList.add('opcion-item', 'mb-4', 'p-4', 'border', 'rounded', 'bg-gray-100');
             div.innerHTML = `
-                <div class="mb-2">
-                    <label class="block text-sm font-medium text-gray-700">Valor (opcional)</label>
-                    <input type="text" name="opciones[${index}][valor]"
-                        class="w-full p-2 border rounded" placeholder="Ej. valor123">
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium text-gray-700">Imagen</label>
-                    <input type="file" name="opciones[${index}][imagen]" accept="image/*"
-                        class="w-full p-2 border rounded">
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium text-gray-700">Contenido</label>
-                    <input type="text" name="opciones[${index}][contenido]"
-                        class="w-full p-2 border rounded" required>
-                </div>
-            `;
+                    <div class="mb-2">
+                        <label class="block text-sm font-medium text-gray-700">Valor (opcional)</label>
+                        <input type="text" name="opciones[${index}][valor]"
+                            class="w-full p-2 border rounded" placeholder="Ej. valor123">
+                    </div>
+                    <div class="mb-2">
+                        <label class="block text-sm font-medium text-gray-700">Imagen</label>
+                        <input type="file" name="opciones[${index}][imagen]" accept="image/*"
+                            class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-2">
+                        <label class="block text-sm font-medium text-gray-700">Contenido</label>
+                        <input type="text" name="opciones[${index}][contenido]"
+                            class="w-full p-2 border rounded" required>
+                    </div>
+                `;
 
             contenedorOpciones.appendChild(div);
         });

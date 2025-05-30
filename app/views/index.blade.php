@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <div class="hero">
+    <div class="hero" id="inicio">
         <div class="hero-form-container">
             <h1 class="hero-title">
                 Obtén tu visa para cualquier destino
@@ -147,7 +147,7 @@
                             <p>Prepárate para mostrar tu pasaporte y tus documentos cuando llegues a tu destino.</p>
                         </div>
                     </div>
-                    <button class="button-apply-now">Aplica ahora <i class="fa-solid fa-arrow-right"></i></button>
+                    <a href="#inicio" class="button-apply-now">Aplica ahora <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
             <div class="col  d-flex justify-content-center">

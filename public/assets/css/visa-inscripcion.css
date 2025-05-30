@@ -687,11 +687,6 @@ input::placeholder {
     border-radius: 10px;
 }
 
-.selected-option img {
-    width: 20px;
-    margin-right: 8px;
-}
-
 .dropdown-form {
     position: absolute;
     width: 100%;
@@ -733,9 +728,11 @@ input::placeholder {
     background-color: #f1f1f1;
 }
 
-.option img {
-    width: 20px;
+.option img, .selected-option img {
+    width: 28px;
+    height: 28px;
     margin-right: 8px;
+    border-radius: 27px;
 }
 
 .revisar-solicitud{

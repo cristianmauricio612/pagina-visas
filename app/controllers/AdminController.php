@@ -499,7 +499,7 @@ class AdminController extends Controller
     {
         csrf()->validate();
 
-        $data = request()->body();
+        $data = $_POST;
 
         if (empty($data['nombre']) || empty($data['tipo_elemento']) || empty($data['tipo_variable'])) {
             return response()->json([
@@ -529,57 +529,42 @@ class AdminController extends Controller
 
         $variable->save();
 
-
         // Guardar opciones si el tipo_elemento es SELECT o SELECT_BUTTONS
         if (
             in_array($data['tipo_elemento'], ['SELECT', 'SELECT_BUTTONS']) &&
-            isset($_POST['opciones']) && is_array($_POST['opciones'])
+            !$variable->isPais &&
+            !empty($data['opciones_json'])
         ) {
-            // Solo guardar si isPais NO está activado
-            if (!$variable->isPais) {
-                $opcionesValidas = [];
+            $opciones = json_decode($data['opciones_json'], true);
 
-                // Filtrar opciones con contenido válido
-                foreach ($_POST['opciones'] as $index => $opcionData) {
-                    $contenido = $opcionData['contenido'] ?? '';
-                    if (!empty(trim($contenido))) {
-                        $opcionesValidas[] = $index; // Guardamos el índice para usarlo luego
-                    }
-                }
+            if (!is_array($opciones)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Error al decodificar las opciones.'
+                ], 400);
+            }
 
-                // Verificar mínimo 2 opciones válidas
-                if (count($opcionesValidas) < 2) {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Debe agregar al menos 2 opciones con contenido.'
-                    ]);
-                }
+            // Filtrar opciones con contenido válido
+            $opcionesValidas = array_filter($opciones, function ($op) {
+                return !empty(trim($op['contenido'] ?? ''));
+            });
 
-                // Si pasa la validación, guardar las opciones válidas
-                foreach ($opcionesValidas as $index) {
-                    $opcionData = $_POST['opciones'][$index];
+            // Verificar mínimo 2 opciones válidas
+            if (count($opcionesValidas) < 2) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Debe agregar al menos 2 opciones con contenido.'
+                ]);
+            }
 
-                    $valor = $opcionData['valor'] ?? null;
-                    $contenido = $opcionData['contenido'];
-
-                    // Manejo de imagen (base64)
-                    $imagenBase64 = null;
-                    if (
-                        isset($_FILES['opciones']['tmp_name'][$index]['imagen']) &&
-                        is_uploaded_file($_FILES['opciones']['tmp_name'][$index]['imagen'])
-                    ) {
-                        $tmpName = $_FILES['opciones']['tmp_name'][$index]['imagen'];
-                        $imageData = file_get_contents($tmpName);
-                        $imagenBase64 = base64_encode($imageData);
-                    }
-
-                    Opcion::create([
-                        'variable_id' => $variable->id,
-                        'valor' => $valor,
-                        'imagen' => $imagenBase64,
-                        'contenido' => $contenido
-                    ]);
-                }
+            // Guardar opciones
+            foreach ($opcionesValidas as $opcion) {
+                Opcion::create([
+                    'variable_id' => $variable->id,
+                    'valor' => $opcion['valor'] ?? null,
+                    'imagen' => $opcion['imagen'] ?? null, // ya viene como base64
+                    'contenido' => $opcion['contenido']
+                ]);
             }
         }
 
@@ -603,6 +588,7 @@ class AdminController extends Controller
             'variable' => $variable
         ], 201);
     }
+
 
     public function editVariable($id)
     {

@@ -51,8 +51,6 @@ usa $optionTextField)
 
 @endphp
 
-
-
 <div class="tab-viajero-item container-{{$variable->nombre}}" id="container-{{$id}}">
     @if(isset($label))
         <div class="w-100 h-100">
