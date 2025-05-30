@@ -54,8 +54,6 @@ app()->get('/blog/categoria/{categoria}', ['name' => 'blog.categoria', 'BlogCont
 
 app()->get('/blog/buscar', ['name' => 'blog.buscar', 'BlogController@buscar']);
 
-app()->get('/{slug}', ['name' => 'blog.show', 'BlogController@show']);
-
 app()->get('/api/blog/articulos', ['name' => 'blog.api.articulos', 'BlogController@obtenerArticulos']);
 
 app()->get('/blog/tag/{tag}', ['name' => 'blog.tag', 'BlogController@tag']);
@@ -638,3 +636,5 @@ app()->delete('/admin/blog/autores/eliminar/{id}', ['name' => 'admin.blog.autore
         'message' => 'Autor eliminado exitosamente'
     ]);
 }]);
+
+app()->get('/{slug}', ['name' => 'blog.show', 'BlogController@show']);
