@@ -13,7 +13,7 @@
 
     <!-- Imagen centrada debajo del texto principal -->
     <div class="max-w-4xl mx-auto mb-24">
-        <img src="{{assets('img/elegirnos.jpg')}}" alt="Nuestro equipo" class="w-full h-auto rounded-lg shadow-lg">
+        <img src="{{assets('img/Nosotros.jpg')}}" alt="Nuestro equipo" class="w-full h-auto rounded-lg shadow-lg">
     </div>
 
     <!-- Primera sección alternada: Texto a la izquierda, imagen a la derecha -->
@@ -25,7 +25,7 @@
             </p>
         </div>
         <div class="w-full md:w-1/2">
-            <img src="{{assets('img/elegirnos.jpg')}}" alt="Nuestro servicio" class="w-full h-auto rounded-lg shadow-lg">
+            <img src="{{assets('img/Ayudarte es nuestro objetivo numero 1.jpg')}}" alt="Nuestro servicio" class="w-full h-auto rounded-lg shadow-lg">
         </div>
     </div>
 
@@ -46,7 +46,7 @@
             </ul>
         </div>
         <div class="w-full md:w-1/2">
-            <img src="{{assets('img/elegirnos.jpg')}}" alt="Nuestros pilares" class="w-full h-auto rounded-lg shadow-lg">
+            <img src="{{assets('img/Ayudarte es nuestro objetivo numero 1.jpg')}}" alt="Nuestros pilares" class="w-full h-auto rounded-lg shadow-lg">
         </div>
     </div>
 

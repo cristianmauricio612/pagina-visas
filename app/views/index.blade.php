@@ -71,7 +71,7 @@
     <div class="container mt-5">
         <div class="row row-cols-1 row-cols-xl-2">
             <div class="col d-flex flex-column align-items-center">
-                <img style="max-width: 100%" class="rounded-4" src="{{assets('img/elegirnos.jpg')}}" alt="">
+                <img style="max-width: 100%" class="rounded-4" src="{{assets('img/Por qué elegirnos.jpg')}}" alt="">
                 <div class="d-flex justify-content-start w-100">
                     <h2 class="pt-4" style="font-size: 3rem; font-weight: bold; text-align: start">Por qué elegirnos</h2>
                 </div>
@@ -151,7 +151,7 @@
                 </div>
             </div>
             <div class="col  d-flex justify-content-center">
-                <img class="rounded-4 hide-mobile" src="{{assets('img/elegirnos.jpg')}}" style="height: 35rem;max-width: 70%; object-fit: cover" alt="">
+                <img class="rounded-4 hide-mobile" src="{{assets('img/Nuestro proceso de aplicacion.jpg')}}" style="height: 35rem;max-width: 70%; object-fit: cover" alt="">
             </div>
         </div>
     </div>
