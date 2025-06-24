@@ -446,6 +446,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
     <script>
         function inicializarDatePickers(context = document) {
@@ -468,6 +469,7 @@
                     clickOpens: true,
                     positionElement: input,
                     showMonths: 2,
+                    locale: "es", 
                     onReady: function(selectedDates, dateStr, instance) {
                         // Mostrar la selección de año por defecto si no hay restricción
                         if (!minDate) {

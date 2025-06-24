@@ -27,96 +27,109 @@
         {{-- Contenedor de Pedidos --}}
         <div class="space-y-4">
             @forelse ($inscripciones->reverse() as $inscripcion)
-                    @php
-                        $visa = \App\Models\Visa::find($inscripcion->visas_id);
-                        $inscripcionVariables = \App\Models\VisaInscripcionVariable::with('variable')->where('visa_inscripcion_id', $inscripcion->id)->get();
-                        $viajeros = \App\Models\Viajero::where('visa_inscripcion_id', $inscripcion->id)->get();
-                    @endphp
+                @php
+                    $visa = \App\Models\Visa::find($inscripcion->visas_id);
+                    $inscripcionVariables = \App\Models\VisaInscripcionVariable::with('variable')->where('visa_inscripcion_id', $inscripcion->id)->get();
+                    $viajeros = \App\Models\Viajero::where('visa_inscripcion_id', $inscripcion->id)->get();
+                @endphp
 
-                    <div class="bg-white p-4 rounded-lg shadow-md border">
-                        {{-- Encabezado del Pedido --}}
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0">
-                            <div>
-                                <h2 class="text-lg font-semibold text-gray-800">{{ $inscripcion->numero_pedido }}</h2>
-                                <p class="text-gray-600 text-sm">Visa: {{ $visa->nombre }}</p>
-                                <p class="text-gray-600 text-sm">inscripcion: {{ $inscripcion->pago_sintasa }}</p>
-                                <p class="text-gray-600 text-sm">Tasa de Gobierno Total: {{ $inscripcion->tasa_gobierno_total }}</p>
-                                <p class="text-gray-600 text-sm font-bold">Pago Total: $
-                                    {{ number_format($inscripcion->pago_total, 2) }}
+                <div class="bg-white p-4 rounded-lg shadow-md border">
+                    {{-- Encabezado del Pedido --}}
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Código: {{ $inscripcion->numero_pedido }}</h2>
+                            <p class="text-gray-600 text-sm">Visa: {{ $visa->nombre }}</p>
+                            <p class="text-gray-600 text-sm">inscripcion: {{ $inscripcion->pago_sintasa }}</p>
+                            <p class="text-gray-600 text-sm">Tasa de Gobierno Total: {{ $inscripcion->tasa_gobierno_total }}</p>
+                            <p class="text-gray-600 text-sm font-bold">Pago Total: $
+                                {{ number_format($inscripcion->pago_total, 2) }}
+                            </p>
+                        </div>
+
+                        {{-- Apartado para mostrar inscripcionVariables --}}
+                        <div class="mt-2 mb-2">
+                            <h3 class="text-sm font-semibold text-gray-700 mb-1">Datos de la inscripción:</h3>
+                            @forelse ($inscripcionVariables as $variable)
+                                <p class="text-sm text-gray-600">
+                                    <span class="font-semibold">{{ $variable->variable->nombre_campo }}:</span>
+                                    {{ $variable->valor }}
                                 </p>
-                            </div>
-
-                            {{-- Estado del Pedido --}}
-                            <div class="flex items-center space-x-2">
-                                <label for="status_{{ $inscripcion->id }}" class="text-sm font-semibold">Estado:</label>
-                                <select id="status_{{ $inscripcion->id }}" class="p-1 border rounded-md text-black font-semibold"
-                                    onchange="updateStatusColor(this)" data-id="{{ $inscripcion->id }}" data-previous-value="">
-                                    <option value="pendiente" {{ $inscripcion->status_pago == 'pendiente' ? 'selected' : '' }}>🟡
-                                        Pendiente</option>
-                                    <option value="pagado" {{ $inscripcion->status_pago == 'pagado' ? 'selected' : '' }}>🟢 Pagado
-                                    </option>
-                                    <option value="en proceso" {{ $inscripcion->status_pago == 'en proceso' ? 'selected' : '' }}>🔵 En
-                                        proceso</option>
-                                    <option value="terminado" {{ $inscripcion->status_pago == 'terminado' ? 'selected' : '' }}
-                                        onclick="">⚪ Terminado</option>
-                                </select>
-                            </div>
-
-                            {{-- Botón para Eliminar Pedido --}}
-                            <button type="submit" class="text-red-500 hover:text-red-700 text-lg" onclick="deleteOrder(this)"
-                                data-id="{{ $inscripcion->id }}">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                            @empty
+                                <p class="text-xs text-gray-400">Sin datos adicionales</p>
+                            @endforelse
                         </div>
 
-                        {{-- Botón para Mostrar/Ocultar Viajeros --}}
-                        <button onclick="toggleViajeros({{ $inscripcion->id }})"
-                            class="mt-4 text-blue-600 hover:text-blue-800 font-semibold transition">
-                            Ver Viajeros ({{ count($viajeros) }})
+                        {{-- Estado del Pedido --}}
+                        <div class="flex items-center space-x-2">
+                            <label for="status_{{ $inscripcion->id }}" class="text-sm font-semibold">Estado:</label>
+                            <select id="status_{{ $inscripcion->id }}" class="p-1 border rounded-md text-black font-semibold"
+                                onchange="updateStatusColor(this)" data-id="{{ $inscripcion->id }}" data-previous-value="">
+                                <option value="pendiente" {{ $inscripcion->status_pago == 'pendiente' ? 'selected' : '' }}>🟡
+                                    Pendiente</option>
+                                <option value="pagado" {{ $inscripcion->status_pago == 'pagado' ? 'selected' : '' }}>🟢 Pagado
+                                </option>
+                                <option value="en proceso" {{ $inscripcion->status_pago == 'en proceso' ? 'selected' : '' }}>🔵 En
+                                    proceso</option>
+                                <option value="terminado" {{ $inscripcion->status_pago == 'terminado' ? 'selected' : '' }}
+                                    onclick="">⚪ Terminado</option>
+                            </select>
+                        </div>
+
+                        {{-- Botón para Eliminar Pedido --}}
+                        <button type="submit" class="text-red-500 hover:text-red-700 text-lg" onclick="deleteOrder(this)"
+                            data-id="{{ $inscripcion->id }}">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
-
-                        {{-- Lista de Viajeros --}}
-                        <div id="viajeros_{{ $inscripcion->id }}" class="hidden mt-2 border-t pt-2 space-y-2">
-                            @foreach ($viajeros as $viajero)
-                                        @php
-                                            $viajeroVariables = \App\Models\ViajeroVariable::with('variable')->where('viajero_id', $viajero->id)->get();
-                                        @endphp
-                                        <div class="p-2 bg-gray-100 rounded-lg">
-                                            @php
-                                                $nombres = $viajeroVariables->firstWhere('variable.nombre', 'nombres')?->valor;
-                                                $apellidos = $viajeroVariables->firstWhere('variable.nombre', 'apellidos')?->valor;
-                                            @endphp
-
-                                            @if ($nombres && $apellidos)
-                                                <p class="font-semibold">{{ $nombres }} {{ $apellidos }}</p>
-                                            @else
-                                                <p class="font-semibold">Faltan datos del viajero</p>
-                                            @endif
-                                            <button onclick="toggleViajero({{ $viajero->id }})"
-                                                class="text-blue-600 hover:text-blue-800 text-sm font-semibold transition">
-                                                Ver Detalles
-                                            </button>
-
-                                            {{-- Detalles del Viajero --}}
-                                            <div id="viajero_{{ $viajero->id }}" class="hidden mt-2 p-3 border rounded bg-white shadow-sm">
-                                                @foreach ($viajeroVariables as $viajeroVariable)
-                                                        @if ($viajeroVariable->variable->tipo_elemento != 'CHECKBOX_RESTRICTIVE')
-                                                            @if ($viajeroVariable->variable->isPais)
-                                                                    @php
-                                                                        $pais = \App\Models\Pais::find($viajeroVariable->valor);
-                                                                    @endphp
-                                                                    <p><strong>{{$viajeroVariable->variable->nombre_campo}}:</strong> {{$pais->nombre}}</p>
-                                                            @else
-                                                                <p><strong>{{$viajeroVariable->variable->nombre_campo}}:</strong>
-                                                                    {{$viajeroVariable->valor ?: 'Sin valor'}}</p>
-                                                            @endif
-                                                        @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
-                            @endforeach
-                        </div>
                     </div>
+
+                    {{-- Botón para Mostrar/Ocultar Viajeros --}}
+                    <button onclick="toggleViajeros({{ $inscripcion->id }})"
+                        class="mt-4 text-blue-600 hover:text-blue-800 font-semibold transition">
+                        Ver Viajeros ({{ count($viajeros) }})
+                    </button>
+
+                    {{-- Lista de Viajeros --}}
+                    <div id="viajeros_{{ $inscripcion->id }}" class="hidden mt-2 border-t pt-2 space-y-2">
+                        @foreach ($viajeros as $viajero)
+                            @php
+                                $viajeroVariables = \App\Models\ViajeroVariable::with('variable')->where('viajero_id', $viajero->id)->get();
+                            @endphp
+                            <div class="p-2 bg-gray-100 rounded-lg">
+                                @php
+                                    $nombres = $viajeroVariables->firstWhere('variable.nombre', 'nombres')?->valor;
+                                    $apellidos = $viajeroVariables->firstWhere('variable.nombre', 'apellidos')?->valor;
+                                @endphp
+
+                                @if ($nombres && $apellidos)
+                                    <p class="font-semibold">{{ $nombres }} {{ $apellidos }}</p>
+                                @else
+                                    <p class="font-semibold">Faltan datos del viajero</p>
+                                @endif
+                                <button onclick="toggleViajero({{ $viajero->id }})"
+                                    class="text-blue-600 hover:text-blue-800 text-sm font-semibold transition">
+                                    Ver Detalles
+                                </button>
+
+                                {{-- Detalles del Viajero --}}
+                                <div id="viajero_{{ $viajero->id }}" class="hidden mt-2 p-3 border rounded bg-white shadow-sm">
+                                    @foreach ($viajeroVariables as $viajeroVariable)
+                                        @if ($viajeroVariable->variable->tipo_elemento != 'CHECKBOX_RESTRICTIVE')
+                                            @if ($viajeroVariable->variable->isPais)
+                                                @php
+                                                    $pais = \App\Models\Pais::find($viajeroVariable->valor);
+                                                @endphp
+                                                <p><strong>{{$viajeroVariable->variable->nombre_campo}}:</strong> {{$pais->nombre}}</p>
+                                            @else
+                                                <p><strong>{{$viajeroVariable->variable->nombre_campo}}:</strong>
+                                                    {{$viajeroVariable->valor ?: 'Sin valor'}}</p>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             @empty
                 <p class="text-gray-500 text-center">No hay pedidos registrados.</p>
             @endforelse

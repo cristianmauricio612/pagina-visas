@@ -293,7 +293,7 @@ class AdminController extends Controller
 
         $visas = Visa::where('pais1_id', $pais->id)->orWhere('pais2_id', $pais->id)->get();
 
-        if (!empty($visas)) {
+        if (count($visas) > 0) {
             return response()->json(['status' => 'error', 'message' => 'El país esta siendo usado, elimine o edite las visas para poder eliminar este pais'], 401);
         }
 
