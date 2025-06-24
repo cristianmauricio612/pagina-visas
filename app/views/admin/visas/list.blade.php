@@ -4,6 +4,10 @@
 @section('content')
     @php
         $visas = \App\Models\Visa::all(); // Obtener todas las visas
+        $paises_origen_ids = $visas->pluck('pais1_id')->unique()->toArray();
+        $paises_destino_ids = $visas->pluck('pais2_id')->unique()->toArray();
+        $paises_origen = \App\Models\Pais::whereIn('id', $paises_origen_ids)->orderBy('nombre')->get();
+        $paises_destino = \App\Models\Pais::whereIn('id', $paises_destino_ids)->orderBy('nombre')->get();
     @endphp
 
     {{-- Botón para abrir el Sidebar (Solo en esta vista) --}}
@@ -17,12 +21,57 @@
             Gestión de Visas
         </h1>
 
-        {{-- Buscador y Botón Agregar --}}
-        <div class="flex flex-col md:flex-row justify-between mb-6 gap-4">
-            <input type="text" id="search-input" placeholder="Buscar visa..." class="p-2 border rounded w-full md:w-1/3">
-            <a href="{{ route('admin.visas.addView') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                Agregar Visa
-            </a>
+        {{-- Selectores personalizados y Botón Agregar --}}
+        <div class="flex flex-col md:flex-row justify-between mb-6 gap-4 items-end">
+            <div class="flex flex-col md:flex-row gap-4 w-full md:w-2/3">
+                <div>
+                    <label for="filtro-pais-origen" class="block text-sm font-medium text-gray-700 mb-1">¿De dónde soy?</label>
+                    <div class="relative">
+                        <button id="btn-pais-origen" type="button" class="p-2 border rounded w-full min-w-[200px] bg-white flex items-center justify-between">
+                            <span id="selected-pais-origen" class="flex items-center gap-2 text-left">
+                                <span class="text-gray-400">Selecciona un país</span>
+                            </span>
+                            <svg class="h-4 w-4 text-gray-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <ul id="custom-list-origen" class="absolute z-10 w-full bg-white border rounded shadow-lg mt-1 hidden max-h-60 overflow-y-auto">
+                            <li class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100" data-value=""><span>Todos los países</span></li>
+                            @foreach($paises_origen as $pais)
+                                <li class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100" data-value="{{ $pais->id }}">
+                                    <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}" class="h-7 w-7 rounded-full object-cover border">
+                                    <span>{{ $pais->nombre }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <input type="hidden" id="filtro-pais-origen" value="">
+                    </div>
+                </div>
+                <div>
+                    <label for="filtro-pais-destino" class="block text-sm font-medium text-gray-700 mb-1">¿A dónde viajo?</label>
+                    <div class="relative">
+                        <button id="btn-pais-destino" type="button" class="p-2 border rounded w-full min-w-[200px] bg-white flex items-center justify-between">
+                            <span id="selected-pais-destino" class="flex items-center gap-2 text-left">
+                                <span class="text-gray-400">Selecciona un país</span>
+                            </span>
+                            <svg class="h-4 w-4 text-gray-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <ul id="custom-list-destino" class="absolute z-10 w-full bg-white border rounded shadow-lg mt-1 hidden max-h-60 overflow-y-auto">
+                            <li class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100" data-value=""><span>Todos los países</span></li>
+                            @foreach($paises_destino as $pais)
+                                <li class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100" data-value="{{ $pais->id }}">
+                                    <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}" class="h-7 w-7 rounded-full object-cover border">
+                                    <span>{{ $pais->nombre }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <input type="hidden" id="filtro-pais-destino" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-end md:items-end">
+                <a href="{{ route('admin.visas.addView') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Agregar Visa
+                </a>
+            </div>
         </div>
 
         {{-- Contenedor con scroll horizontal y vertical --}}
@@ -47,13 +96,13 @@
                 <tbody id="visas-table-body">
                     @forelse ($visas as $visa)
                         @php
-                            $pais1 = \App\Models\Pais::find($visa->pais1_id)->nombre;
-                            $pais2 = \App\Models\Pais::find($visa->pais2_id)->nombre;
+                            $pais1 = \App\Models\Pais::find($visa->pais1_id);
+                            $pais2 = \App\Models\Pais::find($visa->pais2_id);
                         @endphp
                         <tr class="border-b hover:bg-gray-100">
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->id }}</td>
-                            <td class="py-2 px-4 whitespace-nowrap">{{ $pais1 }}</td>
-                            <td class="py-2 px-4 whitespace-nowrap">{{ $pais2 }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap" data-pais-id="{{ $pais1 ? $pais1->id : '' }}">{{ $pais1 ? $pais1->nombre : '' }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap" data-pais-id="{{ $pais2 ? $pais2->id : '' }}">{{ $pais2 ? $pais2->nombre : '' }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->nombre }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->tiempo_validez }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $visa->numero_entradas }}</td>
@@ -88,11 +137,107 @@
             this.classList.add('hidden'); // Oculta el botón de abrir
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
-            $("#search-input").on("keyup", function () {
-                searchVisa();
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+            customDropdownPais('btn-pais-origen', 'custom-list-origen', 'selected-pais-origen', 'filtro-pais-origen', filtrarVisasLocal);
+            customDropdownPais('btn-pais-destino', 'custom-list-destino', 'selected-pais-destino', 'filtro-pais-destino', filtrarVisasLocal);
         });
+
+        function customDropdownPais(btnId, listId, selectedId, hiddenId, onChange) {
+            const btn = document.getElementById(btnId);
+            const ul = document.getElementById(listId);
+            const selected = document.getElementById(selectedId);
+            const hidden = document.getElementById(hiddenId);
+            let open = false;
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                ul.classList.toggle('hidden');
+                open = !ul.classList.contains('hidden');
+            });
+            ul.querySelectorAll('li').forEach(function(li) {
+                li.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    ul.classList.add('hidden');
+                    open = false;
+                    hidden.value = li.getAttribute('data-value');
+                    if (li.querySelector('img')) {
+                        selected.innerHTML = `<img src="${li.querySelector('img').src}" class="h-7 w-7 rounded-full object-cover border"> <span>${li.querySelector('span').textContent}</span>`;
+                    } else {
+                        selected.innerHTML = `<span>${li.querySelector('span').textContent}</span>`;
+                    }
+                    if (typeof onChange === 'function') onChange();
+                });
+            });
+            document.addEventListener('click', function(e) {
+                if (open) {
+                    ul.classList.add('hidden');
+                    open = false;
+                }
+            });
+            // Evita que el menú se cierre si haces click dentro del ul
+            ul.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Custom dropdown para país de origen
+            customDropdown('filtro-pais-origen', 'custom-list-origen');
+            customDropdown('filtro-pais-destino', 'custom-list-destino');
+            document.getElementById('filtro-pais-origen').addEventListener('change', filtrarVisasLocal);
+            document.getElementById('filtro-pais-destino').addEventListener('change', filtrarVisasLocal);
+        });
+
+        function customDropdown(selectId, listId) {
+            const select = document.getElementById(selectId);
+            const ul = document.getElementById(listId);
+            select.addEventListener('focus', function() {
+                ul.innerHTML = '';
+                for (let i = 0; i < select.options.length; i++) {
+                    const opt = select.options[i];
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-100';
+                    if (opt.value === select.value) li.classList.add('bg-gray-200');
+                    if (opt.value) {
+                        const img = opt.getAttribute('data-img');
+                        if (img) {
+                            const imgEl = document.createElement('img');
+                            imgEl.src = img;
+                            imgEl.alt = opt.text;
+                            imgEl.className = 'h-7 w-7 rounded-full object-cover border';
+                            li.appendChild(imgEl);
+                        }
+                    }
+                    const span = document.createElement('span');
+                    span.textContent = opt.text;
+                    li.appendChild(span);
+                    li.onclick = function() {
+                        select.value = opt.value;
+                        select.dispatchEvent(new Event('change'));
+                        ul.classList.add('hidden');
+                    };
+                    ul.appendChild(li);
+                }
+                ul.classList.remove('hidden');
+            });
+            select.addEventListener('blur', function() {
+                setTimeout(() => ul.classList.add('hidden'), 150);
+            });
+        }
+
+        function filtrarVisasLocal() {
+            let paisOrigen = document.getElementById('filtro-pais-origen').value;
+            let paisDestino = document.getElementById('filtro-pais-destino').value;
+            let filas = document.querySelectorAll('#visas-table-body tr');
+            filas.forEach(function(fila) {
+                let tdPais1 = fila.querySelector('td:nth-child(2)');
+                let tdPais2 = fila.querySelector('td:nth-child(3)');
+                if (!tdPais1 || !tdPais2) return;
+                let mostrar = true;
+                if (paisOrigen && tdPais1.dataset.paisId !== paisOrigen) mostrar = false;
+                if (paisDestino && tdPais2.dataset.paisId !== paisDestino) mostrar = false;
+                fila.style.display = mostrar ? '' : 'none';
+            });
+        }
 
         const csrfToken = "{{ csrf()->token() }}";
 
@@ -125,22 +270,26 @@
                 }
             });
         }
-   
-        function searchVisa() {
-            let description = $("#search-input").val().trim();
+
+        function filterVisas() {
+            let paisOrigen = $("#filtro-pais-origen").val();
+            let paisDestino = $("#filtro-pais-destino").val();
 
             $("#visas-table-body").html('<tr><td colspan="6">Cargando...</td></tr>');
 
             $.ajax({
                 url: "/admin/visas/buscar",
                 type: "GET",
-                data: { descripcion: description },
+                data: {
+                    pais_origen: paisOrigen,
+                    pais_destino: paisDestino
+                },
                 dataType: "json",
                 success: function (data) {
                     $("#visas-table-body").empty();
 
                     if (!Array.isArray(data) || data.length === 0) {
-                        $("#visas-table-body").html('<tr><td colspan="6">No se encontraron usuarios.</td></tr>');
+                        $("#visas-table-body").html('<tr><td colspan="6">No se encontraron visas.</td></tr>');
                         return;
                     }
 
@@ -176,9 +325,9 @@
                     $("#visas-table-body").html(html);
                 },
                 error: function (xhr) {
-                    let errorMessage = "Error al cargar los usuarios.";
+                    let errorMessage = "Error al cargar las visas.";
                     if (xhr.status === 404) {
-                        errorMessage = "No se encontraron usuarios.";
+                        errorMessage = "No se encontraron visas.";
                     } else if (xhr.status === 500) {
                         errorMessage = "Error interno del servidor.";
                     }
@@ -188,5 +337,5 @@
                 }
             });
         }
-   </script>
+    </script>
 @endsection

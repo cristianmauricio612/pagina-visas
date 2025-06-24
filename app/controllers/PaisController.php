@@ -12,8 +12,12 @@ class PaisController extends Controller
      */
     public function index()
     {
-        // Obtener países para el selector de visas
-        $paises = Pais::all();
+        // Obtener solo los países usados como país 1 y país 2 en visas
+        $visas = \App\Models\Visa::all();
+        $paises_origen_ids = $visas->pluck('pais1_id')->unique()->toArray();
+        $paises_destino_ids = $visas->pluck('pais2_id')->unique()->toArray();
+        $paises_origen = Pais::whereIn('id', $paises_origen_ids)->orderBy('nombre')->get();
+        $paises_destino = Pais::whereIn('id', $paises_destino_ids)->orderBy('nombre')->get();
 
         // Obtener artículos populares (por vistas)
         $articulosPopulares = Blog::with('autorObj')
@@ -24,7 +28,11 @@ class PaisController extends Controller
             ->limit(3)
             ->get();
 
-        return render('index', compact('paises', 'articulosPopulares'));
+        return render('index', [
+            'paises_origen' => $paises_origen,
+            'paises_destino' => $paises_destino,
+            'articulosPopulares' => $articulosPopulares
+        ]);
     }
 
     public function getPaisById($id) {

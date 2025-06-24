@@ -4,6 +4,26 @@
 
 @push('resources')
     <link rel="stylesheet" href="{{ assets("css/index.css") }}">
+    <style>
+        .options-list .option {
+            border-radius: 0.5rem;
+            transition: background 0.15s;
+            padding: 6px 12px;
+            margin: 2px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .options-list .option:hover {
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+        }
+        .dropdown-form {
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -18,18 +38,22 @@
                         <div class="select-container">
                             <label for="origen">¿De dónde soy?</label>
                             <div class="custom-select" id="from-select">
-                                @foreach ($paises as $pais)
-                                    @if ($pais->nombre == "Perú")
-                                        <div class="selected-option" data-value="{{ $pais->id }}" id="origen">
-                                            <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                @php $primero = true; @endphp
+                                @foreach ($paises_origen as $pais)
+                                    @if ($primero)
+                                        <div class="selected-option" data-value="{{ $pais->id }}" id="origen" style="display: flex; align-items: center; justify-content: space-between; min-width: 180px; position: relative;">
+                                            <span class="selected-label" style="display: flex; align-items: center; gap: 8px;">
+                                                <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                            </span>
+                                            <svg class="chevron-down" style="width: 1.1em; height: 1.1em; margin-left: 8px; color: #888; pointer-events: none; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                                         </div>
+                                        @php $primero = false; @endphp
                                     @endif
                                 @endforeach
-
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">
-                                        @foreach ($paises as $pais)
+                                        @foreach ($paises_origen as $pais)
                                             <div class="option" data-value="{{ $pais->id }}">
                                                 <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
                                             </div>
@@ -41,13 +65,22 @@
                         <div class="select-container">
                             <label for="destino">¿A dónde viajo?</label>
                             <div class="custom-select" id="to-select">
-                                <div class="selected-option" data-value="{{ $paises[0]->id }}" id="destino">
-                                    <img src="{{ $paises[0]->imagen }}" alt="{{ $paises[0]->nombre }}"> {{ $paises[0]->nombre }}
-                                </div>
+                                @php $primero = true; @endphp
+                                @foreach ($paises_destino as $pais)
+                                    @if ($primero)
+                                        <div class="selected-option" data-value="{{ $pais->id }}" id="destino" style="display: flex; align-items: center; justify-content: space-between; min-width: 180px; position: relative;">
+                                            <span class="selected-label" style="display: flex; align-items: center; gap: 8px;">
+                                                <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
+                                            </span>
+                                            <svg class="chevron-down" style="width: 1.1em; height: 1.1em; margin-left: 8px; color: #888; pointer-events: none; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                        </div>
+                                        @php $primero = false; @endphp
+                                    @endif
+                                @endforeach
                                 <div class="dropdown-form">
                                     <input type="text" class="search-input" placeholder="Buscar país...">
                                     <div class="options-list">
-                                        @foreach ($paises as $pais)
+                                        @foreach ($paises_destino as $pais)
                                             <div class="option" data-value="{{ $pais->id }}">
                                                 <img src="{{ $pais->imagen }}" alt="{{ $pais->nombre }}"> {{ $pais->nombre }}
                                             </div>
@@ -237,7 +270,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const customSelects = document.querySelectorAll(".custom-select");
-
             customSelects.forEach(select => {
                 const selectedOption = select.querySelector(".selected-option");
                 const dropdown = select.querySelector(".dropdown-form");
@@ -262,12 +294,11 @@
                 // Seleccionar un país
                 optionsList.forEach(option => {
                     option.addEventListener("click", function () {
-                        const selectedId = this.getAttribute("data-value"); // Obtener ID del país seleccionado
-                        const optionText = this.textContent.trim(); // Obtener solo el texto
-                        let optionHTML = this.innerHTML; // Copiar contenido HTML (imagen + texto si hay)
-
-                        // **Actualizar UI del select**
-                        selectedOption.innerHTML = optionHTML;
+                        const selectedId = this.getAttribute("data-value");
+                        const img = this.querySelector('img').outerHTML;
+                        const name = this.textContent.trim();
+                        // Solo actualiza el span, no el SVG
+                        selectedOption.querySelector('.selected-label').innerHTML = img + ' ' + name;
                         selectedOption.dataset.value = selectedId;
                         dropdown.style.display = "none";
                         searchInput.value = "";
