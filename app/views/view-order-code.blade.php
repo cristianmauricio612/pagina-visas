@@ -118,8 +118,8 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $pais1 = \APP\MODELS\Pais::find($visa->pais1_id);
-                                        $pais2 = \APP\MODELS\Pais::find($visa->pais2_id);
+                                        $pais1 = \App\Models\Pais::find($visa->pais1_id);
+                                        $pais2 = \App\Models\Pais::find($visa->pais2_id);
                                     @endphp
                                     <tr>
                                         <td>País de Partida</td>
