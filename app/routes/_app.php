@@ -95,6 +95,8 @@ app()->post('/api/izipay/payload', ['name' => 'izipay-payload', 'VisaInscripcion
 
 app()->get('/api/izipay/response', 'VisaInscripcionController@processPayment');
 
+app()->post('/api/izipay/form-token', 'VisaInscripcionController@getFormToken');
+
 app()->get('/pago-exitoso', ['name' => 'pago-exitoso', function () {render('pagos.exito');}]);
 
 app()->get('/pago-fallido', ['name' => 'pago-fallido', function () {render('pagos.error');}]);

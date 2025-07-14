@@ -13,7 +13,6 @@
     <link href="{{assets('fontawesome/css/all.css')}}" rel="stylesheet">
     <link href="{{assets('css/styles.css') }}" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://checkout.izipay.pe/payments/v1/js/index.js" defer></script>
     @stack('resources')
 </head>
 @php
@@ -337,7 +336,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
-    <script src="{{ assets('js/email-capture.js') }}"></script>
+    <!-- <script src="{{ assets('js/email-capture.js') }}"></script> -->
 
     <script>
         function logout() {

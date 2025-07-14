@@ -3,6 +3,16 @@
 @section('title', 'Visa-Inscripcion')
 
 @push('resources')
+    <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
+            kr-public-key="{{ env('PUBLIC_TEST_KEY') }}"
+            kr-post-url-success="/pago-exitoso"
+            kr-post-url-refused="/pago-fallido">
+    </script>
+    <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.css">
+    <script
+        type="text/javascript"
+        src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js">
+    </script>
     <link rel="stylesheet" href="{{ assets("css/visa-inscripcion.css") }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
@@ -444,10 +454,17 @@
             </div>
         </div>
     </div>
+    <div id="contenedor-pago" style="display: flex; justify-content: center; align-items: center;">
+    </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<<<<<<< Updated upstream
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
+=======
+    
+>>>>>>> Stashed changes
     <script>
         function inicializarDatePickers(context = document) {
             const inputs = context.querySelectorAll('.date-picker');
@@ -1166,74 +1183,7 @@
                         console.log("Datos guardados en formData:", JSON.stringify(formData, null, 2));
                         data = "";
 
-                        // Enviar formData al backend para generar el payload
-                        // Función asíncrona para manejar el fetch
-                        async function obtenerPayload() {
-                            try {
-                                // Preparar el objeto de datos final para el envío
-                                // Extraer valores específicos necesarios para la API actual
-                                // Buscar fecha_llegada desde el datepicker o elementos con esas clases/IDs
-                                let fechaLlegada = '';
-                                const posiblesFechas = ['date-picker', 'fecha_llegada', 'fecha-llegada'];
-
-                                for (const posibleFecha of posiblesFechas) {
-                                    if (formData.variables_dinamicas[posibleFecha]) {
-                                        fechaLlegada = formData.variables_dinamicas[posibleFecha];
-                                        break;
-                                    }
-                                }
-
-                                const response = await fetch('/api/izipay/payload', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        "X-CSRF-TOKEN": csrfToken
-                                    },
-                                    body: JSON.stringify(formData)
-                                });
-
-                                data = await response.json(); // Asigna la respuesta JSON a data
-                            } catch (error) {
-                                console.error("Error al comunicarse con el backend:", error);
-                            }
-                        }
-
-                        // Llamar a la función y luego validar data
-                        obtenerPayload().then(() => {
-                            if (data.signature) {
-                                console.log("Payload recibido del backend:", data);
-
-                                let form = document.createElement("form");
-                                form.method = "POST";
-                                form.action = "https://secure.micuentaweb.pe/vads-payment/";
-
-                                // Agregar los campos necesarios de la respuesta del backend
-                                form.innerHTML = `
-                                                <input type="hidden" name="vads_action_mode" value="${data.vads_action_mode}" />
-                                                <input type="hidden" name="vads_amount" value="${data.vads_amount}" />
-                                                <input type="hidden" name="vads_ctx_mode" value="${data.vads_ctx_mode}" />
-                                                <input type="hidden" name="vads_currency" value="${data.vads_currency}" /> 
-                                                <input type="hidden" name="vads_cust_email" value="${data.vads_cust_email}" />
-                                                <input type="hidden" name="vads_page_action" value="${data.vads_page_action}" />
-                                                <input type="hidden" name="vads_payment_config" value="${data.vads_payment_config}" />
-                                                <input type="hidden" name="vads_redirect_success_timeout" value="${data.vads_redirect_success_timeout}"/>
-                                                <input type="hidden" name="vads_return_mode" value="${data.vads_return_mode}"/>
-                                                <input type="hidden" name="vads_site_id" value="${data.vads_site_id}" />
-                                                <input type="hidden" name="vads_trans_date" value="${data.vads_trans_date}" />
-                                                <input type="hidden" name="vads_trans_id" value="${data.vads_trans_id}" />
-                                                <input type="hidden" name="vads_url_return" value="${data.vads_url_return}"/>
-                                                <input type="hidden" name="vads_version" value="${data.vads_version}" />
-                                                <input type="hidden" name="signature" value="${data.signature}"/>
-                                                <input type="submit" name="pagar" value="Pagar"/>
-                                            `;
-
-                                document.body.appendChild(form);
-                                form.submit();
-                            } else {
-                                console.error("Error: Datos incompletos en la respuesta del backend.");
-                            }
-                        });
-
+                        mostrarFormularioPago(formData);
                         break;
                     default:
                         console.warn("Botón no reconocido");
@@ -1438,6 +1388,39 @@
         function formatFecha(fecha) {
             let partes = fecha.split("/");
             return `${partes[0]}/${partes[1]}/${partes[2]}`; // Convierte "19/04/2025" → "2025-04-19"
+        }
+    </script>
+
+    <script>
+        // Llama a esta función cuando el usuario esté listo para pagar
+        function mostrarFormularioPago(formData) {
+            fetch('/api/izipay/form-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken // Si usas CSRF
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.formToken) { 
+                    // Elimina cualquier formulario anterior
+                    let contenedor = document.getElementById('contenedor-pago');
+                    // Crea la estructura completa de KR Embedded desde JS
+                    contenedor.innerHTML = `
+                        <div class="kr-embedded" kr-form-token="${data.formToken}" kr-popin></div>
+                    `;
+                    KR.renderElement('kr-embedded');
+                } else {
+                    alert('No se pudo obtener el formulario de pago. Intenta nuevamente.');
+                    console.error(data);
+                }
+            })
+            .catch(err => {
+                alert('Error al conectar con el servidor de pagos.');
+                console.error(err);
+            });
         }
     </script>
 @endsection

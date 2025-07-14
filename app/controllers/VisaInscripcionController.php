@@ -298,4 +298,89 @@ class VisaInscripcionController extends Controller
 
         render('session.show-order', compact('pedido_visa', 'visa'));
     }
+
+    public function getFormToken()
+    {
+        $data = request()->body();
+
+        // Decodificar viajeros y variables_dinamicas si llegan como JSON string
+        if (isset($data['viajeros']) && is_string($data['viajeros'])) {
+            $data['viajeros'] = json_decode($data['viajeros'], true);
+        }
+
+        if (isset($data['variables_dinamicas']) && is_string($data['variables_dinamicas'])) {
+            $data['variables_dinamicas'] = json_decode($data['variables_dinamicas'], true);
+        }
+
+        // Validar que llegaron los campos básicos
+        if (
+            empty($data['viajeros']) || !is_array($data['viajeros']) ||
+            empty($data['variables_dinamicas']) || !is_array($data['variables_dinamicas']) ||
+            empty($data['visas_id'])
+        ) {
+            return response()->json([
+                'error' => 'No se pudo obtener los campos basicos',
+                'detalle' => $data
+            ], 500);
+        }
+        error_log("FormData: " . print_r($data, true));
+
+        $purchaseNumber = $this->generatePurchaseNumber();
+        $data['purchase_number'] = $purchaseNumber;
+
+        // (Opcional) Guardar en sesión toda la data, incluyendo variables dinámicas
+        Session::set('data', $data);
+
+        // Buscar la visa
+        $visa = Visa::find($data['visas_id']);
+        if (!$visa) {
+            return response()->json([
+                'error' => 'No se pudo obtener el formToken',
+                'detalle' => 'Visa no encontrada: '.$data['visas_id']
+            ], 500);
+        }
+
+        // Calcular total (por cantidad de viajeros)
+        $pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
+        $correo = $data['variables_dinamicas']['correo'] ?? null;
+
+        // Ajusta estos valores según tu lógica y tus variables
+        $amount = intval(number_format($pago_total, 2, '.', '') * 100); // en centavos, por ejemplo 1000 = S/ 10.00
+        $currency = "USD"; // O "USD" si es en dólares
+        $orderId = $purchaseNumber; // O usa tu propio identificador único
+        $email = $correo;
+
+        // Prepara el payload según la documentación de Izipay
+        $payload = [
+            "amount" => $amount,
+            "currency" => $currency,
+            "orderId" => $orderId,
+            "customer" => [
+                "email" => $email,
+            ],
+            // Puedes agregar más campos según lo que requiera tu negocio
+        ];
+
+        $client = new Client();
+        $response = $client->post('https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment', [
+            'headers' => [
+                'Authorization' => 'Basic ' . base64_encode(env('IZIPAY_USER') . ':' . env('IZIPAY_PASSWORD')),
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($payload),
+        ]);
+
+        $result = json_decode($response->getBody(), true);
+
+        if (isset($result['answer']['formToken'])) {
+            return response()->json([
+                'formToken' => $result['answer']['formToken']
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'No se pudo obtener el formToken',
+                'detalle' => $result
+            ], 500);
+        }
+    }
 }
