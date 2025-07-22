@@ -93,13 +93,22 @@ app()->get('/pago/{id}', ['name' => 'pago', 'VisaInscripcionController@createVis
 
 app()->post('/api/izipay/payload', ['name' => 'izipay-payload', 'VisaInscripcionController@checkout']);
 
-app()->get('/api/izipay/response', 'VisaInscripcionController@processPayment');
+// 1. IPN → Sin sesión, sin redirecciones
+app()->post('/api/izipay/ipn', 'VisaInscripcionController@handleIPN');
+
+// 2. Retorno a tienda → Con sesión, redirección a vista
+app()->post('/procesar-pago-retorno', 'VisaInscripcionController@handleReturn');
 
 app()->post('/api/izipay/form-token', 'VisaInscripcionController@getFormToken');
 
 app()->get('/pago-exitoso', ['name' => 'pago-exitoso', function () {render('pagos.exito');}]);
 
 app()->get('/pago-fallido', ['name' => 'pago-fallido', function () {render('pagos.error');}]);
+
+app()->post('/saludo', ['name' => 'saludo', function () {
+    response()->json(['mensaje' => 'hola']);
+}]);
+
 
 app()->get('/limpiar-pedidos', function () {
     VisaInscripcion::limpiarPedidosPendientes();

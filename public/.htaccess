@@ -18,5 +18,4 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-    Header set Content-Security-Policy "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.izipay.pe https://analytics.google.com https://www.google-analytics.com https://www.googletagmanager.com https://browser.sentry-cdn.com https://clarity.microsoft.com https://*.cybersource.com https://*.online-metrix.net https://applepay.cdn-apple.com https://*.visa.com"
 </IfModule>

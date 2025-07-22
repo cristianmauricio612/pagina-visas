@@ -13,6 +13,19 @@
     <link href="{{assets('fontawesome/css/all.css')}}" rel="stylesheet">
     <link href="{{assets('css/styles.css') }}" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Scripts de Izipay -->
+    <script 
+        src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
+        kr-public-key="{{ env('PUBLIC_TEST_KEY') }}"
+        kr-post-url-success="/procesar-pago-retorno"
+        kr-language="es-ES">
+    </script>
+
+    
+    <!-- CSS de Izipay para el tema classic -->
+    <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic-reset.css">
+    <script src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js"></script>
     @stack('resources')
 </head>
 @php
@@ -336,7 +349,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
-    <!-- <script src="{{ assets('js/email-capture.js') }}"></script> -->
+    <script src="{{ assets('js/email-capture.js') }}"></script>
 
     <script>
         function logout() {

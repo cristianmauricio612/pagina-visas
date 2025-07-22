@@ -1,14 +1,15 @@
-.visa-inscripcion{
+.visa-inscripcion {
     margin-left: 24px;
     margin-right: 24px;
     max-width: 1312px;
 }
 
-.visa-inscripcion-container{
+.visa-inscripcion-container {
     margin-bottom: 230px;
     grid-column: 1 / -1;
 }
-.inscripcion-title-text{
+
+.inscripcion-title-text {
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 28px;
@@ -18,19 +19,21 @@
     padding-bottom: 16px;
 }
 
-.visa-inscripcion-progress{
+.visa-inscripcion-progress {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     justify-content: space-between;
     align-items: center;
     display: none;
 }
-.inscripcion-progress-points{
+
+.inscripcion-progress-points {
     white-space: nowrap;
     display: flex;
     align-items: center;
 }
-.inscripcion-point-container{
+
+.inscripcion-point-container {
     margin-right: 6px;
     display: flex;
     height: 20px;
@@ -42,24 +45,28 @@
     border-color: rgb(11 57 71 / var(--tw-border-opacity, 1));
     border-style: solid;
 }
+
 .inscripcion-point-active {
     --tw-bg-opacity: 1;
     background-color: rgb(11 57 71 / var(--tw-bg-opacity, 1));
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
-.inscripcion-point{
+
+.inscripcion-point {
     font-size: .75rem;
     font-weight: 700;
     line-height: 16px;
     margin-top: 1px;
 }
-.inscripcion-point-text{
+
+.inscripcion-point-text {
     font-size: 1rem;
     font-weight: 700;
     line-height: 16px;
 }
-.inscripcion-progress-bar{
+
+.inscripcion-progress-bar {
     --tw-space-x-reverse: 0;
     margin-right: calc(32px* var(--tw-space-x-reverse));
     margin-left: calc(32px* calc(1 - var(--tw-space-x-reverse)));
@@ -75,44 +82,51 @@
     background-color: #000;
 }
 
-.tab{
+.tab {
     margin-top: 24px;
 }
-.tab-information{
+
+.tab-information {
     top: 7rem;
     grid-column: 1 / -1;
     top: 64px;
     position: sticky;
 }
-.tab-form-title{
+
+.tab-form-title {
     justify-content: space-between;
     align-items: center;
     width: 100%;
     display: flex;
     margin-bottom: 8px;
 }
-.form-title-text{
+
+.form-title-text {
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 28px;
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
 }
-.tab-form-box{
+
+.tab-form-box {
     padding-top: 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: 100%;
 }
-.form-box-input{
+
+.form-box-input {
     margin-bottom: 16px;
 }
-.form-box-date{
+
+.form-box-date {
     width: 100%;
     height: 100%;
 }
-.form-label{
+
+.form-label {
     align-items: center;
     display: flex;
     margin-bottom: 4px;
@@ -123,11 +137,13 @@
     font-weight: 600;
     line-height: 24px;
 }
-.form-input-content{
+
+.form-input-content {
     display: flex;
     flex-direction: column;
 }
-.form-input{
+
+.form-input {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -153,7 +169,8 @@
     outline-offset: -2px;
     border-style: solid;
 }
-.form-icon-content{
+
+.form-icon-content {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     --tw-translate-y: -50%;
@@ -163,11 +180,13 @@
     right: 20px;
     position: absolute;
 }
-.form-icon-content i{
+
+.form-icon-content i {
     font-size: 16px;
     display: block;
 }
-.form-alert{
+
+.form-alert {
     font-size: .75rem;
     line-height: 20px;
     --tw-text-opacity: 1;
@@ -176,11 +195,13 @@
     max-width: 100%;
     overflow-x: hidden;
 }
-.form-box-accept{
+
+.form-box-accept {
     display: flex;
     align-items: flex-start;
 }
-.form-accept-checkbox{
+
+.form-accept-checkbox {
     margin-right: 8px;
     height: 20px;
     width: 20px;
@@ -209,6 +230,7 @@
 [type=checkbox]:checked {
     background-color: #000;
 }
+
 /*
 [type=checkbox]:checked::after {
     content: "✔";
@@ -216,21 +238,23 @@
     font-size: 16px;
     font-weight: bold;
 }*/
-.form-accept-text{
+.form-accept-text {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     line-height: 24px;
     font-size: .75rem;
 }
 
-.tab-information-container{
+.tab-information-container {
     top: 64px;
     position: sticky;
 }
-.tab-information-box{
+
+.tab-information-box {
     display: none;
 }
-.information-box{
+
+.information-box {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     padding-top: 24px;
@@ -239,7 +263,8 @@
     margin-bottom: 32px;
     border-style: solid;
 }
-.information-box-title{
+
+.information-box-title {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     justify-content: space-between;
@@ -247,7 +272,8 @@
     display: flex;
     margin-bottom: 8px;
 }
-.information-title-text{
+
+.information-title-text {
     padding: 0;
     list-style-type: none;
     list-style-position: inside;
@@ -258,7 +284,8 @@
     font-weight: 700;
     line-height: 24px;
 }
-.information-pago-hoy{
+
+.information-pago-hoy {
     font-size: .875rem;
     font-weight: 600;
     line-height: 24px;
@@ -275,24 +302,28 @@
     border-color: rgb(231 238 239 / var(--tw-border-opacity, 1));
     border-style: solid;
 }
-.information-pago-extra{
+
+.information-pago-extra {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
 }
-.information-pago-despues{
+
+.information-pago-despues {
     font-size: .875rem;
     line-height: 24px;
     justify-content: space-between;
     display: flex;
     margin-bottom: 8px;
 }
-.pago-despues-text{
+
+.pago-despues-text {
     font-size: .875rem;
     font-weight: 600;
     line-height: 24px;
     flex: 1 1 0%;
 }
-.pago-despues-price{
+
+.pago-despues-price {
     font-size: .875rem;
     font-weight: 700;
     line-height: 24px;
@@ -301,7 +332,8 @@
     text-wrap: nowrap;
     width: fit-content;
 }
-.information-pago-tasas{
+
+.information-pago-tasas {
     font-size: .875rem;
     line-height: 24px;
     --tw-text-opacity: 1;
@@ -309,24 +341,28 @@
     justify-content: space-between;
     display: flex;
 }
-.information-box-total{
+
+.information-box-total {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     padding-left: 24px;
     padding-right: 24px;
 }
-.box-total-text{
+
+.box-total-text {
     font-size: 1rem;
     font-weight: 700;
     line-height: 24px;
     justify-content: space-between;
     display: flex;
 }
-.tab-information-buttons{
+
+.tab-information-buttons {
     display: block;
     margin-top: 24px;
 }
-.tab-button-continuar{
+
+.tab-button-continuar {
     position: relative;
     width: 100%;
     padding: 16px 40px;
@@ -345,12 +381,14 @@
     color: white;
     cursor: pointer;
 }
-.tab-button-continuar:hover{
+
+.tab-button-continuar:hover {
     border-color: #c7161e;
     background: white;
     color: #21356b;
 }
-.tab-button-retroceder{
+
+.tab-button-retroceder {
     position: relative;
     padding: 0;
     --tw-text-opacity: 1;
@@ -367,7 +405,8 @@
     border-radius: 16px;
     background-color: transparent;
 }
-.tab-button-retroceder:hover{
+
+.tab-button-retroceder:hover {
     background-color: transparent;
     border: none;
 }
@@ -395,13 +434,15 @@
 }
 
 /* 🔥 Flechas de navegación */
-.flatpickr-prev-month, .flatpickr-next-month {
+.flatpickr-prev-month,
+.flatpickr-next-month {
     color: #007bff !important;
     font-size: 18px;
     cursor: pointer;
 }
 
-.flatpickr-prev-month:hover, .flatpickr-next-month:hover {
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
     color: #0056b3 !important;
 }
 
@@ -454,14 +495,15 @@
     animation: fadeIn 0.2s ease-in-out;
 }
 
-.form-title-warning{
+.form-title-warning {
     font-size: .875rem;
     line-height: 24px;
     --tw-text-opacity: 1;
     color: rgb(66 102 113 / var(--tw-text-opacity, 1));
     margin-bottom: 24px;
 }
-.tab-viajero-box{
+
+.tab-viajero-box {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     --tw-border-opacity: 1;
@@ -471,7 +513,8 @@
     border-radius: 16px;
     margin-top: 20px;
 }
-.tab-viajero-select{
+
+.tab-viajero-select {
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 24px;
@@ -484,7 +527,8 @@
     cursor: pointer;
     display: flex;
 }
-.viajero-select-active{
+
+.viajero-select-active {
     border-width: 0;
     border-style: solid;
     border-radius: 0px;
@@ -494,17 +538,20 @@
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
 }
-.tab-viajero-text{
+
+.tab-viajero-text {
     width: 100%;
     align-items: center;
     justify-content: space-between;
 }
-.viajero-text{
+
+.viajero-text {
     font-size: .875rem;
     font-weight: 700;
     line-height: 22px;
 }
-.tab-viajero-icon{
+
+.tab-viajero-icon {
     --tw-bg-opacity: 1;
     background-color: rgb(231 238 239 / var(--tw-bg-opacity, 1));
     border-radius: 9999px;
@@ -514,23 +561,28 @@
     height: 32px;
     display: flex;
 }
-.viajero-icon-rotated{
+
+.viajero-icon-rotated {
     transform: rotate(180deg);
     transition: transform 0.3s ease-in-out;
 }
-.tab-viajero-form{
+
+.tab-viajero-form {
     padding-left: 16px;
     padding-right: 16px;
     padding-bottom: 8px;
     padding-top: 16px;
 }
+
 .tab-viajero-form.hidden {
     display: none;
 }
-.tab-viajero-item{
+
+.tab-viajero-item {
     margin-bottom: 16px;
 }
-.viajero-item-label{
+
+.viajero-item-label {
     margin-bottom: 4px;
     display: flex;
     --tw-text-opacity: 1;
@@ -540,7 +592,8 @@
     line-height: 24px;
     align-items: center;
 }
-.viajero-item-input{
+
+.viajero-item-input {
     display: block;
     width: 100%;
     cursor: pointer;
@@ -562,7 +615,8 @@
     padding-right: 40px;
     line-height: 20px;
 }
-.viajero-item-warning{
+
+.viajero-item-warning {
     max-width: 100%;
     overflow-x: hidden;
     font-size: .75rem;
@@ -571,7 +625,8 @@
     --tw-text-opacity: 1;
     color: rgb(66 102 113 / var(--tw-text-opacity, 1));
 }
-.tab-viajero-date{
+
+.tab-viajero-date {
     appearance: none;
     background-color: #fff;
     border-color: #0b3947;
@@ -582,11 +637,13 @@
     line-height: 1.5rem;
     --tw-shadow: 0 0 #0000;
 }
-.viajero-date-container{
+
+.viajero-date-container {
     display: flex;
     align-items: center;
 }
-.viajero-date-container select{
+
+.viajero-date-container select {
     text-overflow: ellipsis;
     white-space: nowrap;
     padding: 12px 40px 12px 16px;
@@ -608,7 +665,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    
+
     padding-right: 30px;
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="gray" d="M7 10l5 5 5-5z"/></svg>') no-repeat;
     background-position: right 20px center;
@@ -620,14 +677,17 @@
 }
 
 input::placeholder {
-    color: rgb(194, 194, 194); /* Cambia el color del placeholder */
-    opacity: 1;  /* Asegura que el color se vea correctamente en algunos navegadores */
+    color: rgb(194, 194, 194);
+    /* Cambia el color del placeholder */
+    opacity: 1;
+    /* Asegura que el color se vea correctamente en algunos navegadores */
 }
 
-.add-form{
+.add-form {
     margin-top: 32px;
 }
-.add-form-button{
+
+.add-form-button {
     box-sizing: border-box;
     border: 2px solid #b0c1c5;
     position: relative;
@@ -648,7 +708,7 @@ input::placeholder {
     outline-style: solid;
 }
 
-.delete-form{
+.delete-form {
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
@@ -728,28 +788,32 @@ input::placeholder {
     background-color: #f1f1f1;
 }
 
-.option img, .selected-option img {
+.option img,
+.selected-option img {
     width: 28px;
     height: 28px;
     margin-right: 8px;
     border-radius: 27px;
 }
 
-.revisar-solicitud{
+.revisar-solicitud {
     margin-left: 24px;
     margin-right: 24px;
     max-width: 1312px;
 }
-.revisar-solicitud-container{
+
+.revisar-solicitud-container {
     margin-bottom: 230px;
     grid-column: 1 / -1;
 }
-.inscripcion-title-span{
+
+.inscripcion-title-span {
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 32px;
 }
-.informacion-completa{
+
+.informacion-completa {
     border-style: solid;
     padding-bottom: 16px;
     padding: 24px;
@@ -761,7 +825,8 @@ input::placeholder {
     margin-bottom: 16px;
     position: relative;
 }
-.informacion-general{
+
+.informacion-general {
     padding-bottom: 24px;
     gap: 16px;
     justify-content: space-between;
@@ -774,7 +839,8 @@ input::placeholder {
     border-style: solid;
     border-color: #b0c1c5;
 }
-.informacion-general-box{
+
+.informacion-general-box {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     text-align: left;
@@ -785,7 +851,8 @@ input::placeholder {
     border-style: solid;
     border-color: #b0c1c5;
 }
-.informacion-general-nombre{
+
+.informacion-general-nombre {
     gap: 4px;
     justify-content: space-between;
     align-items: center;
@@ -793,23 +860,26 @@ input::placeholder {
     margin-bottom: 16px;
 }
 
-.informacion-general-nombre h2{
+.informacion-general-nombre h2 {
     font-size: 1rem;
     font-weight: 700;
     line-height: 24px;
 }
-.informacion-general-item{
+
+.informacion-general-item {
     font-size: .75rem;
     line-height: 20px;
     margin-bottom: 16px;
 }
-.info-general-item-black{
+
+.info-general-item-black {
     font-size: .75rem;
     font-weight: 600;
     line-height: 20px;
     display: block;
 }
-.viajeros-box{
+
+.viajeros-box {
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
@@ -820,7 +890,8 @@ input::placeholder {
     border-color: rgb(213 225 226 / var(--tw-border-opacity, 1));
     border-top-width: 1px;
 }
-.viajeros-box-title{
+
+.viajeros-box-title {
     font-size: 1rem;
     font-weight: 600;
     line-height: 24px;
@@ -828,7 +899,8 @@ input::placeholder {
     margin: 0;
     margin-bottom: 12px;
 }
-.viajeros-box-item{
+
+.viajeros-box-item {
     font-size: .875rem;
     font-weight: 600;
     line-height: 22px;
@@ -838,7 +910,8 @@ input::placeholder {
     display: flex;
     margin-bottom: 8px;
 }
-.information-box-final{
+
+.information-box-final {
     --tw-text-opacity: 1;
     color: rgb(11 57 71 / var(--tw-text-opacity, 1));
     padding-top: 24px;
@@ -850,16 +923,134 @@ input::placeholder {
 .flatpickr-calendar .flatpickr-days {
     display: flex;
 }
+
 .flatpickr-calendar .dayContainer {
     border-right: 1px solid #eee;
 }
+
 .flatpickr-calendar .dayContainer:last-child {
     border-right: none;
 }
 
+/* IZIPAY */
+
+/* Estilos para que el botón de Izipay coincida con el diseño original */
+.kr-embedded {
+    width: 100%;
+}
+
+.kr-popin-button {
+    background: linear-gradient(135deg, #dc2626, #1e40af) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    width: 100% !important;
+    height: 48px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    margin-top: 15px !important;
+}
+
+.kr-popin-button:hover {
+    background: linear-gradient(135deg, #b91c1c, #1d4ed8) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.kr-popin-button:active {
+    transform: translateY(0) !important;
+}
+
+/* Contenedor para el botón de pago reemplazando al original */
+.payment-button-container {
+    width: 100%;
+}
+
+.kr-payment-button {
+    background: linear-gradient(135deg, #dc2626, #1e40af) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    color: white !important;
+    margin-bottom: 0 !important;
+}
+
+.kr-card-form {
+    width: 430px !important;
+    border-radius: 15px !important;
+}
+
+.kr-popin-modal-header {
+    border-top-right-radius: 15px !important;
+    border-top-left-radius: 15px !important;
+    height: 95px !important;
+}
+
+.kr-popin-modal-header-background {
+    border-top-right-radius: 15px !important;
+    border-top-left-radius: 15px !important;
+}
+
+.kr-popin-modal-footer {
+    border-bottom-right-radius: 15px !important;
+    border-bottom-left-radius: 15px !important;
+}
+
+.kr-embedded .kr-icon-wrapper svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.kr-embedded[kr-popin] .kr-popin-modal-header span.kr-popin-shop-name span {
+    font-size: 18px !important;
+    color: black !important;
+}
+
+.kr-embedded[kr-popin] .kr-popin-modal-header i.fi-x-circle.icon-close-popup {
+    width: 25px !important;
+    height: 25px !important;
+    border: 0px solid transparent !important;
+}
+
+.kr-embedded[kr-popin] .kr-popin-modal-header .kr-popin-modal-header-image img.kr-header-logo {
+    content: url('/assets/img/visas_travel_logo.png') !important;
+    background-color: white !important;
+    object-fit: contain !important;
+    width: 95px !important;
+    height: 95px !important;
+    display: block !important;
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.2)) !important;
+    transform: scale(1.2) !important;
+    top: -25px;
+    right: -5px;
+}
+
+
+.kr-field-element {
+    border-radius: 7px !important;
+}
+
+.kr-popin-modal-header-background{
+	background-color: #ffffff !important;
+}
+
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (min-width: 768px) {
@@ -867,20 +1058,24 @@ input::placeholder {
         margin-left: 48px;
         margin-right: 48px;
     }
+
     .revisar-solicitud {
         margin-left: 48px;
         margin-right: 48px;
     }
+
     .inscripcion-title-text {
         font-size: 1.5rem;
         font-weight: 700;
         line-height: 32px;
     }
+
     .tab-form-box {
         padding-left: 0;
         padding-right: 0;
     }
-    .tab-viajero-text{
+
+    .tab-viajero-text {
         display: flex;
     }
 }
@@ -890,18 +1085,22 @@ input::placeholder {
         margin-left: 120px;
         margin-right: 120px;
     }
+
     .revisar-solicitud {
         margin-left: 120px;
         margin-right: 120px;
     }
+
     .inscripcion-title-text {
         font-size: 2rem;
         font-weight: 700;
         line-height: 40px;
     }
+
     .visa-inscripcion-progress {
         padding-bottom: 24px;
     }
+
     .tab {
         display: grid;
         max-width: 1312px;
@@ -909,40 +1108,51 @@ input::placeholder {
         -moz-column-gap: 16px;
         column-gap: 16px;
     }
+
     .tab-form {
         grid-column: span 7 / span 7;
     }
-    .tab-information{
+
+    .tab-information {
         grid-column-start: 9;
     }
+
     .tab-form-title {
         margin-bottom: 12px;
     }
+
     .form-title-text {
         font-size: 1.5rem;
         line-height: 32px;
     }
-    .form-box-input{
+
+    .form-box-input {
         margin-bottom: 40px;
     }
-    .form-input{
+
+    .form-input {
         padding-top: 14px;
         padding-bottom: 14px;
     }
-    .form-icon-content{
+
+    .form-icon-content {
         right: 24px;
     }
+
     .form-alert {
         margin-top: 8px;
     }
+
     .form-accept-text {
         font-size: .875rem;
         line-height: 24px;
     }
-    .tab-information-box{
+
+    .tab-information-box {
         display: block;
     }
-    .information-box{
+
+    .information-box {
         padding-left: 24px;
         padding-right: 24px;
         --tw-bg-opacity: 1;
@@ -952,81 +1162,100 @@ input::placeholder {
         border-width: 1px;
         border-radius: 24px;
     }
+
     .tab-button-retroceder {
         width: auto;
     }
+
     .form-title-warning {
         font-size: 1rem;
         line-height: 28px;
     }
-    .tab-viajero-box{
+
+    .tab-viajero-box {
         margin-top: 12px;
         margin-bottom: 0;
     }
-    .tab-viajero-select{
+
+    .tab-viajero-select {
         padding-top: 20px;
         padding-bottom: 20px;
     }
-    .viajero-text{
+
+    .viajero-text {
         font-size: 1rem;
         font-weight: 700;
         line-height: 24px;
     }
-    .tab-viajero-form{
+
+    .tab-viajero-form {
         padding-left: 24px;
         padding-right: 24px;
         padding-top: 24px;
     }
-    .tab-viajero-item{
+
+    .tab-viajero-item {
         margin-bottom: 40px;
     }
-    .viajero-item-input{
+
+    .viajero-item-input {
         padding-top: 14px;
         padding-bottom: 14px;
     }
-    .viajero-item-warning{
+
+    .viajero-item-warning {
         margin-top: 8px;
     }
-    .viajero-date-container select{
+
+    .viajero-date-container select {
         padding-top: 16px;
         padding-bottom: 16px;
         padding-left: 16px;
         line-height: 18px;
         margin-right: 24px;
     }
+
     .viajero-date-container select:nth-of-type(3) {
         margin-right: 0px;
     }
-    .add-form-button{
+
+    .add-form-button {
         width: auto;
     }
-    .informacion-completa{
+
+    .informacion-completa {
         margin-bottom: 24px;
     }
-    .informacion-general{
+
+    .informacion-general {
         gap: 32px;
         align-items: center;
         flex-direction: row-reverse;
     }
-    .informacion-general-box{
+
+    .informacion-general-box {
         flex: 1 1 0%;
     }
-    .informacion-general-nombre h2{
+
+    .informacion-general-nombre h2 {
         font-size: 1.25rem;
         font-weight: 700;
         line-height: 28px;
     }
-    .informacion-general-item{
+
+    .informacion-general-item {
         font-size: .875rem;
         line-height: 16px;
     }
-    .info-general-item-black{
+
+    .info-general-item-black {
         font-size: .875rem;
         font-weight: 600;
         line-height: 20px;
         display: inline;
     }
-    .information-box-final{
+
+    .information-box-final {
         padding-left: 24px;
         padding-right: 24px;
         --tw-bg-opacity: 1;
@@ -1055,6 +1284,7 @@ input::placeholder {
         -moz-column-gap: 32px;
         column-gap: 32px;
     }
+
     .tab-information {
         grid-column-end: 13;
     }
@@ -1065,6 +1295,7 @@ input::placeholder {
         margin-left: auto;
         margin-right: auto;
     }
+
     .revisar-solicitud {
         margin-left: auto;
         margin-right: auto;
@@ -1075,10 +1306,12 @@ input::placeholder {
     .visa-inscripcion-title {
         margin-top: 7px;
     }
+
     .inscripcion-title-text {
         padding-top: 24px;
         padding-bottom: 24px;
     }
+
     .visa-inscripcion-progress {
         display: flex;
     }
@@ -1088,7 +1321,7 @@ input::placeholder {
     .flatpickr-calendar {
         width: auto !important;
     }
-    
+
     .flatpickr-day {
         width: 30px;
         height: 30px;

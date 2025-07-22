@@ -3,16 +3,6 @@
 @section('title', 'Visa-Inscripcion')
 
 @push('resources')
-    <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
-            kr-public-key="{{ env('PUBLIC_TEST_KEY') }}"
-            kr-post-url-success="/pago-exitoso"
-            kr-post-url-refused="/pago-fallido">
-    </script>
-    <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.css">
-    <script
-        type="text/javascript"
-        src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js">
-    </script>
     <link rel="stylesheet" href="{{ assets("css/visa-inscripcion.css") }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
@@ -453,18 +443,12 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div id="contenedor-pago" style="display: flex; justify-content: center; align-items: center;">
-    </div>
-    
+    </div>    
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<<<<<<< Updated upstream
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
-=======
     
->>>>>>> Stashed changes
     <script>
         function inicializarDatePickers(context = document) {
             const inputs = context.querySelectorAll('.date-picker');
@@ -1394,33 +1378,183 @@
     <script>
         // Llama a esta función cuando el usuario esté listo para pagar
         function mostrarFormularioPago(formData) {
+            console.log('Iniciando proceso de pago...');
+            
+            // Obtener el botón "Continuar con el pago" que se va a reemplazar
+            const continueButton = document.getElementById('btnContinuePay');
+            const buttonContainer = continueButton.parentElement;
+            
+            // Ocultar el botón original
+            continueButton.style.display = 'none';
+            
+            // Mostrar mensaje de carga mientras se obtiene el token
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading-payment';
+            loadingDiv.innerHTML = `
+                <button class="tab-button-continuar" disabled style="opacity: 0.6;">
+                    <span>Cargando formulario de pago...</span>
+                </button>
+            `;
+            buttonContainer.appendChild(loadingDiv);
+            
             fetch('/api/izipay/form-token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken // Si usas CSRF
+                    'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify(formData)
             })
-            .then(res => res.json())
+            .then(res => {
+                console.log('Respuesta del servidor:', res.status);
+                return res.json();
+            })
             .then(data => {
-                if (data.formToken) { 
-                    // Elimina cualquier formulario anterior
-                    let contenedor = document.getElementById('contenedor-pago');
-                    // Crea la estructura completa de KR Embedded desde JS
-                    contenedor.innerHTML = `
-                        <div class="kr-embedded" kr-form-token="${data.formToken}" kr-popin></div>
-                    `;
-                    KR.renderElement('kr-embedded');
+                console.log('Datos recibidos:', data);
+                
+                // Remover mensaje de carga
+                const loadingElement = document.getElementById('loading-payment');
+                if (loadingElement) {
+                    loadingElement.remove();
+                }
+                
+                if (data.formToken) {
+                    console.log('FormToken recibido:', data.formToken);
+                    
+                    // Verificar si KR está disponible
+                    if (typeof window.KR === 'undefined') {
+                        console.error('❌ KR no está definido');
+                        alert('Error: No se pudo cargar el script de pago de Izipay. Verifique la configuración de las claves y scripts.');
+                        restaurarBotonOriginal();
+                        return;
+                    }
+                    
+                    console.log('✅ KR disponible. Métodos:', Object.keys(window.KR));
+                    
+                    // Crear el elemento kr-embedded en el lugar del botón
+                    const krContainer = document.createElement('div');
+                    krContainer.className = 'payment-button-container';
+                    krContainer.id = 'payment-button-container';
+                    
+                    const krDiv = document.createElement('div');
+                    krDiv.className = 'kr-embedded';
+                    krDiv.setAttribute('kr-popin', '');
+                    krDiv.setAttribute('kr-form-token', data.formToken);
+                    
+                    krContainer.appendChild(krDiv);
+                    buttonContainer.appendChild(krContainer);
+                    
+                    console.log('✅ Elemento kr-embedded creado en lugar del botón');
+                    
+                    // Intentar diferentes métodos según disponibilidad
+                    try {
+                        if (typeof window.KR.renderElements === 'function') {
+                            console.log('✅ Usando KR.renderElements...');
+                            KR.renderElements();
+                        } else if (typeof window.KR.addForm === 'function') {
+                            console.log('✅ Usando KR.addForm...');
+                            KR.addForm('.kr-embedded');
+                        } else if (typeof window.KR.attachForm === 'function') {
+                            console.log('✅ Usando KR.attachForm...');
+                            KR.attachForm('.kr-embedded');
+                        } else if (typeof window.KR.openPopin === 'function') {
+                            console.log('✅ Usando KR.openPopin...');
+                            KR.openPopin();
+                        } else {
+                            console.error('❌ Ningún método de renderizado conocido está disponible');
+                            console.log('Métodos disponibles:', Object.keys(window.KR));
+                            alert('Error: No se encontró un método válido para mostrar el formulario de pago.');
+                            restaurarBotonOriginal();
+                            return;
+                        }
+                        
+                        console.log('✅ Formulario de pago inicializado correctamente');
+                        
+                    } catch (error) {
+                        console.error('❌ Error al inicializar formulario:', error);
+                        alert('Error al mostrar el formulario de pago: ' + error.message);
+                        restaurarBotonOriginal();
+                    }
                 } else {
+                    console.error('No se recibió formToken:', data);
                     alert('No se pudo obtener el formulario de pago. Intenta nuevamente.');
-                    console.error(data);
+                    restaurarBotonOriginal();
                 }
             })
             .catch(err => {
+                console.error('Error en la petición:', err);
                 alert('Error al conectar con el servidor de pagos.');
-                console.error(err);
+                
+                // Remover mensaje de carga en caso de error
+                const loadingElement = document.getElementById('loading-payment');
+                if (loadingElement) {
+                    loadingElement.remove();
+                }
+                
+                restaurarBotonOriginal();
             });
         }
+
+        // Función para restaurar el botón original en caso de error
+        function restaurarBotonOriginal() {
+            const continueButton = document.getElementById('btnContinuePay');
+            const paymentContainer = document.getElementById('payment-button-container');
+            
+            // Mostrar el botón original nuevamente
+            if (continueButton) {
+                continueButton.style.display = 'block';
+            }
+            
+            // Remover el contenedor del formulario de pago
+            if (paymentContainer) {
+                paymentContainer.remove();
+            }
+            
+            console.log('Botón original restaurado');
+        }
+
+        // Configurar eventos de Izipay cuando el DOM esté listo
+        document.addEventListener("DOMContentLoaded", function() {
+            // Verificar si KR se carga correctamente después de un delay
+            setTimeout(function() {
+                console.log("Verificando disponibilidad de KR...");
+                console.log("window.KR:", typeof window.KR);
+                
+                if (typeof window.KR === 'undefined') {
+                    console.error("❌ KR no está disponible después de cargar la página");
+                    console.log("Verificando scripts en el DOM...");
+                    
+                    const scripts = document.querySelectorAll('script[src*="krypton-client"]');
+                    console.log("Scripts de Izipay encontrados:", scripts.length);
+                    
+                    scripts.forEach((script, index) => {
+                        console.log(`Script ${index + 1}:`, script.src);
+                        console.log(`Public key:`, script.getAttribute('kr-public-key'));
+                    });
+                } else {
+                    console.log("✅ KR está disponible correctamente");
+                    console.log("✅ Métodos disponibles en KR:", Object.keys(window.KR));
+                    console.log("ℹ️ El elemento kr-embedded se creará dinámicamente cuando sea necesario");
+                }
+            }, 2000);
+
+            // Event listener para cuando el pago falla
+            window.addEventListener("kr-payment-error", function(event) {
+                console.error("Error en el pago:", event.detail);
+                alert("Error en el pago. Por favor, intenta nuevamente.");
+                restaurarBotonOriginal();
+            });
+
+            // Event listener para cuando el usuario cancela el pago
+            window.addEventListener("kr-popin-closed", function(event) {
+                console.log("El usuario cerró el formulario de pago");
+                restaurarBotonOriginal();
+            });
+
+            // Event listener para cuando el formulario se renderiza correctamente
+            window.addEventListener("kr-popin-displayed", function(event) {
+                console.log("Formulario de pago mostrado correctamente");
+            });
+        });
     </script>
 @endsection

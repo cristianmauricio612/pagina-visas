@@ -159,7 +159,7 @@ class VisaInscripcionController extends Controller
             'vads_site_id' => 94909545,
             'vads_trans_date' => gmdate("YmdHis"),
             'vads_trans_id' => $purchaseNumber,
-            'vads_url_return' => env('APP_URL').'api/izipay/response',
+            'vads_url_return' => env('APP_URL') . 'api/izipay/response',
             'vads_version' => "V2",
         ];
 
@@ -171,44 +171,100 @@ class VisaInscripcionController extends Controller
         return response()->json($payload);
     }
 
-    public function processPayment()
+    public function processEmbeddedPayment()
     {
-        $dataResult = $_GET;
+        csrf()->validate();
 
-        error_log("Datos recibidos: " . json_encode($dataResult));
+        $dataResult = request()->body();
+
+        error_log("Datos recibidos del formulario incrustado: " . json_encode($dataResult));
 
         if (empty($dataResult)) {
-            return redirect('/pago-fallido')->with('error', 'El Post estaba vacío.');
+            return redirect('/pago-fallido')->with('error', 'No se recibieron datos del pago.');
         }
 
-        if (!isset($dataResult['signature'])) {
-            return redirect('/pago-fallido')->with('error', 'Faltó el signatue.');
+        // Verificar campos requeridos según documentación paso 5 de Izipay
+        if (!isset($dataResult['kr-hash']) || !isset($dataResult['kr-answer'])) {
+            return redirect('/pago-fallido')->with('error', 'Respuesta de pago incompleta. Faltan campos obligatorios kr-hash o kr-answer.');
         }
 
-        $clave_secreta = _env('TOKEN_SECRET');
-        $firma_calculada = $this->getSignature($dataResult, $clave_secreta);
+        // Verificar campos adicionales si están presentes
+        $krHashAlgorithm = $dataResult['kr-hash-algorithm'] ?? 'sha256_hmac';
+        $krAnswerType = $dataResult['kr-answer-type'] ?? 'V4/Payment';
 
-        if ($firma_calculada !== $dataResult['signature']) {
-            return redirect('/pago-fallido')->with('error', 'Signature inválido.');
+        error_log("Algoritmo de hash: {$krHashAlgorithm}, Tipo de respuesta: {$krAnswerType}");
+
+        // Validar hash según el algoritmo especificado (por defecto sha256_hmac)
+        $clave_secreta = env('IZIPAY_PASSWORD');
+        $krAnswer = $dataResult['kr-answer'];
+
+        // Validación del hash según documentación de Izipay
+        if ($krHashAlgorithm === 'sha256_hmac') {
+            $expectedHash = hash_hmac('sha256', $krAnswer, $clave_secreta);
+        } else {
+            // Fallback a sha256_hmac si el algoritmo no es reconocido
+            $expectedHash = hash_hmac('sha256', $krAnswer, $clave_secreta);
+            error_log("Algoritmo de hash no reconocido, usando sha256_hmac por defecto");
         }
 
-        $estado_pago = $dataResult['vads_trans_status'] ?? 'UNKNOWN';
+        if (hash_equals($expectedHash, $dataResult['kr-hash']) === false) {
+            error_log("Validación de hash fallida.");
+            error_log("Hash esperado: {$expectedHash}");
+            error_log("Hash recibido: {$dataResult['kr-hash']}");
+            error_log("Algoritmo utilizado: {$krHashAlgorithm}");
+            error_log("Clave secreta utilizada: " . substr($clave_secreta, 0, 8) . "...");
 
-        // Recuperar toda la data guardada en la sesión
+            return redirect('/pago-fallido')->with('error', 'La respuesta de pago no pudo ser verificada. Hash inválido.');
+        }
+
+        // Decodificar respuesta de pago
+        $paymentData = json_decode($krAnswer, true);
+
+        if (!$paymentData) {
+            error_log("Error al decodificar kr-answer JSON: " . json_last_error_msg());
+            return redirect('/pago-fallido')->with('error', 'Error al procesar la respuesta de pago. JSON inválido.');
+        }
+
+        error_log("Datos de pago decodificados correctamente: " . json_encode($paymentData));
+
+        // Verificar estado del pago según estructura de Izipay
+        $orderStatus = $paymentData['orderStatus'] ?? 'UNKNOWN';
+
+        // Log detallado del estado
+        error_log("Estado del pedido: {$orderStatus}");
+
+        // Recuperar data de la sesión
         $data = Session::get('data');
 
-        if ($estado_pago === 'AUTHORISED') {
+        if (!$data) {
+            error_log("No se encontraron datos de sesión");
+            return redirect('/pago-fallido')->with('error', 'Datos de la sesión no encontrados.');
+        }
+
+        if ($orderStatus === 'PAID') {
+            error_log("Procesando pago exitoso");
+
             $visa = Visa::find($data['visas_id']);
+
+            // Extraer información del pago de la respuesta de Izipay
+            $transactionId = $paymentData['orderDetails']['orderId'] ?? $data['purchase_number'];
+            $paidAmount = ($paymentData['orderDetails']['orderTotalAmount'] ?? 0) / 100; // Convertir de centavos
+
+            // Log información de transacción
+            error_log("ID de transacción: {$transactionId}");
+            error_log("Monto pagado: {$paidAmount}");
 
             // Crear la inscripción en la base de datos
             $visaInscripcion = new VisaInscripcion();
             $visaInscripcion->visas_id = $data['visas_id'];
-            $visaInscripcion->numero_pedido = $data['purchase_number'];
+            $visaInscripcion->numero_pedido = $transactionId;
             $visaInscripcion->pago_sintasa = $visa['precio'] * count($data['viajeros']);
             $visaInscripcion->pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
             $visaInscripcion->tasa_gobierno_total = $visa['tasa_gobierno'] * count($data['viajeros']);
             $visaInscripcion->status_pago = "pagado";
             $visaInscripcion->save();
+
+            error_log("Inscripción de visa creada con ID: {$visaInscripcion->id}");
 
             // Guardar variables dinámicas
             foreach ($data["variables_dinamicas"] as $nombre => $valor) {
@@ -284,10 +340,12 @@ class VisaInscripcionController extends Controller
 
             Session::delete('data');
 
+            error_log("Pago procesado exitosamente, redirigiendo a página de éxito");
             return render('pagos.exito', compact('visaInscripcion'));
         } else {
+            error_log("Pago no autorizado con estado: {$orderStatus}");
             Session::delete('data');
-            return redirect('/pago-fallido')->with('error', 'Pago no autorizado.');
+            return redirect('/pago-fallido')->with('error', 'Pago no autorizado. Estado: ' . $orderStatus);
         }
     }
 
@@ -297,6 +355,175 @@ class VisaInscripcionController extends Controller
         $visa = Visa::find($pedido_visa->visas_id);
 
         render('session.show-order', compact('pedido_visa', 'visa'));
+    }
+
+    public function handleIPN()
+    {
+        $dataResult = $_POST;
+
+        error_log("Datos recibidos del IPN: " . print_r($dataResult, true));
+        if (empty($dataResult['kr-hash']) || empty($dataResult['kr-answer'])) {
+            return response()->status(400);
+        }
+
+        $krAnswerRaw = $dataResult['kr-answer'];
+        $claveIPN = getenv('IZIPAY_PASSWORD'); // .env → contraseña para IPN
+
+        $expectedHash = base64_encode(
+            hash_hmac('sha256', $krAnswerRaw, $claveIPN, true)
+        );
+
+        if (!hash_equals($expectedHash, $dataResult['kr-hash'])) {
+            return response()->status(400);
+        }
+
+        $paymentData = json_decode($krAnswerRaw, true);
+        if (!$paymentData) {
+            return response()->status(400);
+        }
+
+        // Aquí puedes actualizar el estado de tu pedido según orderId
+        return response()->json(['message' => 'IPN recibida'], 200);
+    }
+
+    public function handleReturn()
+    {
+        $dataResult = $_POST;
+        
+        error_log("Datos recibidos del retorno: " . print_r($dataResult, true));
+        
+        if (empty($dataResult['kr-hash']) || empty($dataResult['kr-answer'])) {
+            return redirect('/pago-fallido')->with('error', 'Respuesta incompleta');
+        }
+        
+        $krAnswerRaw = $dataResult['kr-answer'];
+        
+        // ✅ Usar la clave HMAC correcta para retorno (NO la contraseña)
+        $claveHMAC = getenv('IZIPAY_HMAC'); // Clave HMAC-SHA 256 del Back Office
+        
+        // ✅ Algoritmo correcto según documentación de Izipay
+        $expectedHash = hash_hmac('sha256', $krAnswerRaw, $claveHMAC);
+        
+        error_log("Hash recibido: " . $dataResult['kr-hash']);
+        error_log("Hash calculado: " . $expectedHash);
+        error_log("Clave HMAC usada: " . substr($claveHMAC, 0, 8) . "...");
+        
+        if (!hash_equals($expectedHash, $dataResult['kr-hash'])) {
+            error_log("❌ Hash inválido en retorno");
+            return redirect('/pago-fallido')->with('error', 'Hash inválido');
+        }
+        
+        error_log("✅ Hash válido - continuando...");
+        
+        $paymentData = json_decode($krAnswerRaw, true);
+        if (!$paymentData) {
+            return redirect('/pago-fallido')->with('error', 'JSON inválido');
+        }
+        
+        $orderStatus = $paymentData['orderStatus'] ?? 'UNKNOWN';
+        error_log("Estado del pago: " . $orderStatus);
+        
+        if ($orderStatus === 'PAID') {
+            return $this->procesarPagoExitoso($paymentData);
+        } else {
+            Session::delete('data');
+            return redirect('/pago-fallido')->with('error', 'Pago no autorizado. Estado: ' . $orderStatus);
+        }
+    }
+
+    private function procesarPagoExitoso(array $paymentData)
+    {
+        $data = Session::get('data');
+        if (!$data) {
+            redirect('/pago-fallido')->with('error', 'Datos de sesión perdidos.');
+            return;
+        }
+
+        $visa = Visa::find($data['visas_id']);
+        $transactionId = $paymentData['orderDetails']['orderId'] ?? $data['purchase_number'];
+        $paidAmount = ($paymentData['orderDetails']['orderTotalAmount'] ?? 0) / 100;
+
+        $visaInscripcion = new VisaInscripcion();
+        $visaInscripcion->visas_id = $data['visas_id'];
+        $visaInscripcion->numero_pedido = $transactionId;
+        $visaInscripcion->pago_sintasa = $visa['precio'] * count($data['viajeros']);
+        $visaInscripcion->pago_total = ($visa['precio'] + $visa['tasa_gobierno']) * count($data['viajeros']);
+        $visaInscripcion->tasa_gobierno_total = $visa['tasa_gobierno'] * count($data['viajeros']);
+        $visaInscripcion->status_pago = "pagado";
+        $visaInscripcion->save();
+
+        foreach ($data["variables_dinamicas"] as $nombre => $valor) {
+            $variabletemp = Variable::where('nombre', $nombre)->first();
+            if ($variabletemp) {
+                VisaInscripcionVariable::create([
+                    "visa_inscripcion_id" => $visaInscripcion->id,
+                    "variable_id" => $variabletemp->id,
+                    "valor" => $valor
+                ]);
+            }
+        }
+
+        foreach ($data["viajeros"] as $viajero) {
+            $newViajero = Viajero::create([
+                "visa_inscripcion_id" => $visaInscripcion->id,
+            ]);
+
+            foreach ($viajero as $nombre => $valor) {
+                $variabletemp = Variable::where('nombre', $nombre)->first();
+                if ($variabletemp) {
+                    ViajeroVariable::create([
+                        "viajero_id" => $newViajero->id,
+                        "variable_id" => $variabletemp->id,
+                        "valor" => $valor
+                    ]);
+                }
+            }
+        }
+        // ENVIAR CORREOS //
+
+        $usuarioEmail = $data['variables_dinamicas']['correo'] ?? null; // Correo del usuario
+        $usuarioTelfono = $data['variables_dinamicas']['telefono'] ?? null; // Telefono del usuario
+        $adminEmail = getenv('MAIL_SENDER_EMAIL'); // Tu correo
+
+        $asunto = "Confirmacion de pago exitoso";
+        $mensaje = "
+                <div style='font-family: Arial, sans-serif; max-width: 600px; width: 100%; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; text-align: center; box-sizing: border-box;'>
+                    <h2 style='color: rgb(76, 86, 175); font-size: 24px;'>¡Pago recibido con éxito! 🎉</h2>
+                    <p style='font-size: 16px; color: #333;'>Hola,</p>
+                    <p style='font-size: 16px; color: #333;'>Tu pago ha sido procesado correctamente. A continuación, los detalles de tu transacción:</p>
+
+                    <div style='background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: 20px 0; text-align: left; word-wrap: break-word;'>
+                        <p style='font-size: 16px; color: #555;'><strong>ID de Transacción:</strong>
+                            <span style='font-size: 18px; color: rgb(62, 76, 156); font-weight: bold;'>{$visaInscripcion->numero_pedido}</span>
+                        </p>
+                        <p style='font-size: 16px; color: #555;'><strong>Correo del Cliente:</strong>
+                            <span style='word-wrap: break-word; display: block;'>{$usuarioEmail}</span>
+                        </p>
+                        <p style='font-size: 16px; color: #555;'><strong>Número de Contacto:</strong> {$usuarioTelfono}</p>
+                        <p style='font-size: 16px; color: #555;'><strong>Precio Total:</strong> $ {$visaInscripcion->pago_total}</p>
+                        <p style='font-size: 16px; color: #555;'><strong>Estatus del Pago:</strong>
+                            <span style='color: green; font-weight: bold;'>{$visaInscripcion->status_pago}</span>
+                        </p>
+                    </div>
+
+                    <p style='font-size: 16px; color: #333;'>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+                    <p style='font-size: 16px; color: #333;'>Gracias por confiar en nosotros.</p>
+
+                    <a href='https://evisa.dibujame.com' style='display: inline-block; padding: 14px 24px; margin-top: 15px; font-size: 16px; color: #fff; background-color: rgb(54, 55, 143); text-decoration: none; border-radius: 5px;'>Ir a la página</a>
+
+                    <p style='margin-top: 20px; font-size: 14px; color: #888;'>© " . date('Y') . " AV Visa Asesores. Todos los derechos reservados.</p>
+                </div>
+            ";
+
+        // Enviar correo al usuario
+        MailController::sendEmail($usuarioEmail, $asunto, $mensaje);
+        // Enviar correo a tu cuenta
+        MailController::sendEmail($adminEmail, "Nuevo pago recibido", $mensaje);
+
+        Session::delete('data');
+
+        error_log("Pago procesado exitosamente, redirigiendo a página de éxito");
+        return render('pagos.exito', compact('visaInscripcion'));
     }
 
     public function getFormToken()
@@ -336,7 +563,7 @@ class VisaInscripcionController extends Controller
         if (!$visa) {
             return response()->json([
                 'error' => 'No se pudo obtener el formToken',
-                'detalle' => 'Visa no encontrada: '.$data['visas_id']
+                'detalle' => 'Visa no encontrada: ' . $data['visas_id']
             ], 500);
         }
 

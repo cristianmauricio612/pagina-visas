@@ -24,6 +24,10 @@ chdir(dirname(__DIR__));
 */
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+app()->csrf([
+    'except' => ['/api/izipay/ipn', '/procesar-pago-retorno', '/saludo'],
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Bring in (env)
