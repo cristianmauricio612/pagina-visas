@@ -1019,7 +1019,7 @@ input::placeholder {
 }
 
 .kr-embedded[kr-popin] .kr-popin-modal-header .kr-popin-modal-header-image img.kr-header-logo {
-    content: url('/assets/img/visas_travel_logo.png') !important;
+    content: url('/public/assets/img/visas_travel_logo.png') !important;
     background-color: white !important;
     object-fit: contain !important;
     width: 95px !important;
