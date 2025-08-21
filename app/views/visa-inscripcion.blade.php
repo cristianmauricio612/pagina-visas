@@ -371,9 +371,12 @@
                                     <img src="{{ $pais2->imagen }}" height="40" width="40">
                                 </div>
 
-                                <p class="informacion-general-item">Válido por: <span class="info-general-item-black">{{ $visa->tiempo_validez }}</span></p>
-                                <p class="informacion-general-item">Estancia máxima: <span class="info-general-item-black">{{ $visa->estancia_maxima }}</span></p>
-                                <p class="informacion-general-item" style="margin: 0;">Número de entradas: <span class="info-general-item-black">{{ $visa->numero_entradas }}</span></p>
+                                <p class="informacion-general-item">Válido por: <span
+                                        class="info-general-item-black">{{ $visa->tiempo_validez }}</span></p>
+                                <p class="informacion-general-item">Estancia máxima: <span
+                                        class="info-general-item-black">{{ $visa->estancia_maxima }}</span></p>
+                                <p class="informacion-general-item" style="margin: 0;">Número de entradas: <span
+                                        class="info-general-item-black">{{ $visa->numero_entradas }}</span></p>
                             </div>
                         </div>
                         <div class="viajeros-box">
@@ -443,18 +446,40 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
-    
+
     <script>
+        // Función para limpiar completamente los datepickers
+        function limpiarDatePickers(context = document) {
+            const inputs = context.querySelectorAll('.date-picker');
+            inputs.forEach(input => {
+                if (input._flatpickr) {
+                    input._flatpickr.destroy();
+                    input._flatpickr = null;
+                }
+                // Limpiar todos los marcadores
+                delete input.dataset.eventsAttached;
+                delete input.dataset.flatpickrInitialized;
+            });
+        }
+
         function inicializarDatePickers(context = document) {
             const inputs = context.querySelectorAll('.date-picker');
 
             inputs.forEach(input => {
-                if (input._flatpickr) return; // Ya tiene flatpickr inicializado
+                // Verificar si ya tiene flatpickr inicializado y destruirlo si existe
+                if (input._flatpickr) {
+                    input._flatpickr.destroy();
+                }
+                
+                // Verificar si ya está procesado para evitar duplicación
+                if (input.dataset.flatpickrInitialized === 'true') {
+                    return;
+                }
 
                 const minMonths = parseInt(input.dataset.minMonths || "0");
 
@@ -463,38 +488,153 @@
                     ? new Date(today.getFullYear(), today.getMonth() + minMonths, today.getDate())
                     : null;
 
+                const isMobile = window.innerWidth <= 768;
+
                 const calendar = flatpickr(input, {
                     dateFormat: "d/m/Y",
                     minDate: minDate,
                     allowInput: false,
                     clickOpens: true,
-                    positionElement: input,
-                    showMonths: 2,
-                    locale: "es", 
-                    onReady: function(selectedDates, dateStr, instance) {
+                    showMonths: 1,
+                    locale: "es",
+                    // Configuración específica para móviles
+                    static: isMobile,
+                    appendTo: isMobile ? document.body : input.parentElement,
+                    // Evitar duplicación de inputs
+                    wrap: false,
+                    altInput: false,
+                    // CRÍTICO: Deshabilitar el input móvil automático de Flatpickr
+                    disableMobile: true,
+                    // Forzar el uso del calendario web en lugar del nativo móvil
+                    enableTime: false,
+                    onReady: function (selectedDates, dateStr, instance) {
                         // Mostrar la selección de año por defecto si no hay restricción
                         if (!minDate) {
                             instance.currentYearElement.click();
                         }
+                        
+                        // Mejorar eventos táctiles en móviles
+                        if (isMobile) {
+                            const calendarElement = instance.calendarContainer;
+                            calendarElement.style.touchAction = 'manipulation';
+                            
+                            // Agregar eventos táctiles
+                            calendarElement.addEventListener('touchstart', function(e) {
+                                e.stopPropagation();
+                            }, { passive: true });
+                        }
+                    },
+                    onOpen: function(selectedDates, dateStr, instance) {
+                        // En móviles, centrar el calendario
+                        if (isMobile) {
+                            const calendarElement = instance.calendarContainer;
+                            calendarElement.style.position = 'fixed';
+                            calendarElement.style.left = '50%';
+                            calendarElement.style.top = '50%';
+                            calendarElement.style.transform = 'translate(-50%, -50%)';
+                            calendarElement.style.zIndex = '9999';
+                        }
+                        
+                        // CRÍTICO: Eliminar cualquier input móvil que se haya creado
+                        setTimeout(() => {
+                            const mobileInputs = document.querySelectorAll('.flatpickr-mobile');
+                            mobileInputs.forEach(mobileInput => {
+                                if (mobileInput !== input) {
+                                    mobileInput.remove();
+                                }
+                            });
+                        }, 10);
                     }
                 });
 
-                const openCalendar = () => {
-                    input.focus();
+                const openCalendar = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Verificar que el calendario existe antes de intentar abrirlo
+                    if (!calendar) return;
+                    
+                    // En móviles, no hacer focus para evitar que aparezca el teclado
+                    if (!isMobile) {
+                        input.focus();
+                    }
+                    
                     setTimeout(() => {
-                        calendar.open();
-                        if (!minDate) {
-                            calendar.currentYearElement?.click(); // Abrir selector de año si no hay minDate
+                        if (calendar && typeof calendar.open === 'function') {
+                            calendar.open();
+                            if (!minDate && calendar.currentYearElement) {
+                                calendar.currentYearElement.click(); // Abrir selector de año si no hay minDate
+                            }
                         }
-                    }, 100);
+                    }, isMobile ? 50 : 100); // Menor delay en móviles
                 };
 
-                input.addEventListener("click", openCalendar);
+                // Limpiar eventos anteriores si existen
+                const existingEvents = input.dataset.eventsAttached;
+                if (!existingEvents) {
+                    // Agregar eventos tanto para click como para touch
+                    input.addEventListener("click", openCalendar);
+                    if (isMobile) {
+                        input.addEventListener("touchstart", openCalendar, { passive: false });
+                    }
+                    
+                    // También agregar el evento al ícono del calendario
+                    const iconElement = input.parentElement.querySelector('.form-icon-content');
+                    if (iconElement) {
+                        iconElement.addEventListener("click", openCalendar);
+                        if (isMobile) {
+                            iconElement.addEventListener("touchstart", openCalendar, { passive: false });
+                        }
+                    }
+                    
+                    // Marcar que los eventos ya están adjuntos
+                    input.dataset.eventsAttached = 'true';
+                }
+                
+                // Marcar como inicializado para evitar duplicación
+                input.dataset.flatpickrInitialized = 'true';
+            });
+        }
+
+        // Función para eliminar inputs móviles duplicados
+        function eliminarInputsMovilesDuplicados() {
+            const mobileInputs = document.querySelectorAll('.flatpickr-mobile');
+            const originalInputs = document.querySelectorAll('.date-picker:not(.flatpickr-mobile)');
+            
+            mobileInputs.forEach(mobileInput => {
+                // Verificar si hay un input original correspondiente
+                const hasOriginal = Array.from(originalInputs).some(original => {
+                    return original.name === mobileInput.name || 
+                           original.id === mobileInput.id ||
+                           original.closest('.form-box-input') === mobileInput.closest('.form-box-input');
+                });
+                
+                if (hasOriginal) {
+                    mobileInput.remove();
+                }
             });
         }
 
         document.addEventListener("DOMContentLoaded", function () {
             inicializarDatePickers();
+            
+            // Eliminar inputs móviles duplicados cada 500ms
+            setInterval(eliminarInputsMovilesDuplicados, 500);
+            
+            // Agregar funcionalidad para cerrar el calendario en móviles al tocar fuera
+            if (window.innerWidth <= 768) {
+                document.addEventListener('touchstart', function(e) {
+                    const openCalendars = document.querySelectorAll('.flatpickr-calendar.open');
+                    openCalendars.forEach(calendar => {
+                        if (!calendar.contains(e.target) && !e.target.closest('.date-picker') && !e.target.closest('.form-icon-content')) {
+                            const flatpickrInstance = calendar._flatpickr;
+                            if (flatpickrInstance) {
+                                flatpickrInstance.close();
+                            }
+                        }
+                    });
+                }, { passive: true });
+            }
         });
     </script>
 
@@ -587,9 +727,9 @@
                     let tasaDiv = document.createElement("div");
                     tasaDiv.classList.add("information-pago-tasas");
                     tasaDiv.innerHTML = `
-                                    <span style="flex: 1 1 0%;">Tasas gubernamentales</span>
-                                    <span style="text-wrap: nowrap; width: fit-content;">$. ${tasaGobierno}</span>
-                                `;
+                                        <span style="flex: 1 1 0%;">Tasas gubernamentales</span>
+                                        <span style="text-wrap: nowrap; width: fit-content;">$. ${tasaGobierno}</span>
+                                    `;
                     contenedorTasas.appendChild(tasaDiv);
                 }
             });
@@ -638,11 +778,11 @@
                     const deleteButton = document.createElement('div');
                     deleteButton.className = 'delete-form';
                     deleteButton.innerHTML = `
-                                    <div style="display: inline; margin-right: 10px; font-size: 16px;">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </div>
-                                    <span>Eliminar viajero</span>
-                                `;
+                                        <div style="display: inline; margin-right: 10px; font-size: 16px;">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </div>
+                                        <span>Eliminar viajero</span>
+                                    `;
                     deleteButton.onclick = function () { eliminarViajero(this); };
 
                     // Encontrar el contenedor del formulario y añadir el botón
@@ -653,7 +793,8 @@
 
                     contenedor.appendChild(nuevoViajero);
 
-                    // 🚀 Re-inicializar flatpickr SOLO en el nuevo viajero
+                    // 🚀 Limpiar y re-inicializar flatpickr SOLO en el nuevo viajero
+                    limpiarDatePickers(nuevoViajero);
                     inicializarDatePickers(nuevoViajero);
 
                     // Actualizar los precios en el sidebar
@@ -948,7 +1089,7 @@
                         if (valor) {
                             const error = validacionesGenerales(nombreCampo, valor, 1);
 
-                            if(error != ""){
+                            if (error != "") {
                                 errores.push(error);
                             }
 
@@ -1034,7 +1175,7 @@
                                 if (valor) {
                                     const error = validacionesGenerales(nombreBase, valor, indexViajero);
 
-                                    if(error != ""){
+                                    if (error != "") {
                                         erroresViajero.push(error);
                                     }
                                 }
@@ -1119,7 +1260,7 @@
                                 if (valor) {
                                     const error = validacionesGenerales(nombreBase, valor, i);
 
-                                    if(error != ""){
+                                    if (error != "") {
                                         erroresViajero.push(error);
                                     }
                                 }
@@ -1175,8 +1316,8 @@
             }
         });
 
-        function validacionesGenerales(nombreCampo, valor, index){
-            let errores="";
+        function validacionesGenerales(nombreCampo, valor, index) {
+            let errores = "";
             // Validar correo electrónico
             if (nombreCampo.includes('correo')) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1301,7 +1442,8 @@
 
                             console.log(formContainer);
 
-                            // 🚀 Re-inicializar flatpickr SOLO en el nuevo viajero
+                            // 🚀 Limpiar y re-inicializar flatpickr SOLO en el nuevo viajero
+                            limpiarDatePickers(formContainer);
                             inicializarDatePickers(formContainer);
                         })
                         .catch(error => {
@@ -1337,18 +1479,18 @@
             if (!contenedorViajeros) return;
 
             let html = `
-                            <h5 class="viajeros-box-title">Viajeros</h5>
-                        `;
+                                <h5 class="viajeros-box-title">Viajeros</h5>
+                            `;
 
             formData.viajeros.forEach((viajero, index) => {
                 html += `
-                                <div class="viajeros-box-item">
-                                    <div style="display: inline;">
-                                        <i class="fa-solid fa-user"></i>
+                                    <div class="viajeros-box-item">
+                                        <div style="display: inline;">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                        <p style="word-break: break-word; margin-bottom: 0;">${viajero.nombres} ${viajero.apellidos}</p>
                                     </div>
-                                    <p style="word-break: break-word; margin-bottom: 0;">${viajero.nombres} ${viajero.apellidos}</p>
-                                </div>
-                            `;
+                                `;
             });
 
             contenedorViajeros.innerHTML = html;
@@ -1364,9 +1506,9 @@
             let total = (precioVisa + tasaGobierno) * contadorViajero;
 
             contenedorTotal.innerHTML = `
-                            <span>Total a pagar hoy</span>
-                            <span>USD $. ${total.toFixed(2)}</span>
-                        `;
+                                <span>Total a pagar hoy</span>
+                                <span>USD $. ${total.toFixed(2)}</span>
+                            `;
         }
 
         function formatFecha(fecha) {
@@ -1376,157 +1518,20 @@
     </script>
 
     <script>
-        // Llama a esta función cuando el usuario esté listo para pagar
-        function mostrarFormularioPago(formData) {
-            console.log('Iniciando proceso de pago...');
-            
-            // Obtener el botón "Continuar con el pago" que se va a reemplazar
-            const continueButton = document.getElementById('btnContinuePay');
-            const buttonContainer = continueButton.parentElement;
-            
-            // Ocultar el botón original
-            continueButton.style.display = 'none';
-            
-            // Mostrar mensaje de carga mientras se obtiene el token
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loading-payment';
-            loadingDiv.innerHTML = `
-                <button class="tab-button-continuar" disabled style="opacity: 0.6;">
-                    <span>Cargando formulario de pago...</span>
-                </button>
-            `;
-            buttonContainer.appendChild(loadingDiv);
-            
-            fetch('/api/izipay/form-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(res => {
-                console.log('Respuesta del servidor:', res.status);
-                return res.json();
-            })
-            .then(data => {
-                console.log('Datos recibidos:', data);
-                
-                // Remover mensaje de carga
-                const loadingElement = document.getElementById('loading-payment');
-                if (loadingElement) {
-                    loadingElement.remove();
-                }
-                
-                if (data.formToken) {
-                    console.log('FormToken recibido:', data.formToken);
-                    
-                    // Verificar si KR está disponible
-                    if (typeof window.KR === 'undefined') {
-                        console.error('❌ KR no está definido');
-                        alert('Error: No se pudo cargar el script de pago de Izipay. Verifique la configuración de las claves y scripts.');
-                        restaurarBotonOriginal();
-                        return;
-                    }
-                    
-                    console.log('✅ KR disponible. Métodos:', Object.keys(window.KR));
-                    
-                    // Crear el elemento kr-embedded en el lugar del botón
-                    const krContainer = document.createElement('div');
-                    krContainer.className = 'payment-button-container';
-                    krContainer.id = 'payment-button-container';
-                    
-                    const krDiv = document.createElement('div');
-                    krDiv.className = 'kr-embedded';
-                    krDiv.setAttribute('kr-popin', '');
-                    krDiv.setAttribute('kr-form-token', data.formToken);
-                    
-                    krContainer.appendChild(krDiv);
-                    buttonContainer.appendChild(krContainer);
-                    
-                    console.log('✅ Elemento kr-embedded creado en lugar del botón');
-                    
-                    // Intentar diferentes métodos según disponibilidad
-                    try {
-                        if (typeof window.KR.renderElements === 'function') {
-                            console.log('✅ Usando KR.renderElements...');
-                            KR.renderElements();
-                        } else if (typeof window.KR.addForm === 'function') {
-                            console.log('✅ Usando KR.addForm...');
-                            KR.addForm('.kr-embedded');
-                        } else if (typeof window.KR.attachForm === 'function') {
-                            console.log('✅ Usando KR.attachForm...');
-                            KR.attachForm('.kr-embedded');
-                        } else if (typeof window.KR.openPopin === 'function') {
-                            console.log('✅ Usando KR.openPopin...');
-                            KR.openPopin();
-                        } else {
-                            console.error('❌ Ningún método de renderizado conocido está disponible');
-                            console.log('Métodos disponibles:', Object.keys(window.KR));
-                            alert('Error: No se encontró un método válido para mostrar el formulario de pago.');
-                            restaurarBotonOriginal();
-                            return;
-                        }
-                        
-                        console.log('✅ Formulario de pago inicializado correctamente');
-                        
-                    } catch (error) {
-                        console.error('❌ Error al inicializar formulario:', error);
-                        alert('Error al mostrar el formulario de pago: ' + error.message);
-                        restaurarBotonOriginal();
-                    }
-                } else {
-                    console.error('No se recibió formToken:', data);
-                    alert('No se pudo obtener el formulario de pago. Intenta nuevamente.');
-                    restaurarBotonOriginal();
-                }
-            })
-            .catch(err => {
-                console.error('Error en la petición:', err);
-                alert('Error al conectar con el servidor de pagos.');
-                
-                // Remover mensaje de carga en caso de error
-                const loadingElement = document.getElementById('loading-payment');
-                if (loadingElement) {
-                    loadingElement.remove();
-                }
-                
-                restaurarBotonOriginal();
-            });
-        }
-
-        // Función para restaurar el botón original en caso de error
-        function restaurarBotonOriginal() {
-            const continueButton = document.getElementById('btnContinuePay');
-            const paymentContainer = document.getElementById('payment-button-container');
-            
-            // Mostrar el botón original nuevamente
-            if (continueButton) {
-                continueButton.style.display = 'block';
-            }
-            
-            // Remover el contenedor del formulario de pago
-            if (paymentContainer) {
-                paymentContainer.remove();
-            }
-            
-            console.log('Botón original restaurado');
-        }
-
         // Configurar eventos de Izipay cuando el DOM esté listo
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Verificar si KR se carga correctamente después de un delay
-            setTimeout(function() {
+            setTimeout(function () {
                 console.log("Verificando disponibilidad de KR...");
                 console.log("window.KR:", typeof window.KR);
-                
+
                 if (typeof window.KR === 'undefined') {
                     console.error("❌ KR no está disponible después de cargar la página");
                     console.log("Verificando scripts en el DOM...");
-                    
+
                     const scripts = document.querySelectorAll('script[src*="krypton-client"]');
                     console.log("Scripts de Izipay encontrados:", scripts.length);
-                    
+
                     scripts.forEach((script, index) => {
                         console.log(`Script ${index + 1}:`, script.src);
                         console.log(`Public key:`, script.getAttribute('kr-public-key'));
@@ -1539,22 +1544,160 @@
             }, 2000);
 
             // Event listener para cuando el pago falla
-            window.addEventListener("kr-payment-error", function(event) {
+            window.addEventListener("kr-payment-error", function (event) {
                 console.error("Error en el pago:", event.detail);
                 alert("Error en el pago. Por favor, intenta nuevamente.");
                 restaurarBotonOriginal();
             });
 
             // Event listener para cuando el usuario cancela el pago
-            window.addEventListener("kr-popin-closed", function(event) {
+            window.addEventListener("kr-popin-closed", function (event) {
                 console.log("El usuario cerró el formulario de pago");
                 restaurarBotonOriginal();
             });
 
             // Event listener para cuando el formulario se renderiza correctamente
-            window.addEventListener("kr-popin-displayed", function(event) {
-                console.log("Formulario de pago mostrado correctamente");
+            window.addEventListener("kr-popin-displayed", function (event) {
+                console.log("Formulario de pago mostrado correctamente " + header.style.zIndex);
             });
         });
+
+        // Llama a esta función cuando el usuario esté listo para pagar
+        function mostrarFormularioPago(formData) {
+            console.log('Iniciando proceso de pago...');
+
+            // Obtener el botón "Continuar con el pago" que se va a reemplazar
+            const continueButton = document.getElementById('btnContinuePay');
+            const buttonContainer = continueButton.parentElement;
+
+            // Ocultar el botón original
+            continueButton.style.display = 'none';
+
+            // Mostrar mensaje de carga mientras se obtiene el token
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading-payment';
+            loadingDiv.innerHTML = `
+                    <button class="tab-button-continuar" disabled style="opacity: 0.6;">
+                        <span>Cargando formulario de pago...</span>
+                    </button>
+                `;
+            buttonContainer.appendChild(loadingDiv);
+
+            fetch('/api/izipay/form-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(res => {
+                    console.log('Respuesta del servidor:', res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    console.log('Datos recibidos:', data);
+
+                    // Remover mensaje de carga
+                    const loadingElement = document.getElementById('loading-payment');
+                    if (loadingElement) {
+                        loadingElement.remove();
+                    }
+
+                    if (data.formToken) {
+                        console.log('FormToken recibido:', data.formToken);
+
+                        // Verificar si KR está disponible
+                        if (typeof window.KR === 'undefined') {
+                            console.error('❌ KR no está definido');
+                            alert('Error: No se pudo cargar el script de pago de Izipay. Verifique la configuración de las claves y scripts.');
+                            restaurarBotonOriginal();
+                            return;
+                        }
+
+                        console.log('✅ KR disponible. Métodos:', Object.keys(window.KR));
+
+                        // Crear el elemento kr-embedded en el lugar del botón
+                        const krContainer = document.createElement('div');
+                        krContainer.className = 'payment-button-container';
+                        krContainer.id = 'payment-button-container';
+
+                        const krDiv = document.createElement('div');
+                        krDiv.className = 'kr-embedded';
+                        krDiv.setAttribute('kr-popin', '');
+                        krDiv.setAttribute('kr-form-token', data.formToken);
+
+                        krContainer.appendChild(krDiv);
+                        buttonContainer.appendChild(krContainer);
+
+                        console.log('✅ Elemento kr-embedded creado en lugar del botón');
+
+                        // Intentar diferentes métodos según disponibilidad
+                        try {
+                            if (typeof window.KR.renderElements === 'function') {
+                                console.log('✅ Usando KR.renderElements...');
+                                KR.renderElements();
+                            } else if (typeof window.KR.addForm === 'function') {
+                                console.log('✅ Usando KR.addForm...');
+                                KR.addForm('.kr-embedded');
+                            } else if (typeof window.KR.attachForm === 'function') {
+                                console.log('✅ Usando KR.attachForm...');
+                                KR.attachForm('.kr-embedded');
+                            } else if (typeof window.KR.openPopin === 'function') {
+                                console.log('✅ Usando KR.openPopin...');
+                                KR.openPopin();
+                            } else {
+                                console.error('❌ Ningún método de renderizado conocido está disponible');
+                                console.log('Métodos disponibles:', Object.keys(window.KR));
+                                alert('Error: No se encontró un método válido para mostrar el formulario de pago.');
+                                restaurarBotonOriginal();
+                                return;
+                            }
+
+                            console.log('✅ Formulario de pago inicializado correctamente');
+
+                        } catch (error) {
+                            console.error('❌ Error al inicializar formulario:', error);
+                            alert('Error al mostrar el formulario de pago: ' + error.message);
+                            restaurarBotonOriginal();
+                        }
+                    } else {
+                        console.error('No se recibió formToken:', data);
+                        alert('No se pudo obtener el formulario de pago. Intenta nuevamente.');
+                        restaurarBotonOriginal();
+                    }
+                })
+                .catch(err => {
+                    console.error('Error en la petición:', err);
+                    alert('Error al conectar con el servidor de pagos.');
+
+                    // Remover mensaje de carga en caso de error
+                    const loadingElement = document.getElementById('loading-payment');
+                    if (loadingElement) {
+                        loadingElement.remove();
+                    }
+
+                    restaurarBotonOriginal();
+                });
+        }
+
+        // Función para restaurar el botón original en caso de error
+        function restaurarBotonOriginal() {
+            const continueButton = document.getElementById('btnContinuePay');
+            const paymentContainer = document.getElementById('payment-button-container');
+
+            // Mostrar el botón original nuevamente
+            if (continueButton) {
+                continueButton.style.display = 'block';
+            }
+
+            // Remover el contenedor del formulario de pago
+            if (paymentContainer) {
+                paymentContainer.remove();
+            }
+
+            console.log('Botón original restaurado');
+        }
+
     </script>
 @endsection

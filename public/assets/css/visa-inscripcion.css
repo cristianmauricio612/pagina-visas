@@ -982,7 +982,7 @@ input::placeholder {
 }
 
 .kr-card-form {
-    width: 430px !important;
+    width: 415px !important;
     border-radius: 15px !important;
 }
 
@@ -1019,15 +1019,15 @@ input::placeholder {
 }
 
 .kr-embedded[kr-popin] .kr-popin-modal-header .kr-popin-modal-header-image img.kr-header-logo {
-    content: url('/public/assets/img/visas_travel_logo.png') !important;
+    content: url('/assets/img/visas_travel_logo.png') !important;
     background-color: white !important;
     object-fit: contain !important;
-    width: 95px !important;
-    height: 95px !important;
+    width: 90px !important;
+    height: 90px !important;
     display: block !important;
     filter: drop-shadow(0 0 4px rgba(0,0,0,0.2)) !important;
     transform: scale(1.2) !important;
-    top: -25px;
+    top: -20px;
     right: -5px;
 }
 
@@ -1320,6 +1320,13 @@ input::placeholder {
 @media (max-width: 768px) {
     .flatpickr-calendar {
         width: auto !important;
+        max-width: 90vw !important;
+        position: fixed !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 9999 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
     }
 
     .flatpickr-day {
@@ -1327,5 +1334,74 @@ input::placeholder {
         height: 30px;
         line-height: 30px;
         font-size: 12px;
+        touch-action: manipulation;
+        min-width: 35px !important;
+        min-height: 35px !important;
+        margin: 1px !important;
     }
+
+    /* Mejorar la interacción táctil */
+    .flatpickr-prev-month,
+    .flatpickr-next-month {
+        padding: 10px !important;
+        touch-action: manipulation;
+    }
+
+    /* Asegurar que el overlay sea visible */
+    .flatpickr-calendar.open {
+        display: block !important;
+    }
+
+    /* Overlay de fondo para móviles */
+    .flatpickr-calendar.open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    /* Asegurar que los inputs no abran el teclado virtual */
+    .form-input.date-picker {
+        caret-color: transparent;
+        cursor: pointer;
+    }
+
+    /* Mejorar el área de toque del ícono */
+    .form-icon-content {
+        padding: 10px;
+        margin: -10px;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+}
+
+/* CRÍTICO: Ocultar completamente el input móvil automático de Flatpickr */
+.flatpickr-mobile {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Asegurar que solo el input original sea visible */
+.date-picker:not(.flatpickr-mobile) {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Prevenir que Flatpickr cree inputs adicionales */
+.flatpickr-input[readonly] {
+    background-color: white !important;
+    cursor: pointer !important;
+}
+
+.flatpickr-wrapper {
+    position: relative !important;
+    display: flex !important;
 }

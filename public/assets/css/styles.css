@@ -174,9 +174,6 @@ body{
     align-items: center;
     width: 100%;
     background-color: white;
-    position: sticky;
-    top: 0;
-    z-index: 9999;
     border: 0px;
     border-bottom-width: 1px;
     border-style: solid;
