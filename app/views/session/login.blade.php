@@ -44,15 +44,15 @@
                 <button class="continuar-btn" onclick="checkLogin()">Continuar</button>
                 <div class="alert invalid-email">
                     <i class="fa-solid fa-circle-check"></i>
-                    <span>Invalid email address</span>
+                    <span>Dirección de correo electrónico no válida</span>
                 </div>
                 <div class="alert error-email">
                     <i class="fa-solid fa-circle-check"></i>
-                    <span>There is no account associated with that email address</span>
+                    <span>No hay una cuenta asociada con esa dirección de correo electrónico</span>
                 </div>
                 <div class="alert invalid-number">
                     <i class="fa-solid fa-circle-check"></i>
-                    <span>There is no account associated with that order number</span>
+                    <span>No hay una cuenta asociada con ese número de pedido</span>
                 </div>
                 <p class="register-text">¿No tienes una cuenta? <br class="salto"> <a
                         href="{{route('registrarse')}}">Regístrate gratis</a></p>
@@ -65,8 +65,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Error Icon">
             </div>
             <h2>Error</h2>
-            <p class="msg-error">Email address is valid but your password is wrong. We have sent you an automatic login link
-                to your email</p>
+            <p class="msg-error">La dirección de correo electrónico es válida pero tu contraseña es incorrecta.</p>
             <button class="close-btn" onclick="closeModal('errorModal')">Cerrar</button>
         </div>
     </div>
@@ -76,7 +75,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Error Icon">
             </div>
             <h2>Error</h2>
-            <p class="msg-error">There is no account associated with that email address</p>
+            <p class="msg-error">No hay una cuenta asociada con esa dirección de correo electrónico</p>
             <button class="close-btn" onclick="closeModal('invalidModal')">Cerrar</button>
         </div>
     </div>

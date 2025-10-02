@@ -35,10 +35,10 @@
     <script>
         document.getElementById("registerForm").addEventListener("submit", function(event) {
             event.preventDefault();
-    
+
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
-    
+
             fetch("/register", {
                 method: "POST",
                 headers: {
@@ -46,12 +46,12 @@
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json().then(json => ({ status: response.status, body: json }))) 
+            .then(response => response.json().then(json => ({ status: response.status, body: json })))
             .then(result => {
                 if (result.status === 201) {
                     console.log("✅ Usuario registrado:", result.body);
                     alert("✅ Usuario registrado exitosamente");
-                    window.location.href = "/iniciar-sesion"; 
+                    window.location.href = "/iniciar-sesion";
                 } else {
                     console.error("❌ Error al registrarse:", result.body);
                     alert(`❌ Error: ${result.body.message}`);

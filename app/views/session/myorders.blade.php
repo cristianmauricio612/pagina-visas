@@ -12,10 +12,10 @@
         if (!$usuario) {
             redirect('/iniciar-sesion');
         }
-        
+
         // Obtener la variable de correo desde la tabla de variables
         $correoVariable = \App\Models\Variable::where('nombre', 'correo')->first();
-        
+
         // Buscar los IDs de los pedidos que tienen el correo del usuario actual
         $pedidosIds = [];
         if ($correoVariable) {
@@ -23,14 +23,14 @@
                 ->where('valor', 'LIKE', $usuario['email'])
                 ->pluck('visa_inscripcion_id')
                 ->toArray();
-            
+
             // Obtener los pedidos completos
             $pedidos = \App\Models\VisaInscripcion::whereIn('id', $pedidosRelaciones)
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
             // Fallback al método anterior si no se encuentra la variable
-            $pedidos = \APP\MODELS\VisaInscripcion::where('correo', 'LIKE', $usuario['email'])
+            $pedidos = \App\Models\VisaInscripcion::where('correo', 'LIKE', $usuario['email'])
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
@@ -81,10 +81,10 @@
                         <tbody>
                             @foreach ($pedidos as $pedido)
                                 @php
-                                    $visa = \APP\MODELS\Visa::find($pedido->visas_id);
+                                    $visa = \App\Models\Visa::find($pedido->visas_id);
                                     // Formatear fecha de creación como dd/mm/aaaa
                                     $fechaCreacion = \Carbon\Carbon::parse($pedido->created_at)->format('d/m/Y');
-                                    
+
                                     // Determinar el color y texto del estado
                                     $statusClasses = [
                                         'pendiente' => 'status pending',
@@ -114,12 +114,12 @@
                 @endif
             </div>
         </div>
-    </div>  
+    </div>
 
     <!-- Modal para visualizar detalles del pedido -->
-    <div class="modal fade" id="show-visa-Modal" tabindex="-1" 
+    <div class="modal fade" id="show-visa-Modal" tabindex="-1"
         aria-labelledby="showModalLabel" aria-hidden="true">
-    </div> 
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

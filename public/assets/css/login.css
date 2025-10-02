@@ -9,7 +9,7 @@
 
 .login-container {
     width: 58%;
-    height: 100%;    
+    height: 100%;
     display: flex;
     gap: 100px;
 }
@@ -23,7 +23,8 @@
 .image{
     border-radius: 24px;
     max-width: 100%;
-    height: auto;
+    height: 80%;
+    min-height: 400px;
     display: block;
 }
 
@@ -249,10 +250,13 @@ input:hover {
     background: white;
     padding: 40px;
     border-radius: 24px;
-    text-align: center;
     width: 547px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Icono */
@@ -284,6 +288,7 @@ h2, .msg-error {
     border-radius: 16px;
     box-sizing: border-box;
     text-decoration: none;
+    width: 100%;
 }
 
 .close-btn:hover {
@@ -322,7 +327,7 @@ h2, .msg-error {
     input {
         width: 100%;
     }
-    
+
     .continuar-btn {
         width: 100%;
     }
@@ -367,7 +372,7 @@ h2, .msg-error {
     .password-container{
         width: 85%;
     }
-    
+
     .continuar-btn {
         width: 85%;
     }
@@ -406,7 +411,7 @@ h2, .msg-error {
     .password-container{
         width: 100%;
     }
-    
+
     .continuar-btn {
         width: 100%;
     }
